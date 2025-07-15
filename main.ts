@@ -1,4 +1,4 @@
-enum UserMessageBodyType {
+export enum MessageBodyType {
     command = 1,
     text,
     number,
@@ -8,48 +8,46 @@ enum UserMessageBodyType {
     selectValue,
     selectValues,
     datetime,
-}
-
-enum SystemMessageBodyType {
-    text = 1,
     markdown,
 }
 
-type UserMessageBody = string | number | boolean | Attachment | Attachment[] | SelectValue | SelectValue[] | Date;
-type SystemMessageBody = string;
+export type MessageBody = string | number | boolean | Attachment | Attachment[] | SelectValue | SelectValue[] | Date;
 
-interface TextLimits {
+export interface TextLimits {
     minLength: number;
     maxLength: number;
 }
 
-interface NumberLimits {
+export interface NumberLimits {
     min: number;
     max: number;
     intOnly: boolean;
 }
 
-interface AttachmentLimits {
+export interface AttachmentLimits {
     mimeTypes: string[];
     maxSize: number;
 }
 
-type AttachmentsLimits = AttachmentLimits & { maxAmount: number };
+export type AttachmentsLimits = AttachmentLimits & { maxAmount: number };
 
-interface SelectValueLimits {
+export interface SelectValueLimits {
     options: SelectValue[];
 }
 
-type SelectValuesLimits = SelectValue & { maxAmount: number };
+export interface SelectValuesLimits {
+    options: SelectValue[];
+    maxAmount: number;
+}
 
-interface DatetimeLimits {
+export interface DatetimeLimits {
     min?: Date;
     max?: Date;
 }
 
-type Commands = Record<string, { label?: string; description?: string }>;
+export type Commands = Record<string, { label?: string; description?: string }>;
 
-interface Attachment {
+export interface Attachment {
     id: string;
     path: string;
     name: string;
@@ -57,79 +55,66 @@ interface Attachment {
     mimeType: string;
 }
 
-interface SelectValue {
+export interface SelectValue {
     value: string;
     label?: string;
 }
 
-interface Chat {
+export interface Chat {
     id: string;
     name: string;
     userID: string; // Уникальный идентификатор пользоватателя, создавшего чат
 }
 
-interface UserMessage {
+export interface Message {
     id: string;
+    sceneID: string; // ID текущей сцены (связанного списка сообщений - диалога)
     chatID: string;
-    userID: string; // Уникальный идентификатор отправителя
-    bodyType: UserMessageBodyType; // Тип данных которые содержаться в body
-    body: string; // JSON строка которая может быть приведена к конкретному типу в зависимости от bodyType
+    userID?: string; // Уникальный идентификатор отправителя (null - система)
+    replyFor?: string; // ID системного сообщения к которому данное сообщение является ответом
+    sceneKey?: string; // Ключ сцены
+    stepKey?: string; // Ключ шага сцены
+    bodyType: MessageBodyType; // Тип данных которые содержаться в body
+    body: string; // строка которая может быть приведена к конкретному типу в зависимости от bodyType
+    replyRestriction?: ReplyRestriction; // Ограничения на ответ, который должен предоставить пользователь
     createdAt: number;
 }
 
-type ReplyRestriction =
+export type ReplyRestriction =
     | {
-          allowedBodyType: UserMessageBodyType.command;
+          bodyType: MessageBodyType.command;
       }
     | {
-          allowedBodyType: UserMessageBodyType.text;
+          bodyType: MessageBodyType.text;
           bodyLimits?: TextLimits;
       }
     | {
-          allowedBodyType: UserMessageBodyType.number;
+          bodyType: MessageBodyType.number;
           bodyLimits?: NumberLimits;
       }
     | {
-          allowedBodyType: UserMessageBodyType.boolean;
+          bodyType: MessageBodyType.boolean;
       }
     | {
-          allowedBodyType: UserMessageBodyType.attachment;
+          bodyType: MessageBodyType.attachment;
           bodyLimits: AttachmentLimits;
       }
     | {
-          allowedBodyType: UserMessageBodyType.attachments;
+          bodyType: MessageBodyType.attachments;
           bodyLimits: AttachmentsLimits;
       }
     | {
-          allowedBodyType: UserMessageBodyType.selectValue;
+          bodyType: MessageBodyType.selectValue;
           bodyLimits: SelectValueLimits;
       }
     | {
-          allowedBodyType: UserMessageBodyType.selectValues;
+          bodyType: MessageBodyType.selectValues;
           bodyLimits: SelectValuesLimits;
       }
     | {
-          allowedBodyType: UserMessageBodyType.datetime;
+          bodyType: MessageBodyType.datetime;
           bodyLimits?: DatetimeLimits;
       };
-
-interface SystemMessage {
-    id: string;
-    chatID: string;
-    bodyType: SystemMessageBodyType; // Тип данных которые содержаться в body
-    body: SystemMessageBody; // JSON строка которая может быть приведена к конкретному типу в зависимости от bodyType
-    attachments?: Attachment[]; // Список файлов прикрепленных к сообщению
-    replyRestriction?: ReplyRestriction;
-    createdAt: number;
-}
-
-const scene = {
-    trigger: "start",
-    steps: [{}],
-    handler: () => {},
-};
-
-console.log(scene);
 
 // interface SceneStep<Key extends string = string, Input extends UserMessageBody> {
 //     key: Key;
