@@ -1,3 +1,5 @@
+import { App } from "./app/app";
+import { createCommand } from "./scene/command";
 import { createScene } from "./scene/scene";
 import { createStep } from "./scene/step";
 
@@ -7,19 +9,16 @@ const stepName = createStep({
     replyRestriction: { bodyType: "text" },
 });
 
-const stepAge = createStep({
-    key: "age",
-    prompt: { type: "text", content: "What is your age?" },
-    replyRestriction: { bodyType: "number" },
-});
-
-const scene = createScene({
-    key: "test",
-    steps: [stepName, stepAge],
-    handler(responses) {
-        responses.name;
-        return { type: "text", content: "test" };
+const sceneHello = createScene({
+    steps: [stepName],
+    handler: async (answers) => {
+        const content = `Hello ${answers.name}!`
+        return { type: "text", content };
     },
 });
 
-console.log(scene);
+const startCmd = createCommand({value:"start", label: "Start a new scene"})
+
+const app = new App()
+app.addScene(startCmd, sceneHello)
+app.start()

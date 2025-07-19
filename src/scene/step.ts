@@ -12,7 +12,7 @@ export interface SceneStep<K extends string = string, T extends UserMessageBodyT
     key: K;
     prompt: SystemMessageBody;
     replyRestriction: ReplyRestriction<T>;
-    handler?: (body: MessageBodyMap[T]) => SystemMessageBody | void;
+    handler?: (body: MessageBodyMap[T]) => Promise<SystemMessageBody | void>;
 }
 
 export const createStep = <K extends string, T extends UserMessageBodyType>(step: SceneStep<K, T>): SceneStep<K, T> => {
