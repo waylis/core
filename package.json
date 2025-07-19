@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsdown"
   },
   "keywords": [],
   "author": "",
@@ -11,6 +11,11 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^24.0.10",
+    "tsdown": "^0.12.9",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
