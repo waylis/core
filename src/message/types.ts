@@ -1,8 +1,3 @@
-export interface Command {
-    value: string;
-    label?: string;
-}
-
 export interface FileData {
     id: string;
     path: string;

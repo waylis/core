@@ -15,6 +15,6 @@ export interface SceneStep<K extends string = string, T extends UserMessageBodyT
     handler?: (body: MessageBodyMap[T]) => SystemMessageBody | void;
 }
 
-export function createStep<K extends string, T extends UserMessageBodyType>(step: SceneStep<K, T>): SceneStep<K, T> {
+export const createStep = <K extends string, T extends UserMessageBodyType>(step: SceneStep<K, T>): SceneStep<K, T> => {
     return step;
 }
