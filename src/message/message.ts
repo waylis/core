@@ -15,12 +15,12 @@ export interface Message {
 }
 
 export interface MessageStorage {
-    add(msg: Message): Promise<void>;
-    getByID(id: string): Promise<Message | null>;
-    getByIDs(ids: string[]): Promise<Message[]>;
-    getByChatID(chatID: string, page: number, limit: number): Promise<Message[]>;
-    deleteOld(maxDate: Date): Promise<number>;
-    deleteByChatID(chatID: string): Promise<number>;
+    addMessage(msg: Message): Promise<void>;
+    getMessageByID(id: string): Promise<Message | null>;
+    getMessagesByIDs(ids: string[]): Promise<Message[]>;
+    getMessagesByChatID(chatID: string, page: number, limit: number): Promise<Message[]>;
+    deleteOldMessages(maxDate: Date): Promise<number>;
+    deleteMessagesByChatID(chatID: string): Promise<number>;
 }
 
 type CreateMessageParams = Omit<Message, "id" | "createdAt">;

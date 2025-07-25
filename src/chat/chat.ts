@@ -8,10 +8,10 @@ export interface Chat {
 }
 
 export interface ChatStorage {
-    add(chat: Chat): Promise<void>;
-    getByID(id: string): Promise<Chat | null>;
-    getByCreatorID(creatorID: string): Promise<Chat[]>;
-    deleteByID(id: string): Promise<Chat | null>;
+    addChat(chat: Chat): Promise<void>;
+    getChatByID(id: string): Promise<Chat | null>;
+    getChatsByCreatorID(creatorID: string): Promise<Chat[]>;
+    deleteChatByID(id: string): Promise<Chat | null>;
 }
 
 export const createChat = (name: string, creatorID: string): Chat => {

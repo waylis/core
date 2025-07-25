@@ -4,8 +4,8 @@ export interface ConfirmedStep {
     id: string;
     threadID: string;
     messageID: string;
-    sceneKey: string;
-    stepKey: string;
+    scene: string;
+    step: string;
 }
 
 export interface SceneStep<K extends string = string, T extends UserMessageBodyType = UserMessageBodyType> {
@@ -15,6 +15,11 @@ export interface SceneStep<K extends string = string, T extends UserMessageBodyT
     handler?: (body: MessageBodyMap[T]) => Promise<SystemMessageBody | void>;
 }
 
+export interface ConfirmedStepStorage {
+    addConfirmedStep(step: ConfirmedStep): Promise<void>;
+    getConfirmedStepsByThreadID(threadID: string): Promise<ConfirmedStep[]>;
+}
+
 export const createStep = <K extends string, T extends UserMessageBodyType>(step: SceneStep<K, T>): SceneStep<K, T> => {
     return step;
-}
+};
