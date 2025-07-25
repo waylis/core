@@ -1,4 +1,4 @@
-import { App } from "./app/app";
+import { Engine } from "./engine/engine";
 import { createCommand } from "./scene/command";
 import { createScene } from "./scene/scene";
 import { createStep } from "./scene/step";
@@ -12,13 +12,12 @@ const stepName = createStep({
 const sceneHello = createScene({
     steps: [stepName],
     handler: async (answers) => {
-        const content = `Hello ${answers.name}!`
+        const content = `Hello ${answers.name}!`;
         return { type: "text", content };
     },
 });
 
-const startCmd = createCommand({value:"start", label: "Start a new scene"})
+const startCmd = createCommand({ value: "start", label: "Start a new scene" });
 
-const app = new App()
-app.addScene(startCmd, sceneHello)
-app.start()
+const app = new Engine();
+app.addScene(startCmd, sceneHello);

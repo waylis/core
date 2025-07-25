@@ -23,12 +23,14 @@ export interface MessageStorage {
     deleteByChatID(chatID: string): Promise<number>;
 }
 
-type CreateMessageParams = Omit<Message, "id" | "createdAt">
+type CreateMessageParams = Omit<Message, "id" | "createdAt">;
 
 export const createMessage = (params: CreateMessageParams): Message => {
     return {
-         id: randomUUID(),
-         ...params,
-         createdAt: new Date()
-    }
-}
+        id: randomUUID(),
+        ...params,
+        createdAt: new Date(),
+    };
+};
+
+export const SYSTEM_SENDER_ID = "system";

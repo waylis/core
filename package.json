@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsdown"
+    "build": "tsdown",
+    "test": "npx tsx test/*"
   },
   "keywords": [],
   "author": "",
