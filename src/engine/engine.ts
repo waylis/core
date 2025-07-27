@@ -2,17 +2,16 @@ import { createMessage, Message, SYSTEM_SENDER_ID } from "../message/message";
 import { SystemMessageBody } from "../message/types";
 import { Command, createCommand } from "../scene/command";
 import { Scene, SceneResponsesMap } from "../scene/scene";
-import { SceneStep } from "../scene/step";
+import { createConfirmedStep, SceneStep } from "../scene/step";
+import { Storage } from "../storage/storage";
 
-export interface EngineConfig {
-    serverPort?: number;
-}
+export interface EngineConfig {}
 
 export class Engine {
     commands: Map<string, Command> = new Map();
     scenes: Map<string, Scene<any>> = new Map();
 
-    constructor(private readonly config?: EngineConfig) {}
+    constructor(private storage: Storage, private readonly config?: EngineConfig) {}
 
     addScene<Steps extends readonly SceneStep<any, any>[]>(
         command: Command,
@@ -81,6 +80,43 @@ export class Engine {
             const stepIndex: number = scene.steps.findIndex((s: SceneStep) => s.key === msg.step);
             const step: SceneStep = scene.steps[stepIndex];
             const isLastStep = stepIndex === scene.steps.length - 1;
+
+            if (step.handler && !isLastStep) {
+                const body = await step.handler(msg.body.content);
+                if (!body) {
+                    await this.storage.addConfirmedStep(
+                        createConfirmedStep({
+                            messageID: msg.id,
+                            threadID: msg.threadID,
+                            scene: msg.scene,
+                            step: msg.step,
+                        })
+                    );
+
+                    const nextStep: SceneStep = scene[stepIndex + 1];
+                    return createMessage({
+                        body: nextStep.prompt,
+                        chatID: msg.chatID,
+                        threadID: msg.threadID,
+                        senderID: SYSTEM_SENDER_ID,
+                        replyTo: msg.id,
+                        replyRestriction: nextStep.replyRestriction,
+                        scene: msg.scene,
+                        step: msg.step,
+                    });
+                } else {
+                    return createMessage({
+                        body,
+                        chatID: msg.chatID,
+                        threadID: msg.threadID,
+                        senderID: SYSTEM_SENDER_ID,
+                        replyTo: msg.id,
+                        replyRestriction: msg.replyRestriction,
+                        scene: msg.scene,
+                        step: msg.step,
+                    });
+                }
+            }
 
             if (!step.handler && isLastStep) {
                 const body = await scene.handler();

@@ -1,4 +1,5 @@
 import { UserMessageBodyType, SystemMessageBody, ReplyRestriction, MessageBodyMap } from "../message/types";
+import { randomUUID } from "../utils/random";
 
 export interface ConfirmedStep {
     id: string;
@@ -22,4 +23,8 @@ export interface ConfirmedStepStorage {
 
 export const createStep = <K extends string, T extends UserMessageBodyType>(step: SceneStep<K, T>): SceneStep<K, T> => {
     return step;
+};
+
+export const createConfirmedStep = (params: Omit<ConfirmedStep, "id">): ConfirmedStep => {
+    return { id: randomUUID(), ...params };
 };

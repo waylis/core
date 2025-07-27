@@ -3,7 +3,7 @@ import { Message } from "../../message/message";
 import { ConfirmedStep } from "../../scene/step";
 import { Storage } from "../storage";
 
-class MemoryStorage implements Storage {
+export class MemoryStorage implements Storage {
     private chats: Chat[] = [];
     private messages: Message[] = [];
     private steps: ConfirmedStep[] = [];

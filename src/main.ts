@@ -2,6 +2,7 @@ import { Engine } from "./engine/engine";
 import { createCommand } from "./scene/command";
 import { createScene } from "./scene/scene";
 import { createStep } from "./scene/step";
+import { MemoryStorage } from "./storage/memory/memory";
 
 const stepName = createStep({
     key: "name",
@@ -19,5 +20,6 @@ const sceneHello = createScene({
 
 const startCmd = createCommand({ value: "start", label: "Start a new scene" });
 
-const app = new Engine();
+const memoryDB = new MemoryStorage();
+const app = new Engine(memoryDB);
 app.addScene(startCmd, sceneHello);
