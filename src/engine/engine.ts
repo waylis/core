@@ -119,7 +119,14 @@ export class Engine {
             }
 
             if (!step.handler && isLastStep) {
-                const body = await scene.handler();
+                const confirmedSteps = await this.storage.getConfirmedStepsByThreadID(msg.threadID);
+                const confirmedMessages = await this.storage.getMessagesByIDs(confirmedSteps.map((c) => c.messageID));
+                const responses = confirmedMessages.reduce((acc, cm) => {
+                    acc[cm.step as string] = cm.body.content;
+                    return acc;
+                }, {});
+
+                const body = await scene.handler({ ...responses, [step.key]: msg.body.content });
                 return createMessage({
                     body,
                     chatID: msg.chatID,
@@ -127,6 +134,64 @@ export class Engine {
                     senderID: SYSTEM_SENDER_ID,
                     replyTo: msg.id,
                     scene: msg.scene,
+                });
+            }
+
+            if (step.handler && isLastStep) {
+                const body = await step.handler(msg.body.content);
+                if (!body) {
+                    const confirmedSteps = await this.storage.getConfirmedStepsByThreadID(msg.threadID);
+                    const confirmedMessages = await this.storage.getMessagesByIDs(
+                        confirmedSteps.map((c) => c.messageID)
+                    );
+                    const responses = confirmedMessages.reduce((acc, cm) => {
+                        acc[cm.step as string] = cm.body.content;
+                        return acc;
+                    }, {});
+
+                    const body = await scene.handler(responses);
+                    return createMessage({
+                        body,
+                        chatID: msg.chatID,
+                        threadID: msg.threadID,
+                        senderID: SYSTEM_SENDER_ID,
+                        replyTo: msg.id,
+                        scene: msg.scene,
+                    });
+                } else {
+                    return createMessage({
+                        body,
+                        chatID: msg.chatID,
+                        threadID: msg.threadID,
+                        senderID: SYSTEM_SENDER_ID,
+                        replyTo: msg.id,
+                        replyRestriction: msg.replyRestriction,
+                        scene: msg.scene,
+                        step: msg.step,
+                    });
+                }
+            }
+
+            if (!step.handler && !isLastStep) {
+                await this.storage.addConfirmedStep(
+                    createConfirmedStep({
+                        messageID: msg.id,
+                        threadID: msg.threadID,
+                        scene: msg.scene,
+                        step: msg.step,
+                    })
+                );
+
+                const nextStep: SceneStep = scene[stepIndex + 1];
+                return createMessage({
+                    body: nextStep.prompt,
+                    chatID: msg.chatID,
+                    threadID: msg.threadID,
+                    senderID: SYSTEM_SENDER_ID,
+                    replyTo: msg.id,
+                    replyRestriction: nextStep.replyRestriction,
+                    scene: msg.scene,
+                    step: msg.step,
                 });
             }
         }
