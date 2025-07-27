@@ -26,22 +26,15 @@ export class Engine {
     }
 
     async handleMessage(msg: Message): Promise<Message> {
-        if (msg.body.type === "command") {
-            return this.handleCommand(msg);
-        }
-
-        if (msg.scene && msg.step) {
-            return this.handleSceneStep(msg);
-        }
+        if (msg.body.type === "command") return this.handleCommand(msg);
+        if (msg.scene && msg.step) return this.handleSceneStep(msg);
 
         return this.createErrorMessage(msg, "Unknown command.");
     }
 
     private async handleCommand(msg: Message): Promise<Message> {
         const scene = this.scenes.get(msg.body.content.toString());
-        if (!scene) {
-            return this.createErrorMessage(msg, "Unknown command.");
-        }
+        if (!scene) return this.createErrorMessage(msg, "Unknown command.");
 
         if (scene.steps.length > 0) {
             const step = scene.steps[0];
@@ -54,11 +47,11 @@ export class Engine {
 
     private async handleSceneStep(msg: Message): Promise<Message> {
         const scene = this.scenes.get(msg.scene || "");
-        if (!scene) {
-            return this.createErrorMessage(msg, "Unknown scene.");
-        }
+        if (!scene) return this.createErrorMessage(msg, "Unknown scene.");
 
         const stepIndex = scene.steps.findIndex((s) => s.key === msg.step);
+        if (stepIndex === -1) return this.createErrorMessage(msg, "Unknown step.");
+
         const step = scene.steps[stepIndex];
         const isLastStep = stepIndex === scene.steps.length - 1;
 
@@ -66,11 +59,11 @@ export class Engine {
             return isLastStep
                 ? this.handleLastStepWithHandler(msg, scene, step)
                 : this.handleIntermediateStepWithHandler(msg, scene, step, stepIndex);
-        } else {
-            return isLastStep
-                ? this.handleLastStepWithoutHandler(msg, scene, step)
-                : this.handleIntermediateStepWithoutHandler(msg, scene, stepIndex);
         }
+
+        return isLastStep
+            ? this.handleLastStepWithoutHandler(msg, scene, step)
+            : this.handleIntermediateStepWithoutHandler(msg, scene, stepIndex);
     }
 
     private createErrorMessage(msg: Message, content: string): Message {
@@ -126,7 +119,7 @@ export class Engine {
         const body = await step.handler!(msg.body.content);
         if (!body) {
             const responses = await this.collectPreviousResponses(msg);
-            const finalBody = await scene.handler({ ...responses });
+            const finalBody = await scene.handler(responses);
             return this.createSceneResponseMessage(msg, finalBody, msg.scene!);
         }
 
