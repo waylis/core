@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsdown",
-    "test": "npx tsx test/*"
+    "test": "npx tsx --test"
   },
   "keywords": [],
   "author": "",

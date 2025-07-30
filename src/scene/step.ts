@@ -21,7 +21,14 @@ export interface ConfirmedStepStorage {
     getConfirmedStepsByThreadID(threadID: string): Promise<ConfirmedStep[]>;
 }
 
+const MIN_STEP_KEY_LEN = 1;
+const MAX_STEP_KEY_LEN = 32;
+
 export const createStep = <K extends string, T extends UserMessageBodyType>(step: SceneStep<K, T>): SceneStep<K, T> => {
+    if (step.key.length < MIN_STEP_KEY_LEN || step.key.length > MAX_STEP_KEY_LEN) {
+        throw Error(`Wrong step key length, must be from ${MIN_STEP_KEY_LEN} to ${MAX_STEP_KEY_LEN} characters.`);
+    }
+
     return step;
 };
 

@@ -1,15 +1,15 @@
 import { describe, it, beforeEach } from "node:test";
+import assert from "node:assert/strict";
 import { Engine } from "../src/engine/engine";
 import { createMessage } from "../src/message/message";
 import { randomString } from "../src/utils/random";
-import assert from "node:assert/strict";
 import { createCommand } from "../src/scene/command";
 import { createScene } from "../src/scene/scene";
 import { MessageBody, SystemMessageBody } from "../src/message/types";
 import { MemoryStorage } from "../src/storage/memory/memory";
 import { createStep } from "../src/scene/step";
 
-describe("Check handleMessage", async () => {
+describe("engine > handleMessage", async () => {
     let engine: Engine;
     const storage = new MemoryStorage();
     await storage.open();
@@ -32,8 +32,8 @@ describe("Check handleMessage", async () => {
     });
 
     it("should respond with unknown command for non-existent command", async () => {
-        const testMsg = mockMessage({ type: "command", content: randomString() });
-        const got = await engine.handleMessage(testMsg);
+        const msg = mockMessage({ type: "command", content: randomString() });
+        const got = await engine.handleMessage(msg);
 
         assert.equal(got.body.type, "text");
         assert.equal(got.body.content, "Unknown command.");
@@ -44,8 +44,8 @@ describe("Check handleMessage", async () => {
         const response: SystemMessageBody = { type: "text", content: "OK" };
         engine.addScene(cmd, mockSimpleScene(response));
 
-        const testMsg = mockMessage({ type: "command", content: cmd.value });
-        const got = await engine.handleMessage(testMsg);
+        const msg = mockMessage({ type: "command", content: cmd.value });
+        const got = await engine.handleMessage(msg);
 
         assert.equal(engine.commands.size, 1);
         assert.equal(engine.scenes.size, 1);
@@ -54,8 +54,8 @@ describe("Check handleMessage", async () => {
     });
 
     it("should handle empty command value", async () => {
-        const testMsg = mockMessage({ type: "command", content: "" });
-        const got = await engine.handleMessage(testMsg);
+        const msg = mockMessage({ type: "command", content: "" });
+        const got = await engine.handleMessage(msg);
 
         assert.equal(got.body.type, "text");
     });
