@@ -1,68 +1,82 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { createCommand } from "../src/scene/command";
+import {
+    COMMAND_DESCR_MAX_LEN,
+    COMMAND_LABEL_MAX_LEN,
+    COMMAND_VALUE_MAX_LEN,
+    createCommand,
+} from "../src/scene/command";
 
 describe("createCommand", () => {
-    it("should create a basic command with only value", () => {
-        const cmd = createCommand({ value: "test" });
-        assert.deepStrictEqual(cmd, {
-            value: "test",
-            label: undefined,
-            description: undefined,
+    const validCases = [
+        {
+            descr: "should create a basic command with only value",
+            input: { value: "test" },
+            expected: { value: "test", label: undefined, description: undefined },
+        },
+        {
+            descr: "should create a basic command with all allowed symbols",
+            input: { value: "command_123" },
+            expected: { value: "command_123", label: undefined, description: undefined },
+        },
+        {
+            descr: "should create a full command with all fields",
+            input: { value: "run", label: "Label", description: "Descr" },
+            expected: { value: "run", label: "Label", description: "Descr" },
+        },
+        {
+            descr: "should accept maximum length values",
+            input: {
+                value: "a".repeat(COMMAND_VALUE_MAX_LEN),
+                label: "b".repeat(COMMAND_LABEL_MAX_LEN),
+                description: "c".repeat(COMMAND_DESCR_MAX_LEN),
+            },
+            expected: {
+                value: "a".repeat(COMMAND_VALUE_MAX_LEN),
+                label: "b".repeat(COMMAND_LABEL_MAX_LEN),
+                description: "c".repeat(COMMAND_DESCR_MAX_LEN),
+            },
+        },
+        {
+            descr: "should accept minimum length values",
+            input: { value: "a", label: "", description: "" },
+            expected: { value: "a", label: "", description: "" },
+        },
+    ];
+
+    validCases.forEach(({ descr, input, expected }) => {
+        it(descr, () => {
+            const cmd = createCommand(input);
+            assert.deepStrictEqual(cmd, expected);
         });
     });
 
-    it("should create a full command with all fields", () => {
-        const cmd = createCommand({
-            value: "run",
-            label: "Execute command",
-            description: "Runs the specified operation",
+    const invalidCases = [
+        {
+            descr: "should reject when value is too short",
+            input: { value: "" },
+        },
+        {
+            descr: "should reject when value is too long",
+            input: { value: "this_is_too_long_command_value" },
+        },
+        {
+            descr: "should reject when value contain uppercase symbols",
+            input: { value: "VaLuE" },
+        },
+        {
+            descr: "should reject when label is too long",
+            input: { value: "cmd", label: "a".repeat(65) },
+        },
+        {
+            descr: "should reject when description is too long",
+            input: { value: "cmd", description: "a".repeat(513) },
+        },
+    ];
+
+    invalidCases.forEach(({ descr, input }) => {
+        it(descr, () => {
+            assert.throws(() => createCommand(input), Error);
         });
-        assert.deepStrictEqual(cmd, {
-            value: "run",
-            label: "Execute command",
-            description: "Runs the specified operation",
-        });
-    });
-
-    it("should throw when value is too short", () => {
-        assert.throws(() => createCommand({ value: "" }), Error);
-    });
-
-    it("should throw when value is too long", () => {
-        assert.throws(() => createCommand({ value: "this-is-way-too-long-value" }), Error);
-    });
-
-    it("should throw when label is too long", () => {
-        const longLabel = "a".repeat(65); // MAX_LABEL_LEN + 1
-        assert.throws(() => createCommand({ value: "cmd", label: longLabel }), Error);
-    });
-
-    it("should throw when description is too long", () => {
-        const longDesc = "a".repeat(513); // MAX_DESCR_LEN + 1
-        assert.throws(() => createCommand({ value: "cmd", description: longDesc }), Error);
-    });
-
-    it("should accept maximum length values", () => {
-        const maxValue = "a".repeat(16);
-        const maxLabel = "b".repeat(64);
-        const maxDesc = "c".repeat(512);
-
-        const cmd = createCommand({
-            value: maxValue,
-            label: maxLabel,
-            description: maxDesc,
-        });
-
-        assert.deepStrictEqual(cmd, {
-            value: maxValue,
-            label: maxLabel,
-            description: maxDesc,
-        });
-    });
-
-    it("should accept minimum length value", () => {
-        const cmd = createCommand({ value: "a" });
-        assert.strictEqual(cmd.value.length, 1);
     });
 });
