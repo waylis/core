@@ -91,7 +91,8 @@ export class Engine {
     private async handleLastStepWithHandler(msg: Message, scene: Scene<any>, step: SceneStep): Promise<Message> {
         const body = await step.handler!(msg.body.content);
         if (!body) {
-            const responses = await this.collectPreviousResponses(msg);
+            await this.confirmStep(msg);
+            const responses = await this.collectStepResponses(msg);
             const finalBody = await scene.handler(responses);
             return this.createSceneResponseMessage(msg, finalBody, msg.scene!);
         }
@@ -100,10 +101,9 @@ export class Engine {
     }
 
     private async handleLastStepWithoutHandler(msg: Message, scene: Scene<any>, step: SceneStep): Promise<Message> {
-        const responses = await this.collectPreviousResponses(msg);
-        responses[step.key] = msg.body.content;
-
-        const body = await scene.handler(responses);
+        await this.confirmStep(msg);
+        const stepResponses = await this.collectStepResponses(msg);
+        const body = await scene.handler(stepResponses);
         return this.createSceneResponseMessage(msg, body, msg.scene!);
     }
 
@@ -181,7 +181,7 @@ export class Engine {
         await this.db.addConfirmedStep(createConfirmedStep({ messageID: msg.id, threadID: msg.threadID, scene, step }));
     }
 
-    private async collectPreviousResponses(msg: Message): Promise<SceneResponsesMap<any>> {
+    private async collectStepResponses(msg: Message): Promise<SceneResponsesMap<any>> {
         const confirmedSteps = await this.db.getConfirmedStepsByThreadID(msg.threadID);
         const confirmedMessages = await this.db.getMessagesByIDs(confirmedSteps.map((c) => c.messageID));
 
