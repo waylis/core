@@ -6,13 +6,12 @@ import { randomString } from "../src/utils/random";
 import { createCommand } from "../src/scene/command";
 import { createScene } from "../src/scene/scene";
 import { MessageBody, SystemMessageBody } from "../src/message/types";
-import { MemoryDatabase } from "../src/database/memory/memory";
+import { JSONDatabase } from "../src/database/json/json";
 import { createStep } from "../src/scene/step";
 
 describe("engine > handleMessage", async () => {
     let engine: Engine;
-    const db = new MemoryDatabase();
-    await db.open();
+    const db = new JSONDatabase();
 
     const mockMessage = (body: MessageBody) =>
         createMessage({
@@ -26,8 +25,9 @@ describe("engine > handleMessage", async () => {
         return createScene({ steps: [], handler: async () => response });
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
         engine = new Engine(db);
+        await engine.run();
     });
 
     it("should respond with unknown command for non-existent command", async () => {
@@ -89,5 +89,56 @@ describe("engine > handleMessage", async () => {
 
         assert.equal(resp1.body.content, step.prompt.content);
         assert.equal(resp2.body.content, "Hello Node.js!");
+    });
+
+    it("should handle calculator scene", async () => {
+        const step1 = createStep({
+            key: "num1",
+            prompt: { type: "text", content: "Enter first number" },
+            replyRestriction: { bodyType: "number" },
+        });
+
+        const step2 = createStep({
+            key: "num2",
+            prompt: { type: "text", content: "Enter second number" },
+            replyRestriction: { bodyType: "number" },
+        });
+
+        const scene = createScene({
+            steps: [step1, step2],
+            handler: async (answers) => {
+                return { type: "text", content: `The sum is ${answers.num1 + answers.num2}` };
+            },
+        });
+
+        const cmd = createCommand({ value: "start" });
+        engine.addScene(cmd, scene);
+
+        const msg1 = mockMessage({ type: "command", content: cmd.value });
+        const resp1 = await engine.handleMessage(msg1);
+        const msg2 = createMessage({
+            body: { type: "number", content: 3 },
+            chatID: resp1.chatID,
+            senderID: msg1.senderID,
+            threadID: resp1.threadID,
+            replyTo: resp1.id,
+            scene: resp1.scene,
+            step: resp1.step,
+        });
+        const resp2 = await engine.handleMessage(msg2);
+        const msg3 = createMessage({
+            body: { type: "number", content: 7 },
+            chatID: resp2.chatID,
+            senderID: msg2.senderID,
+            threadID: resp2.threadID,
+            replyTo: resp2.id,
+            scene: resp2.scene,
+            step: resp2.step,
+        });
+        const resp3 = await engine.handleMessage(msg3);
+
+        assert.equal(resp1.body.content, step1.prompt.content);
+        assert.equal(resp2.body.content, step2.prompt.content);
+        assert.equal(resp3.body.content, "The sum is 10");
     });
 });

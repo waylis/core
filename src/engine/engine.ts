@@ -25,7 +25,13 @@ export class Engine {
         this.scenes.set(cmd.value, scene);
     }
 
+    async run() {
+        await this.db.open();
+    }
+
     async handleMessage(msg: Message): Promise<Message> {
+        await this.db.addMessage(msg);
+
         if (msg.body.type === "command") return this.handleCommand(msg);
         if (msg.scene && msg.step) return this.handleSceneStep(msg);
 
@@ -64,39 +70,6 @@ export class Engine {
         return isLastStep
             ? this.handleLastStepWithoutHandler(msg, scene, step)
             : this.handleIntermediateStepWithoutHandler(msg, scene, stepIndex);
-    }
-
-    private createErrorMessage(msg: Message, content: string): Message {
-        return createMessage({
-            chatID: msg.chatID,
-            senderID: SYSTEM_SENDER_ID,
-            threadID: msg.threadID,
-            body: { type: "text", content },
-        });
-    }
-
-    private createStepPromptMessage(msg: Message, step: SceneStep, sceneKey: string): Message {
-        return createMessage({
-            body: step.prompt,
-            chatID: msg.chatID,
-            threadID: msg.threadID,
-            senderID: SYSTEM_SENDER_ID,
-            replyTo: msg.id,
-            replyRestriction: step.replyRestriction,
-            scene: sceneKey,
-            step: step.key,
-        });
-    }
-
-    private createSceneResponseMessage(msg: Message, body: MessageBody, sceneKey: string): Message {
-        return createMessage({
-            body,
-            chatID: msg.chatID,
-            threadID: msg.threadID,
-            senderID: SYSTEM_SENDER_ID,
-            replyTo: msg.id,
-            scene: sceneKey,
-        });
     }
 
     private async handleIntermediateStepWithHandler(
@@ -144,14 +117,50 @@ export class Engine {
         return this.createStepPromptMessage(msg, nextStep, msg.scene!);
     }
 
-    private async confirmStep(msg: Message): Promise<void> {
-        const scene = msg.scene || "__unknown";
-        const step = msg.step || "__unknown";
-        await this.db.addConfirmedStep(createConfirmedStep({ messageID: msg.id, threadID: msg.threadID, scene, step }));
+    private async createErrorMessage(msg: Message, content: string): Promise<Message> {
+        const errMsg = createMessage({
+            chatID: msg.chatID,
+            senderID: SYSTEM_SENDER_ID,
+            threadID: msg.threadID,
+            body: { type: "text", content },
+        });
+
+        await this.db.addMessage(errMsg);
+        return errMsg;
     }
 
-    private createStepReplyMessage(msg: Message, body: MessageBody): Message {
-        return createMessage({
+    private async createStepPromptMessage(msg: Message, step: SceneStep, sceneKey: string): Promise<Message> {
+        const promptMsg = createMessage({
+            body: step.prompt,
+            chatID: msg.chatID,
+            threadID: msg.threadID,
+            senderID: SYSTEM_SENDER_ID,
+            replyTo: msg.id,
+            replyRestriction: step.replyRestriction,
+            scene: sceneKey,
+            step: step.key,
+        });
+
+        await this.db.addMessage(promptMsg);
+        return promptMsg;
+    }
+
+    private async createSceneResponseMessage(msg: Message, body: MessageBody, sceneKey: string): Promise<Message> {
+        const respMsg = createMessage({
+            body,
+            chatID: msg.chatID,
+            threadID: msg.threadID,
+            senderID: SYSTEM_SENDER_ID,
+            replyTo: msg.id,
+            scene: sceneKey,
+        });
+
+        await this.db.addMessage(respMsg);
+        return respMsg;
+    }
+
+    private async createStepReplyMessage(msg: Message, body: MessageBody): Promise<Message> {
+        const replyMsg = createMessage({
             body,
             chatID: msg.chatID,
             threadID: msg.threadID,
@@ -161,6 +170,15 @@ export class Engine {
             scene: msg.scene!,
             step: msg.step!,
         });
+
+        await this.db.addMessage(replyMsg);
+        return replyMsg;
+    }
+
+    private async confirmStep(msg: Message): Promise<void> {
+        const scene = msg.scene || "__unknown";
+        const step = msg.step || "__unknown";
+        await this.db.addConfirmedStep(createConfirmedStep({ messageID: msg.id, threadID: msg.threadID, scene, step }));
     }
 
     private async collectPreviousResponses(msg: Message): Promise<SceneResponsesMap<any>> {
