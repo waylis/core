@@ -5,7 +5,7 @@ export interface Command {
 }
 
 export const COMMAND_VALUE_MIN_LEN = 1;
-export const COMMAND_VALUE_MAX_LEN = 16;
+export const COMMAND_VALUE_MAX_LEN = 32;
 export const COMMAND_LABEL_MAX_LEN = 64;
 export const COMMAND_DESCR_MAX_LEN = 512;
 export const COMMAND_ALLOWED_SYMBOLS = /^[a-z0-9_]+$/;

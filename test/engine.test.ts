@@ -1,17 +1,17 @@
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert/strict";
-import { Engine } from "../src/engine/engine";
+import { Engine } from "../src/scene/engine";
 import { createMessage } from "../src/message/message";
 import { randomString } from "../src/utils/random";
 import { createCommand } from "../src/scene/command";
 import { createScene } from "../src/scene/scene";
 import { MessageBody, SystemMessageBody } from "../src/message/types";
-import { JSONDatabase } from "../src/database/json/json";
+import { MemoryDatabase } from "../src/database/memory/memory";
 import { createStep } from "../src/scene/step";
 
 describe("engine > handleMessage", async () => {
     let engine: Engine;
-    const db = new JSONDatabase();
+    const db = new MemoryDatabase();
 
     const mockMessage = (body: MessageBody) =>
         createMessage({

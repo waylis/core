@@ -1,8 +1,8 @@
 import { createMessage, Message, SYSTEM_SENDER_ID } from "../message/message";
 import { MessageBody, SystemMessageBody } from "../message/types";
-import { Command, createCommand } from "../scene/command";
-import { Scene, SceneResponsesMap } from "../scene/scene";
-import { createConfirmedStep, SceneStep } from "../scene/step";
+import { Command, createCommand } from "./command";
+import { Scene, SceneResponsesMap } from "./scene";
+import { createConfirmedStep, SceneStep } from "./step";
 import { Database } from "../database/database";
 
 export interface EngineConfig {}

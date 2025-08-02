@@ -58,7 +58,7 @@ describe("createCommand", () => {
         },
         {
             descr: "should reject when value is too long",
-            input: { value: "this_is_too_long_command_value" },
+            input: { value: "this_is_tooooo_long_command_value" },
         },
         {
             descr: "should reject when value contain uppercase symbols",

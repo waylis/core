@@ -1,5 +1,5 @@
 import { MemoryDatabase } from "./database/memory/memory";
-import { Engine } from "./engine/engine";
+import { Engine } from "./scene/engine";
 import { createCommand } from "./scene/command";
 import { createScene } from "./scene/scene";
 import { createStep } from "./scene/step";

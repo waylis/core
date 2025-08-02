@@ -15,10 +15,5 @@ export interface ChatDatabase {
 }
 
 export const createChat = (name: string, creatorID: string): Chat => {
-    return {
-        id: randomUUID(),
-        name,
-        creatorID,
-        createdAt: new Date(),
-    };
+    return { id: randomUUID(), name, creatorID, createdAt: new Date() };
 };
