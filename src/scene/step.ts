@@ -16,7 +16,7 @@ export interface SceneStep<K extends string = string, T extends UserMessageBodyT
     handler?: (body: MessageBodyMap[T]) => Promise<SystemMessageBody | void>;
 }
 
-export interface ConfirmedStepStorage {
+export interface ConfirmedStepDatabase {
     addConfirmedStep(step: ConfirmedStep): Promise<void>;
     getConfirmedStepsByThreadID(threadID: string): Promise<ConfirmedStep[]>;
 }

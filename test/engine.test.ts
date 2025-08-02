@@ -6,15 +6,14 @@ import { randomString } from "../src/utils/random";
 import { createCommand } from "../src/scene/command";
 import { createScene } from "../src/scene/scene";
 import { MessageBody, SystemMessageBody } from "../src/message/types";
-import { MemoryStorage } from "../src/storage/memory/memory";
+import { MemoryDatabase } from "../src/database/memory/memory";
 import { createStep } from "../src/scene/step";
 
 describe("engine > handleMessage", async () => {
     let engine: Engine;
-    const storage = new MemoryStorage();
-    await storage.open();
+    const db = new MemoryDatabase();
+    await db.open();
 
-    // Helper functions
     const mockMessage = (body: MessageBody) =>
         createMessage({
             chatID: randomString(),
@@ -28,7 +27,7 @@ describe("engine > handleMessage", async () => {
     };
 
     beforeEach(() => {
-        engine = new Engine(storage);
+        engine = new Engine(db);
     });
 
     it("should respond with unknown command for non-existent command", async () => {

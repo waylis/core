@@ -3,9 +3,9 @@ import path from "path";
 import { Chat } from "../../chat/chat";
 import { Message } from "../../message/message";
 import { ConfirmedStep } from "../../scene/step";
-import { Storage } from "../storage";
+import { Database } from "../database";
 
-export class JSONStorage implements Storage {
+export class JSONDatabase implements Database {
     private dataPath: string;
     private data: {
         chats: Chat[];
@@ -13,8 +13,8 @@ export class JSONStorage implements Storage {
         steps: ConfirmedStep[];
     };
 
-    constructor(storagePath: string = "./storage.json") {
-        this.dataPath = path.resolve(storagePath);
+    constructor(filepath: string = "./db.json") {
+        this.dataPath = path.resolve(filepath);
         this.data = { chats: [], messages: [], steps: [] };
     }
 
@@ -38,7 +38,6 @@ export class JSONStorage implements Storage {
         await fs.writeFile(this.dataPath, JSON.stringify(this.data, null, 2));
     }
 
-    // Initialize the storage
     async open(): Promise<void> {
         await this.loadData();
     }

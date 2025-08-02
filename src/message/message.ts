@@ -14,7 +14,7 @@ export interface Message {
     createdAt: Date;
 }
 
-export interface MessageStorage {
+export interface MessageDatabase {
     addMessage(msg: Message): Promise<void>;
     getMessageByID(id: string): Promise<Message | null>;
     getMessagesByIDs(ids: string[]): Promise<Message[]>;

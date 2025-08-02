@@ -3,7 +3,7 @@ import { MessageBody, SystemMessageBody } from "../message/types";
 import { Command, createCommand } from "../scene/command";
 import { Scene, SceneResponsesMap } from "../scene/scene";
 import { createConfirmedStep, SceneStep } from "../scene/step";
-import { Storage } from "../storage/storage";
+import { Database } from "../database/database";
 
 export interface EngineConfig {}
 
@@ -11,7 +11,7 @@ export class Engine {
     commands: Map<string, Command> = new Map();
     scenes: Map<string, Scene<any>> = new Map();
 
-    constructor(private storage: Storage, private readonly config?: EngineConfig) {}
+    constructor(private db: Database, private readonly config?: EngineConfig) {}
 
     addScene<Steps extends readonly SceneStep<any, any>[]>(
         command: Command,
@@ -145,14 +145,9 @@ export class Engine {
     }
 
     private async confirmStep(msg: Message): Promise<void> {
-        await this.storage.addConfirmedStep(
-            createConfirmedStep({
-                messageID: msg.id,
-                threadID: msg.threadID,
-                scene: msg.scene!,
-                step: msg.step!,
-            })
-        );
+        const scene = msg.scene || "__unknown";
+        const step = msg.step || "__unknown";
+        await this.db.addConfirmedStep(createConfirmedStep({ messageID: msg.id, threadID: msg.threadID, scene, step }));
     }
 
     private createStepReplyMessage(msg: Message, body: MessageBody): Message {
@@ -169,8 +164,8 @@ export class Engine {
     }
 
     private async collectPreviousResponses(msg: Message): Promise<SceneResponsesMap<any>> {
-        const confirmedSteps = await this.storage.getConfirmedStepsByThreadID(msg.threadID);
-        const confirmedMessages = await this.storage.getMessagesByIDs(confirmedSteps.map((c) => c.messageID));
+        const confirmedSteps = await this.db.getConfirmedStepsByThreadID(msg.threadID);
+        const confirmedMessages = await this.db.getMessagesByIDs(confirmedSteps.map((c) => c.messageID));
 
         return confirmedMessages.reduce((acc, cm) => {
             acc[cm.step as string] = cm.body.content;

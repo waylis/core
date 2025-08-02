@@ -7,7 +7,7 @@ export interface Chat {
     createdAt: Date;
 }
 
-export interface ChatStorage {
+export interface ChatDatabase {
     addChat(chat: Chat): Promise<void>;
     getChatByID(id: string): Promise<Chat | null>;
     getChatsByCreatorID(creatorID: string): Promise<Chat[]>;

@@ -1,9 +1,9 @@
 import { Chat } from "../../chat/chat";
 import { Message } from "../../message/message";
 import { ConfirmedStep } from "../../scene/step";
-import { Storage } from "../storage";
+import { Database } from "../database";
 
-export class MemoryStorage implements Storage {
+export class MemoryDatabase implements Database {
     private chats: Chat[] = [];
     private messages: Message[] = [];
     private steps: ConfirmedStep[] = [];
