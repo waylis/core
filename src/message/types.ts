@@ -6,7 +6,7 @@ export interface FileData {
     mimeType: string;
 }
 
-export interface SelectedValue {
+export interface Option {
     value: string;
     label?: string;
 }
@@ -29,12 +29,12 @@ export interface FileLimits {
 
 export type FilesLimits = FileLimits & { maxAmount?: number };
 
-export interface SelectedValueLimits {
-    options: SelectedValue[];
+export interface OptionLimits {
+    options: Option[];
 }
 
-export interface SelectedValuesLimits {
-    options: SelectedValue[];
+export interface OptionsLimits {
+    options: Option[];
     maxAmount?: number;
 }
 
@@ -50,8 +50,8 @@ export type MessageBodyMap = {
     boolean: boolean;
     file: FileData;
     files: FileData[];
-    selection: SelectedValue;
-    selections: SelectedValue[];
+    option: Option;
+    options: Option[];
     datetime: Date;
     markdown: string;
 };
@@ -76,12 +76,12 @@ type LimitsMap = {
     number: NumberLimits;
     file: FileLimits;
     files: FilesLimits;
-    selection: SelectedValueLimits;
-    selections: SelectedValuesLimits;
+    option: OptionLimits;
+    options: OptionsLimits;
     datetime: DatetimeLimits;
 };
 
-export type ReplyRestriction<T extends MessageBodyType = MessageBodyType> = {
+export type ReplyRestriction<T extends UserMessageBodyType = UserMessageBodyType> = {
     bodyType: T;
     bodyLimits?: T extends keyof LimitsMap ? LimitsMap[T] : never;
 };

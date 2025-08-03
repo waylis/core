@@ -1,11 +1,11 @@
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { Engine } from "../src/scene/engine";
-import { createMessage } from "../src/message/message";
+import { createUserMessage, Message } from "../src/message/message";
 import { randomString } from "../src/utils/random";
 import { createCommand } from "../src/scene/command";
 import { createScene } from "../src/scene/scene";
-import { MessageBody, SystemMessageBody } from "../src/message/types";
+import { SystemMessageBody, UserMessageBody } from "../src/message/types";
 import { MemoryDatabase } from "../src/database/memory/memory";
 import { createStep } from "../src/scene/step";
 
@@ -13,13 +13,12 @@ describe("engine > handleMessage", async () => {
     let engine: Engine;
     const db = new MemoryDatabase();
 
-    const mockMessage = (body: MessageBody) =>
-        createMessage({
-            chatID: randomString(),
-            senderID: randomString(),
-            threadID: randomString(),
-            body: body,
-        });
+    const mockMessage = (
+        body: UserMessageBody,
+        chatID = randomString(),
+        senderID = randomString(),
+        replyMsg?: Message
+    ) => createUserMessage({ chatID, senderID, body: body }, replyMsg);
 
     const mockSimpleScene = (response: SystemMessageBody) => {
         return createScene({ steps: [], handler: async () => response });
@@ -76,15 +75,7 @@ describe("engine > handleMessage", async () => {
 
         const msg1 = mockMessage({ type: "command", content: cmd.value });
         const resp1 = await engine.handleMessage(msg1);
-        const msg2 = createMessage({
-            body: { type: "text", content: "Node.js" },
-            chatID: resp1.chatID,
-            senderID: msg1.senderID,
-            threadID: resp1.threadID,
-            replyTo: resp1.id,
-            scene: resp1.scene,
-            step: resp1.step,
-        });
+        const msg2 = mockMessage({ type: "text", content: "Node.js" }, resp1.chatID, msg1.senderID, resp1);
         const resp2 = await engine.handleMessage(msg2);
 
         assert.equal(resp1.body.content, step.prompt.content);
@@ -116,25 +107,9 @@ describe("engine > handleMessage", async () => {
 
         const msg1 = mockMessage({ type: "command", content: cmd.value });
         const resp1 = await engine.handleMessage(msg1);
-        const msg2 = createMessage({
-            body: { type: "number", content: 3 },
-            chatID: resp1.chatID,
-            senderID: msg1.senderID,
-            threadID: resp1.threadID,
-            replyTo: resp1.id,
-            scene: resp1.scene,
-            step: resp1.step,
-        });
+        const msg2 = mockMessage({ type: "number", content: 3 }, resp1.chatID, msg1.senderID, resp1);
         const resp2 = await engine.handleMessage(msg2);
-        const msg3 = createMessage({
-            body: { type: "number", content: 7 },
-            chatID: resp2.chatID,
-            senderID: msg2.senderID,
-            threadID: resp2.threadID,
-            replyTo: resp2.id,
-            scene: resp2.scene,
-            step: resp2.step,
-        });
+        const msg3 = mockMessage({ type: "number", content: 7 }, resp2.chatID, msg2.senderID, resp2);
         const resp3 = await engine.handleMessage(msg3);
 
         assert.equal(resp1.body.content, step1.prompt.content);

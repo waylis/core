@@ -1,5 +1,5 @@
-import { createMessage, Message, SYSTEM_SENDER_ID } from "../message/message";
-import { MessageBody, SystemMessageBody } from "../message/types";
+import { createSystemMessage, Message } from "../message/message";
+import { SystemMessageBody } from "../message/types";
 import { Command, createCommand } from "./command";
 import { Scene, SceneResponsesMap } from "./scene";
 import { createConfirmedStep, SceneStep } from "./step";
@@ -118,58 +118,36 @@ export class Engine {
     }
 
     private async createErrorMessage(msg: Message, content: string): Promise<Message> {
-        const errMsg = createMessage({
-            chatID: msg.chatID,
-            senderID: SYSTEM_SENDER_ID,
-            threadID: msg.threadID,
-            body: { type: "text", content },
-        });
-
+        const errMsg = createSystemMessage({ chatID: msg.chatID, body: { type: "text", content } }, msg);
         await this.db.addMessage(errMsg);
         return errMsg;
     }
 
     private async createStepPromptMessage(msg: Message, step: SceneStep, sceneKey: string): Promise<Message> {
-        const promptMsg = createMessage({
-            body: step.prompt,
-            chatID: msg.chatID,
-            threadID: msg.threadID,
-            senderID: SYSTEM_SENDER_ID,
-            replyTo: msg.id,
-            replyRestriction: step.replyRestriction,
-            scene: sceneKey,
-            step: step.key,
-        });
+        const promptMsg = createSystemMessage(
+            { body: step.prompt, replyRestriction: step.replyRestriction, scene: sceneKey, step: step.key },
+            msg
+        );
 
         await this.db.addMessage(promptMsg);
         return promptMsg;
     }
 
-    private async createSceneResponseMessage(msg: Message, body: MessageBody, sceneKey: string): Promise<Message> {
-        const respMsg = createMessage({
-            body,
-            chatID: msg.chatID,
-            threadID: msg.threadID,
-            senderID: SYSTEM_SENDER_ID,
-            replyTo: msg.id,
-            scene: sceneKey,
-        });
-
+    private async createSceneResponseMessage(
+        msg: Message,
+        body: SystemMessageBody,
+        sceneKey: string
+    ): Promise<Message> {
+        const respMsg = createSystemMessage({ body, scene: sceneKey }, msg);
         await this.db.addMessage(respMsg);
         return respMsg;
     }
 
-    private async createStepReplyMessage(msg: Message, body: MessageBody): Promise<Message> {
-        const replyMsg = createMessage({
-            body,
-            chatID: msg.chatID,
-            threadID: msg.threadID,
-            senderID: SYSTEM_SENDER_ID,
-            replyTo: msg.id,
-            replyRestriction: msg.replyRestriction,
-            scene: msg.scene!,
-            step: msg.step!,
-        });
+    private async createStepReplyMessage(msg: Message, body: SystemMessageBody): Promise<Message> {
+        const replyMsg = createSystemMessage(
+            { body, replyRestriction: msg.replyRestriction, scene: msg.scene!, step: msg.step! },
+            msg
+        );
 
         await this.db.addMessage(replyMsg);
         return replyMsg;
