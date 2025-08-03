@@ -40,13 +40,18 @@ export interface MessageDatabase {
 }
 
 type CreateMessageParams = Omit<Message, "id" | "createdAt">;
-type CreateSystemMessageParams = Omit<CreateMessageParams, "senderID" | "replyTo" | "threadID" | "chatID" | "body"> & {
+export type CreateSystemMessageParams = Omit<
+    CreateMessageParams,
+    "senderID" | "replyTo" | "threadID" | "chatID" | "body"
+> & {
     body: SystemMessageBody;
     chatID?: string;
 };
-type CreateUserMessageParams = Pick<CreateMessageParams, "chatID" | "senderID" | "body"> & { body: UserMessageBody };
+export type CreateUserMessageParams = Pick<CreateMessageParams, "chatID" | "senderID" | "body"> & {
+    body: UserMessageBody;
+};
 
-const SYSTEM_SENDER_ID = "system";
+export const SYSTEM_SENDER_ID = "system";
 
 export const createSystemMessage = (params: CreateSystemMessageParams, userMsg?: Message): Message => {
     if (!userMsg && !params.chatID) {
@@ -107,7 +112,7 @@ export const createUserMessage = (params: CreateUserMessageParams, replyMsg?: Me
         msg.body.content = bodyContent;
 
         if (limit?.integerOnly && isFloat(bodyContent)) {
-            throw Error(`Invalid message body. It must be a valid interger.`);
+            throw Error(`Invalid message body. It must be a valid integer.`);
         }
 
         if (limit?.min != null && bodyContent < limit.min) {

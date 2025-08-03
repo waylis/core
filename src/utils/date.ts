@@ -3,4 +3,5 @@ export const isValidDate = (value: string) => {
 
     const parsedTimestamp = Date.parse(value);
     if (isNaN(parsedTimestamp)) return false;
+    return true;
 };
