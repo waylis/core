@@ -116,4 +116,31 @@ describe("engine > handleMessage", async () => {
         assert.equal(resp2.body.content, step2.prompt.content);
         assert.equal(resp3.body.content, "The sum is 10");
     });
+
+    it("should reject message with exceeded limit", async () => {
+        const step = createStep({
+            key: "name",
+            prompt: { type: "text", content: "What is your name?" },
+            replyRestriction: { bodyType: "text", bodyLimits: { minLength: 3 } },
+        });
+
+        const scene = createScene({
+            steps: [step],
+            handler: async (answers) => ({ type: "text", content: `Hello ${answers.name}!` }),
+        });
+
+        const cmd = createCommand({ value: "start" });
+        engine.addScene(cmd, scene);
+
+        const msg1 = mockMessage({ type: "command", content: cmd.value });
+        const resp1 = await engine.handleMessage(msg1);
+
+        assert.equal(resp1.body.content, step.prompt.content);
+        assert.throws(
+            () => {
+                mockMessage({ type: "text", content: "X" }, resp1.chatID, msg1.senderID, resp1);
+            },
+            { name: "Error" }
+        );
+    });
 });
