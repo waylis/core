@@ -1,4 +1,5 @@
 import { Chat } from "../../chat/chat";
+import { FileData } from "../../file/file";
 import { Message } from "../../message/message";
 import { ConfirmedStep } from "../../scene/step";
 import { Database } from "../database";
@@ -7,6 +8,7 @@ export class MemoryDatabase implements Database {
     private chats: Chat[] = [];
     private messages: Message[] = [];
     private steps: ConfirmedStep[] = [];
+    private files: FileData[] = [];
 
     async open(): Promise<void> {}
     async close(): Promise<void> {}
@@ -82,5 +84,27 @@ export class MemoryDatabase implements Database {
 
     async getConfirmedStepsByThreadID(threadID: string): Promise<ConfirmedStep[]> {
         return this.steps.filter((step) => step.threadID === threadID);
+    }
+
+    // File operations
+    async addFile(data: FileData): Promise<void> {
+        if (this.files.some((f) => f.id === data.id)) {
+            throw new Error(`File with ID ${data.id} already exists`);
+        }
+        this.files.push(data);
+    }
+
+    async getFileByID(id: string): Promise<FileData | null> {
+        return this.files.find((file) => file.id === id) || null;
+    }
+
+    async getFilesByIDs(ids: string[]): Promise<FileData[]> {
+        return this.files.filter((file) => ids.includes(file.id));
+    }
+
+    async deleteByIDs(ids: string[]): Promise<number> {
+        const initialCount = this.files.length;
+        this.files = this.files.filter((file) => !ids.includes(file.id));
+        return initialCount - this.files.length;
     }
 }

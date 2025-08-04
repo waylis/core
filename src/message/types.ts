@@ -1,10 +1,4 @@
-export interface FileData {
-    id: string;
-    path: string;
-    name: string;
-    size: number;
-    mimeType: string;
-}
+import { FileData } from "../file/file";
 
 export interface Option {
     value: string;

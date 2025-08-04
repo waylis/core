@@ -4,6 +4,7 @@ import { Chat } from "../../chat/chat";
 import { Message } from "../../message/message";
 import { ConfirmedStep } from "../../scene/step";
 import { Database } from "../database";
+import { FileData } from "../../file/file";
 
 export class JSONDatabase implements Database {
     private dataPath: string;
@@ -11,11 +12,12 @@ export class JSONDatabase implements Database {
         chats: Chat[];
         messages: Message[];
         steps: ConfirmedStep[];
+        files: FileData[];
     };
 
     constructor(filepath: string = "./db.json") {
         this.dataPath = path.resolve(filepath);
-        this.data = { chats: [], messages: [], steps: [] };
+        this.data = { chats: [], messages: [], steps: [], files: [] };
     }
 
     private async loadData(): Promise<void> {
@@ -133,5 +135,27 @@ export class JSONDatabase implements Database {
         }
         this.data.steps.push(step);
         await this.saveData();
+    }
+
+    // File operations
+    async addFile(data: FileData): Promise<void> {
+        if (this.data.files.some((f) => f.id === data.id)) {
+            throw new Error(`File with ID ${data.id} already exists`);
+        }
+        this.data.files.push(data);
+    }
+
+    async getFileByID(id: string): Promise<FileData | null> {
+        return this.data.files.find((file) => file.id === id) || null;
+    }
+
+    async getFilesByIDs(ids: string[]): Promise<FileData[]> {
+        return this.data.files.filter((file) => ids.includes(file.id));
+    }
+
+    async deleteByIDs(ids: string[]): Promise<number> {
+        const initialCount = this.data.files.length;
+        this.data.files = this.data.files.filter((file) => !ids.includes(file.id));
+        return initialCount - this.data.files.length;
     }
 }

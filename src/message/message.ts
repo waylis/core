@@ -1,3 +1,4 @@
+import { FileData } from "../file/file";
 import { isValidDate } from "../utils/date";
 import { bytesToMB, isFloat } from "../utils/number";
 import { randomUUID } from "../utils/random";
@@ -12,7 +13,6 @@ import {
     TextLimits,
     UserMessageBody,
     OptionsLimits,
-    FileData,
     FileLimits,
     FilesLimits,
 } from "./types";
