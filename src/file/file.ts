@@ -1,6 +1,7 @@
+import mime from "mime";
 import { randomUUID } from "../utils/random";
 
-export interface FileData {
+export interface FileMeta {
     id: string;
     name: string;
     size: number;
@@ -8,18 +9,23 @@ export interface FileData {
 }
 
 export interface FileStorage {
-    upload(bytes: NodeJS.ReadableStream | Buffer, metadata: FileData): Promise<boolean>;
-    download(metadata: FileData): Promise<NodeJS.ReadableStream>;
+    upload(bytes: NodeJS.ReadableStream | Buffer, metadata: FileMeta): Promise<boolean>;
+    download(metadata: FileMeta): Promise<NodeJS.ReadableStream>;
     deleteByID(id: string): Promise<boolean>;
 }
 
 export interface FileDatabase {
-    addFile(data: FileData): Promise<void>;
-    getFileByID(id: string): Promise<FileData | null>;
-    getFilesByIDs(ids: string[]): Promise<FileData[]>;
+    addFile(data: FileMeta): Promise<void>;
+    getFileByID(id: string): Promise<FileMeta | null>;
+    getFilesByIDs(ids: string[]): Promise<FileMeta[]>;
     deleteByIDs(ids: string[]): Promise<number>;
 }
 
-export const createFileData = (data: Omit<FileData, "id">): FileData => {
-    return { id: randomUUID(), ...data };
+export type CreateFileDataParams = Omit<FileMeta, "id" | "mimeType"> & { mimeType?: string };
+
+export const createFileMeta = (meta: CreateFileDataParams): FileMeta => {
+    const id = randomUUID();
+    const mimeType = meta.mimeType || mime.getType(meta.name);
+    if (!mimeType) throw Error(`Unable to identify the MIME type of the file - "${meta.name}".`);
+    return { id, ...meta, mimeType };
 };

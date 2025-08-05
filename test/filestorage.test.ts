@@ -4,12 +4,12 @@ import { createWriteStream, promises } from "node:fs";
 import { pipeline } from "node:stream/promises";
 import { randomUUID } from "node:crypto";
 import * as path from "path";
-import { FileData } from "../src/file/file";
+import { FileMeta } from "../src/file/file";
 import { DiskFileStorage } from "../src/file/storage/disk";
 
 const uploadDir = path.resolve(__dirname, "test_uploads");
 let storage: DiskFileStorage;
-let metadata: FileData;
+let metadata: FileMeta;
 let downloadedPath: string;
 
 describe("DiskFileStorage", () => {

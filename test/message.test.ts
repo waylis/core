@@ -196,18 +196,6 @@ describe("createUserMessage", () => {
             },
         });
 
-        it("should validate date format", () => {
-            assert.throws(
-                () =>
-                    createUserMessage(
-                        // @ts-ignore
-                        { ...baseParams, body: { type: "datetime", content: "invalid-date" } },
-                        dateReplyMsg({})
-                    ),
-                { message: /Invalid date format/ }
-            );
-        });
-
         it("should validate min date", () => {
             const minDate = new Date("2023-01-01");
             assert.throws(
@@ -257,18 +245,6 @@ describe("createUserMessage", () => {
                 bodyType: "file",
                 bodyLimits: limits as FileLimits,
             },
-        });
-
-        it("should validate file metadata", () => {
-            assert.throws(
-                () =>
-                    createUserMessage(
-                        // @ts-ignore
-                        { ...baseParams, body: { type: "file", content: { invalid: "data" } } },
-                        fileReplyMsg({})
-                    ),
-                { message: /Invalid file metadata format/ }
-            );
         });
 
         it("should validate file size", () => {

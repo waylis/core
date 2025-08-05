@@ -4,7 +4,7 @@ import { Chat } from "../../chat/chat";
 import { Message } from "../../message/message";
 import { ConfirmedStep } from "../../scene/step";
 import { Database } from "../database";
-import { FileData } from "../../file/file";
+import { FileMeta } from "../../file/file";
 
 export class JSONDatabase implements Database {
     private dataPath: string;
@@ -12,7 +12,7 @@ export class JSONDatabase implements Database {
         chats: Chat[];
         messages: Message[];
         steps: ConfirmedStep[];
-        files: FileData[];
+        files: FileMeta[];
     };
 
     constructor(filepath: string = "./db.json") {
@@ -138,18 +138,18 @@ export class JSONDatabase implements Database {
     }
 
     // File operations
-    async addFile(data: FileData): Promise<void> {
+    async addFile(data: FileMeta): Promise<void> {
         if (this.data.files.some((f) => f.id === data.id)) {
             throw new Error(`File with ID ${data.id} already exists`);
         }
         this.data.files.push(data);
     }
 
-    async getFileByID(id: string): Promise<FileData | null> {
+    async getFileByID(id: string): Promise<FileMeta | null> {
         return this.data.files.find((file) => file.id === id) || null;
     }
 
-    async getFilesByIDs(ids: string[]): Promise<FileData[]> {
+    async getFilesByIDs(ids: string[]): Promise<FileMeta[]> {
         return this.data.files.filter((file) => ids.includes(file.id));
     }
 

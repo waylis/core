@@ -1,4 +1,4 @@
-import { FileData } from "../file/file";
+import { FileMeta } from "../file/file";
 
 export interface Option {
     value: string;
@@ -42,8 +42,8 @@ export type MessageBodyMap = {
     text: string;
     number: number;
     boolean: boolean;
-    file: FileData;
-    files: FileData[];
+    file: FileMeta;
+    files: FileMeta[];
     option: Option;
     options: Option[];
     datetime: Date;

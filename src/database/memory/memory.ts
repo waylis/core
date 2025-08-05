@@ -1,5 +1,5 @@
 import { Chat } from "../../chat/chat";
-import { FileData } from "../../file/file";
+import { FileMeta } from "../../file/file";
 import { Message } from "../../message/message";
 import { ConfirmedStep } from "../../scene/step";
 import { Database } from "../database";
@@ -8,7 +8,7 @@ export class MemoryDatabase implements Database {
     private chats: Chat[] = [];
     private messages: Message[] = [];
     private steps: ConfirmedStep[] = [];
-    private files: FileData[] = [];
+    private files: FileMeta[] = [];
 
     async open(): Promise<void> {}
     async close(): Promise<void> {}
@@ -87,18 +87,18 @@ export class MemoryDatabase implements Database {
     }
 
     // File operations
-    async addFile(data: FileData): Promise<void> {
+    async addFile(data: FileMeta): Promise<void> {
         if (this.files.some((f) => f.id === data.id)) {
             throw new Error(`File with ID ${data.id} already exists`);
         }
         this.files.push(data);
     }
 
-    async getFileByID(id: string): Promise<FileData | null> {
+    async getFileByID(id: string): Promise<FileMeta | null> {
         return this.files.find((file) => file.id === id) || null;
     }
 
-    async getFilesByIDs(ids: string[]): Promise<FileData[]> {
+    async getFilesByIDs(ids: string[]): Promise<FileMeta[]> {
         return this.files.filter((file) => ids.includes(file.id));
     }
 

@@ -18,5 +18,8 @@
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "mime": "^4.0.7"
   }
 }

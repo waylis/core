@@ -1,5 +1,4 @@
-import { FileData } from "../file/file";
-import { isValidDate } from "../utils/date";
+import { FileMeta } from "../file/file";
 import { bytesToMB, isFloat } from "../utils/number";
 import { randomUUID } from "../utils/random";
 import {
@@ -125,12 +124,7 @@ export const createUserMessage = (params: CreateUserMessageParams, replyMsg?: Me
     }
 
     if (replyMsg.replyRestriction.bodyType === "datetime") {
-        const strBodyContent = params.body.content.toString();
-        if (!isValidDate(strBodyContent)) {
-            throw Error("Invalid date format.");
-        }
-
-        const bodyContent = new Date(strBodyContent);
+        const bodyContent = params.body.content as Date;
         const limit = replyMsg.replyRestriction.bodyLimits as DatetimeLimits;
         msg.body.content = bodyContent;
 
@@ -145,10 +139,6 @@ export const createUserMessage = (params: CreateUserMessageParams, replyMsg?: Me
 
     if (replyMsg.replyRestriction.bodyType === "option") {
         const bodyContent = msg.body.content as Option;
-        if (bodyContent?.value == null || typeof bodyContent.value !== "string") {
-            throw Error("Invalid option value format.");
-        }
-
         const limit = replyMsg.replyRestriction.bodyLimits as OptionLimits;
         const existingOption = limit?.options?.find((opt) => opt?.value === bodyContent.value);
         if (!existingOption) {
@@ -158,14 +148,6 @@ export const createUserMessage = (params: CreateUserMessageParams, replyMsg?: Me
 
     if (replyMsg.replyRestriction.bodyType === "options") {
         const bodyContent = msg.body.content as Option[];
-        if (!Array.isArray(bodyContent)) {
-            throw Error("Invalid option values format.");
-        }
-
-        if ((bodyContent.length && bodyContent[0]?.value == null) || typeof bodyContent[0].value !== "string") {
-            throw Error("Invalid option value format.");
-        }
-
         const limit = replyMsg.replyRestriction.bodyLimits as OptionsLimits;
 
         if (limit?.maxAmount != null && bodyContent.length > limit.maxAmount) {
@@ -181,26 +163,19 @@ export const createUserMessage = (params: CreateUserMessageParams, replyMsg?: Me
     }
 
     if (replyMsg.replyRestriction.bodyType === "file") {
-        const bodyContent = msg.body.content as FileData;
-        validateFileData(bodyContent);
-
+        const bodyContent = msg.body.content as FileMeta;
         const limit = replyMsg.replyRestriction.bodyLimits as FileLimits;
         checkFileDataLimit(limit, bodyContent);
     }
 
     if (replyMsg.replyRestriction.bodyType === "files") {
-        const bodyContent = msg.body.content as FileData[];
-        if (!Array.isArray(bodyContent)) {
-            throw Error("Invalid files format.");
-        }
-
+        const bodyContent = msg.body.content as FileMeta[];
         const limit = replyMsg.replyRestriction.bodyLimits as FilesLimits;
         if (limit?.maxAmount != null && bodyContent.length > limit.maxAmount) {
             throw Error(`Too many files. The maximum allowed is ${limit.maxAmount}`);
         }
 
         for (const file of bodyContent) {
-            validateFileData(file);
             checkFileDataLimit(limit, file);
         }
     }
@@ -208,25 +183,13 @@ export const createUserMessage = (params: CreateUserMessageParams, replyMsg?: Me
     return msg;
 };
 
-function validateFileData(bodyContent: any) {
-    const isHasID = bodyContent?.id != null && typeof bodyContent.id === "string";
-    const isHasMime = bodyContent?.mimeType != null && typeof bodyContent.mimeType === "string";
-    const isHasName = bodyContent?.name != null && typeof bodyContent.name === "string";
-    const isHasPath = bodyContent?.path != null && typeof bodyContent.path === "string";
-    const isHasSize = bodyContent?.size != null && typeof bodyContent.size === "number";
-
-    if (!isHasID || !isHasMime || !isHasName || !isHasPath || !isHasSize) {
-        throw Error("Invalid file metadata format.");
-    }
-}
-
-function checkFileDataLimit(limit: FileLimits, filedata: FileData) {
+function checkFileDataLimit(limit: FileLimits, filemeta: FileMeta) {
     if (limit?.mimeTypes && limit.mimeTypes.length) {
-        const isValidMime = limit.mimeTypes.includes(filedata.mimeType);
+        const isValidMime = limit.mimeTypes.includes(filemeta.mimeType);
         if (!isValidMime) throw Error("MIME type not allowed.");
     }
 
-    if (limit?.maxSize != null && filedata.size > limit.maxSize) {
+    if (limit?.maxSize != null && filemeta.size > limit.maxSize) {
         throw Error(`Too large file. The maximum allowed size is ${bytesToMB(limit.maxSize)} MB.`);
     }
 }

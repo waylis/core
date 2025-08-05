@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import { promises, createWriteStream, createReadStream, existsSync, mkdirSync } from "node:fs";
 import { pipeline } from "node:stream/promises";
-import { FileStorage, FileData } from "../file";
+import { FileStorage, FileMeta } from "../file";
 
 export class DiskFileStorage implements FileStorage {
     private storagePath: string;
@@ -21,7 +21,7 @@ export class DiskFileStorage implements FileStorage {
         return join(this.storagePath, id);
     }
 
-    async upload(bytes: NodeJS.ReadableStream | Buffer, metadata: FileData): Promise<boolean> {
+    async upload(bytes: NodeJS.ReadableStream | Buffer, metadata: FileMeta): Promise<boolean> {
         const filePath = this.getFilePath(metadata.id);
         try {
             // Ensure directory exists
@@ -41,7 +41,7 @@ export class DiskFileStorage implements FileStorage {
         }
     }
 
-    async download(metadata: FileData): Promise<NodeJS.ReadableStream> {
+    async download(metadata: FileMeta): Promise<NodeJS.ReadableStream> {
         const filePath = this.getFilePath(metadata.id);
 
         try {
