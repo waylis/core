@@ -16,6 +16,7 @@ describe("createFileMeta", () => {
             name: "document.pdf",
             size: 1024,
             mimeType: "application/pdf",
+            createdAt: result.createdAt,
         } satisfies FileMeta);
     });
 

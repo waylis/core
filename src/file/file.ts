@@ -6,6 +6,7 @@ export interface FileMeta {
     name: string;
     size: number;
     mimeType: string;
+    createdAt: Date;
 }
 
 export interface FileStorage {
@@ -21,11 +22,11 @@ export interface FileDatabase {
     deleteByIDs(ids: string[]): Promise<number>;
 }
 
-export type CreateFileDataParams = Omit<FileMeta, "id" | "mimeType"> & { mimeType?: string };
+export type CreateFileDataParams = Omit<FileMeta, "id" | "mimeType" | "createdAt"> & { mimeType?: string };
 
 export const createFileMeta = (meta: CreateFileDataParams): FileMeta => {
     const id = randomUUID();
     const mimeType = meta.mimeType || mime.getType(meta.name);
     if (!mimeType) throw Error(`Unable to identify the MIME type of the file - "${meta.name}".`);
-    return { id, ...meta, mimeType };
+    return { id, ...meta, mimeType, createdAt: new Date() };
 };
