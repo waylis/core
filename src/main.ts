@@ -1,8 +1,7 @@
-import { MemoryDatabase } from "./database/memory/memory";
-import { Engine } from "./scene/engine";
 import { createCommand } from "./scene/command";
 import { createScene } from "./scene/scene";
 import { createStep } from "./scene/step";
+import { HTTPServer } from "./server/server";
 
 const stepName = createStep({
     key: "name",
@@ -20,6 +19,5 @@ const sceneHello = createScene({
 
 const startCmd = createCommand({ value: "start", label: "Start a new scene" });
 
-const memoryDB = new MemoryDatabase();
-const app = new Engine(memoryDB);
-app.addScene(startCmd, sceneHello);
+const server = new HTTPServer();
+server.start();

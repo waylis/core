@@ -25,10 +25,6 @@ export class Engine {
         this.scenes.set(cmd.value, scene);
     }
 
-    async run() {
-        await this.db.open();
-    }
-
     async handleMessage(msg: Message): Promise<Message> {
         await this.db.addMessage(msg);
 
