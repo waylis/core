@@ -11,13 +11,11 @@ const stepName = createStep({
 
 const sceneHello = createScene({
     steps: [stepName],
-    handler: async (answers) => {
-        const content = `Hello ${answers.name}!`;
-        return { type: "text", content };
-    },
+    handler: async (answers) => ({ type: "text", content: `Hello ${answers.name}!` }),
 });
 
 const startCmd = createCommand({ value: "start", label: "Start a new scene" });
 
 const server = new HTTPServer();
+server.addScene(startCmd, sceneHello);
 server.start();
