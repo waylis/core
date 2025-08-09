@@ -6,7 +6,8 @@ import { createChat } from "../chat/chat";
 import { createFileMeta } from "../file/file";
 import { randomUUID } from "../utils/random";
 import { defineFileExtension } from "../utils/mime";
-import { HTTPError, jsonData, jsonMessage, parseCookies, parseJSONBody, parseURL } from "../utils/http";
+import { createUserMessage, CreateUserMessageParams, Message } from "../message/message";
+import { getUserID, HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL } from "./helpers";
 
 export async function getMessagesHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
     const url = parseURL(req);
@@ -41,6 +42,29 @@ export async function createChatHandler(this: HTTPServer, req: IncomingMessage, 
     jsonData(res, chat, 201);
 }
 
+export async function sendMessageHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+    const senderID = getUserID(req);
+    const body = await parseJSONBody<Omit<CreateUserMessageParams, "senderID">>(req);
+    let replyMsg: Message | undefined;
+
+    if (body.replyTo) {
+        const candidate = await this.database.getMessageByID(body.replyTo);
+        if (!candidate) throw new HTTPError(404, "No reply message found");
+        replyMsg = candidate;
+    }
+
+    let msg: Message;
+    try {
+        msg = createUserMessage({ ...body, senderID }, replyMsg);
+    } catch (error) {
+        const textErr = error instanceof Error ? error.message : "Bad request";
+        throw new HTTPError(400, textErr);
+    }
+
+    this.eventBus.emit("newUserMessage", msg);
+    jsonData(res, msg, 201);
+}
+
 export async function getFileHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
     getUserID(req);
     const url = parseURL(req);
@@ -68,7 +92,7 @@ export async function uploadFileHandler(this: HTTPServer, req: IncomingMessage, 
     const fileExtension = defineFileExtension(contentType);
 
     if (!fileExtension && !filename) throw new HTTPError(400, "Couldn't define file extension");
-    if (filename) filename = basename(filename).replace(/[^a-zA-Z0-9._-]/g, "_");
+    if (filename) filename = basename(filename).replace(/[^a-zA-Z0-9._-]/g, "_"); // sanitizing
     if (!filename) filename = `file.${fileExtension}`;
 
     const declaredBytes = Number(req.headers["content-length"] || 0);
@@ -82,9 +106,9 @@ export async function uploadFileHandler(this: HTTPServer, req: IncomingMessage, 
         },
     });
     const fileStream = req.pipe(counterStream);
-
     const filemeta = createFileMeta({ name: filename, size: declaredBytes, mimeType: contentType });
     const ok = await this.fileStorage.upload(fileStream, filemeta);
+
     if (!ok) throw new HTTPError(500, "File upload failed");
     await this.database.addFile({ ...filemeta, size: actualBytes });
 
@@ -95,12 +119,4 @@ export async function authHandler(this: HTTPServer, req: IncomingMessage, res: S
     const userID = randomUUID();
     res.setHeader("Set-Cookie", `user_id=${userID}; HttpOnly; SameSite=Strict; Path=/`);
     jsonMessage(res, { msg: "OK" });
-}
-
-function getUserID(req: IncomingMessage) {
-    const cookies = parseCookies(req.headers.cookie ?? "");
-    const userID = cookies.user_id ?? "";
-
-    if (!userID) throw new HTTPError(401, "Unauthorized");
-    return userID;
 }
