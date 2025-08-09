@@ -4,14 +4,15 @@ import { Command, createCommand } from "./command";
 import { Scene, SceneResponsesMap } from "./scene";
 import { createConfirmedStep, SceneStep } from "./step";
 import { Database } from "../database/database";
+import { EventBus } from "../events/bus";
 
 export interface EngineConfig {}
 
-export class Engine {
+export class SceneEngine {
     commands: Map<string, Command> = new Map();
     scenes: Map<string, Scene<any>> = new Map();
 
-    constructor(private db: Database, private readonly config?: EngineConfig) {}
+    constructor(private db: Database, protected eventBus: EventBus, private readonly config?: EngineConfig) {}
 
     addScene<Steps extends readonly SceneStep<any, any>[]>(
         command: Command,
@@ -23,6 +24,20 @@ export class Engine {
         const cmd = createCommand(command);
         this.commands.set(cmd.value, cmd);
         this.scenes.set(cmd.value, scene);
+    }
+
+    listenMessages() {
+        const handler = async (msg: Message) => {
+            try {
+                const response = await this.handleMessage(msg);
+                this.eventBus.emit("newSystemMessage", { userID: msg.senderID, msg: response });
+            } catch (error) {
+                console.error("Handle message failed", error);
+            }
+        };
+
+        this.eventBus.on("newUserMessage", handler);
+        return () => this.eventBus.off("newUserMessage", handler);
     }
 
     async handleMessage(msg: Message): Promise<Message> {

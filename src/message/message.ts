@@ -46,7 +46,7 @@ export type CreateSystemMessageParams = Omit<
     body: SystemMessageBody;
     chatID?: string;
 };
-export type CreateUserMessageParams = Pick<CreateMessageParams, "chatID" | "senderID" | "body"> & {
+export type CreateUserMessageParams = Pick<CreateMessageParams, "chatID" | "senderID" | "body" | "replyTo"> & {
     body: UserMessageBody;
 };
 

@@ -237,6 +237,7 @@ describe("createUserMessage", () => {
             name: "test.png",
             path: "/uploads/test.png",
             size: 1024,
+            createdAt: new Date(),
         };
 
         const fileReplyMsg = (limits: Partial<FileLimits>): Message => ({
@@ -267,6 +268,7 @@ describe("createUserMessage", () => {
                 name: "test.jpg",
                 path: "/uploads/test.jpg",
                 size: 1024,
+                createdAt: new Date(),
             },
             {
                 id: "file-2",
@@ -274,6 +276,7 @@ describe("createUserMessage", () => {
                 name: "test.png",
                 path: "/uploads/test.png",
                 size: 2048,
+                createdAt: new Date(),
             },
         ];
 
