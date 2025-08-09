@@ -44,7 +44,13 @@ export class SceneEngine {
         await this.db.addMessage(msg);
 
         if (msg.body.type === "command") return this.handleCommand(msg);
-        if (msg.scene && msg.step) return this.handleSceneStep(msg);
+
+        try {
+            if (msg.scene && msg.step) return this.handleSceneStep(msg);
+        } catch (error) {
+            console.error("Internal scene error", error);
+            return this.createErrorMessage(msg, "Internal error. Please, try again later.");
+        }
 
         return this.createErrorMessage(msg, "Unknown command.");
     }
