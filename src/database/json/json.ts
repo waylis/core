@@ -37,7 +37,7 @@ export class JSONDatabase implements Database {
     private async saveData(): Promise<void> {
         const dir = path.dirname(this.dataPath);
         await fs.mkdir(dir, { recursive: true });
-        await fs.writeFile(this.dataPath, JSON.stringify(this.data, null, 2));
+        await fs.writeFile(this.dataPath, JSON.stringify(this.data));
     }
 
     async open(): Promise<void> {
@@ -143,6 +143,7 @@ export class JSONDatabase implements Database {
             throw new Error(`File with ID ${data.id} already exists`);
         }
         this.data.files.push(data);
+        await this.saveData();
     }
 
     async getFileByID(id: string): Promise<FileMeta | null> {
@@ -156,6 +157,7 @@ export class JSONDatabase implements Database {
     async deleteByIDs(ids: string[]): Promise<number> {
         const initialCount = this.data.files.length;
         this.data.files = this.data.files.filter((file) => !ids.includes(file.id));
+        await this.saveData();
         return initialCount - this.data.files.length;
     }
 }

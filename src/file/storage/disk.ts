@@ -6,8 +6,8 @@ import { FileStorage, FileMeta } from "../file";
 export class DiskFileStorage implements FileStorage {
     private storagePath: string;
 
-    constructor(storagePath: string) {
-        this.storagePath = storagePath;
+    constructor(storagePath?: string) {
+        this.storagePath = storagePath || "files";
         this.ensureDirectoryExists();
     }
 

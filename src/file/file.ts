@@ -1,4 +1,4 @@
-import mime from "mime";
+import { defineMimeType } from "../utils/mime";
 import { randomUUID } from "../utils/random";
 
 export interface FileMeta {
@@ -26,7 +26,7 @@ export type CreateFileDataParams = Omit<FileMeta, "id" | "mimeType" | "createdAt
 
 export const createFileMeta = (meta: CreateFileDataParams): FileMeta => {
     const id = randomUUID();
-    const mimeType = meta.mimeType || mime.getType(meta.name);
+    const mimeType = meta.mimeType || defineMimeType(meta.name);
     if (!mimeType) throw Error(`Unable to identify the MIME type of the file - "${meta.name}".`);
     return { id, ...meta, mimeType, createdAt: new Date() };
 };

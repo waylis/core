@@ -6,12 +6,12 @@ import { randomString } from "../src/utils/random";
 import { createCommand } from "../src/scene/command";
 import { createScene } from "../src/scene/scene";
 import { SystemMessageBody, UserMessageBody } from "../src/message/types";
-import { MemoryDatabase } from "../src/database/memory/memory";
 import { createStep } from "../src/scene/step";
+import { JSONDatabase } from "../src/database/json/json";
 
 describe("engine > handleMessage", async () => {
     let engine: Engine;
-    const db = new MemoryDatabase();
+    const db = new JSONDatabase();
 
     const mockMessage = (
         body: UserMessageBody,
@@ -25,8 +25,8 @@ describe("engine > handleMessage", async () => {
     };
 
     beforeEach(async () => {
+        await db.open();
         engine = new Engine(db);
-        await engine.run();
     });
 
     it("should respond with unknown command for non-existent command", async () => {
