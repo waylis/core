@@ -11,10 +11,10 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@types/node": "^24.0.10",
-    "tsdown": "^0.12.9",
+    "@types/node": "^24.2.1",
+    "tsdown": "^0.13.4",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "engines": {
     "node": ">=20.0.0"
