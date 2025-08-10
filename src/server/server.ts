@@ -103,6 +103,12 @@ export class HTTPServer {
         };
     }
 
+    protected async checkFileByID(id: string) {
+        const filemeta = await this.database.getFileByID(id);
+        if (!filemeta) throw new HTTPError(404, "File not found");
+        return filemeta;
+    }
+
     async start() {
         await this.database.open();
         this.engine.listenMessages();

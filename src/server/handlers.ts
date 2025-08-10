@@ -59,6 +59,15 @@ export async function sendMessageHandler(this: HTTPServer, req: IncomingMessage,
             replyMsg = candidate;
         }
 
+        if (msgParams.body.type === "file") {
+            msgParams.body.content = await this.checkFileByID(msgParams.body.content.id);
+        }
+        if (msgParams.body.type === "files") {
+            msgParams.body.content = await Promise.all(
+                msgParams.body.content.map(async (file) => ({ ...file, ...(await this.checkFileByID(file.id)) }))
+            );
+        }
+
         let msg = createUserMessage({ ...msgParams, senderID }, replyMsg);
         this.eventBus.emit("newUserMessage", msg);
         jsonData(res, msg, 201);
