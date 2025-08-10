@@ -1,9 +1,8 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { HTTPServer } from "./server";
-import { getUserID } from "./helpers";
 
-export function EventsHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = getUserID(req);
+export async function EventsHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+    const userID = await this.config.authMiddleware(req);
 
     res.writeHead(200, {
         "Content-Type": "text/event-stream",

@@ -18,20 +18,26 @@ import { FileStorage } from "../file/file";
 import { DiskFileStorage } from "../file/storage/disk";
 import { JSONDatabase } from "../database/json/json";
 import { EventBus, eventBus } from "../events/bus";
-import { parseURL, HTTPError, jsonMessage } from "./helpers";
+import { parseURL, HTTPError, jsonMessage, identifyUser } from "./helpers";
 import { EventsHandler, SSEMessage } from "./sse";
 import { Message } from "../message/message";
 
 export interface ServerConfig {
     port: number;
+
+    authHandler: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
+    authMiddleware: (req: IncomingMessage) => Promise<string>;
 }
 
 const defaultConfig: ServerConfig = {
     port: 7331,
+
+    authHandler: authHandler,
+    authMiddleware: identifyUser,
 };
 
 export class HTTPServer {
-    private config: ServerConfig;
+    protected config: ServerConfig = defaultConfig;
     protected eventBus: EventBus;
     protected database: Database;
     protected fileStorage: FileStorage;
@@ -39,7 +45,7 @@ export class HTTPServer {
     protected connections: Map<string, ServerResponse> = new Map();
 
     constructor(params?: { db?: Database; fileStorage?: FileStorage; config?: Partial<ServerConfig> }) {
-        this.config = { ...defaultConfig, ...params?.config };
+        this.config = { ...this.config, ...params?.config };
         this.database = params?.db ?? new JSONDatabase();
         this.fileStorage = params?.fileStorage ?? new DiskFileStorage();
         this.eventBus = eventBus;
@@ -52,7 +58,7 @@ export class HTTPServer {
         "GET /api/file": getFileHandler.bind(this),
         "GET /api/events": EventsHandler.bind(this),
 
-        "POST /api/auth": authHandler.bind(this),
+        "POST /api/auth": this.config.authHandler,
         "POST /api/chat": createChatHandler.bind(this),
         "POST /api/message": sendMessageHandler.bind(this),
         "POST /api/file": uploadFileHandler.bind(this),
@@ -77,17 +83,6 @@ export class HTTPServer {
         }
     };
 
-    async start() {
-        await this.database.open();
-        const server = createServer(this.router);
-        const port = this.config.port || 7331;
-
-        server.listen(port, () => {
-            console.info("Server is running on http://localhost:" + port);
-            this.serveConnections();
-        });
-    }
-
     private serveConnections() {
         const newSystemMessageHandler = async (payload: { userID: string; msg: Message }) => {
             const conn = this.connections.get(payload.userID);
@@ -106,6 +101,18 @@ export class HTTPServer {
             this.eventBus.off("newSystemMessage", newSystemMessageHandler);
             clearInterval(heartbeatHandler);
         };
+    }
+
+    async start() {
+        await this.database.open();
+        this.engine.listenMessages();
+        const server = createServer(this.router);
+        const port = this.config.port || 7331;
+
+        server.listen(port, () => {
+            console.info("Server is running on http://localhost:" + port);
+            this.serveConnections();
+        });
     }
 
     addScene<Steps extends readonly SceneStep<any, any>[]>(

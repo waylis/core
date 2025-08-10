@@ -6,12 +6,12 @@ import { createChat } from "../chat/chat";
 import { createFileMeta } from "../file/file";
 import { randomUUID } from "../utils/random";
 import { defineFileExtension } from "../utils/mime";
-import { createUserMessage, CreateUserMessageParams, Message } from "../message/message";
-import { getUserID, HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL } from "./helpers";
+import { createUserMessage, Message, validateUserMessageParams } from "../message/message";
+import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL } from "./helpers";
 
 export async function getMessagesHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+    const userID = await this.config.authMiddleware(req);
     const url = parseURL(req);
-    const userID = getUserID(req);
     const chatID = url.searchParams.get("chat_id");
     if (!chatID) throw new HTTPError(400, "chat_id query parameter is required");
 
@@ -27,13 +27,13 @@ export async function getMessagesHandler(this: HTTPServer, req: IncomingMessage,
 }
 
 export async function getChatsHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = getUserID(req);
+    const userID = await this.config.authMiddleware(req);
     const chats = await this.database.getChatsByCreatorID(userID);
     jsonData(res, chats);
 }
 
 export async function createChatHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = getUserID(req);
+    const userID = await this.config.authMiddleware(req);
     const body = await parseJSONBody<{ name?: string }>(req);
     const chatName = body?.name ?? "";
 
@@ -43,30 +43,34 @@ export async function createChatHandler(this: HTTPServer, req: IncomingMessage, 
 }
 
 export async function sendMessageHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
-    const senderID = getUserID(req);
-    const body = await parseJSONBody<Omit<CreateUserMessageParams, "senderID">>(req);
-    let replyMsg: Message | undefined;
-
-    if (body.replyTo) {
-        const candidate = await this.database.getMessageByID(body.replyTo);
-        if (!candidate) throw new HTTPError(404, "No reply message found");
-        replyMsg = candidate;
-    }
-
-    let msg: Message;
     try {
-        msg = createUserMessage({ ...body, senderID }, replyMsg);
+        const senderID = await this.config.authMiddleware(req);
+        const body = await parseJSONBody(req);
+
+        let msgParams = validateUserMessageParams(body, senderID);
+        let replyMsg: Message | undefined;
+
+        const chat = await this.database.getChatByID(msgParams.chatID);
+        if (!chat) throw new HTTPError(404, "Chat not found");
+
+        if (msgParams.replyTo) {
+            const candidate = await this.database.getMessageByID(msgParams.replyTo);
+            if (!candidate) throw new HTTPError(404, "No reply message found");
+            replyMsg = candidate;
+        }
+
+        let msg = createUserMessage({ ...msgParams, senderID }, replyMsg);
+        this.eventBus.emit("newUserMessage", msg);
+        jsonData(res, msg, 201);
     } catch (error) {
+        if (error instanceof HTTPError) throw error;
         const textErr = error instanceof Error ? error.message : "Bad request";
         throw new HTTPError(400, textErr);
     }
-
-    this.eventBus.emit("newUserMessage", msg);
-    jsonData(res, msg, 201);
 }
 
 export async function getFileHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
-    getUserID(req);
+    await this.config.authMiddleware(req);
     const url = parseURL(req);
     const fileID = url.searchParams.get("id");
     if (!fileID) throw new HTTPError(400, "id query parameter is required");
@@ -84,7 +88,7 @@ export async function getFileHandler(this: HTTPServer, req: IncomingMessage, res
 }
 
 export async function uploadFileHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
-    getUserID(req);
+    await this.config.authMiddleware(req);
     const contentType = req.headers["content-type"];
     if (!contentType) throw new HTTPError(400, "Content-Type header required");
 
@@ -115,7 +119,7 @@ export async function uploadFileHandler(this: HTTPServer, req: IncomingMessage, 
     jsonData(res, filemeta);
 }
 
-export async function authHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+export async function authHandler(_: IncomingMessage, res: ServerResponse) {
     const userID = randomUUID();
     res.setHeader("Set-Cookie", `user_id=${userID}; HttpOnly; SameSite=Strict; Path=/`);
     jsonMessage(res, { msg: "OK" });
