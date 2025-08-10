@@ -1,9 +1,5 @@
 import { FileMeta } from "../file/file";
-
-export interface Option {
-    value: string;
-    label?: string;
-}
+import { Option } from "./option";
 
 export interface TextLimits {
     minLength?: number;
@@ -44,8 +40,8 @@ export type MessageBodyMap = {
     boolean: boolean;
     file: FileMeta;
     files: FileMeta[];
-    option: Option;
-    options: Option[];
+    option: string;
+    options: string[];
     datetime: Date;
     markdown: string;
 };

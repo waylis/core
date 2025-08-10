@@ -100,6 +100,10 @@ export class JSONDatabase implements Database {
         await this.loadData();
         const filtered = this.data.messages
             .filter((msg) => msg.chatID === chatID)
+            .map((msg) => {
+                msg.createdAt = new Date(msg.createdAt);
+                return msg;
+            })
             .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
         const start = (page - 1) * limit;

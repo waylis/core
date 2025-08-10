@@ -1,17 +1,18 @@
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert/strict";
-import { Engine } from "../src/scene/engine";
+import { SceneEngine } from "../src/scene/engine";
 import { createUserMessage, Message } from "../src/message/message";
 import { randomString } from "../src/utils/random";
 import { createCommand } from "../src/scene/command";
 import { createScene } from "../src/scene/scene";
 import { SystemMessageBody, UserMessageBody } from "../src/message/types";
 import { createStep } from "../src/scene/step";
-import { JSONDatabase } from "../src/database/json/json";
+import { eventBus } from "../src/events/bus";
+import { MemoryDatabase } from "../src/database/memory/memory";
 
 describe("engine > handleMessage", async () => {
-    let engine: Engine;
-    const db = new JSONDatabase();
+    let engine: SceneEngine;
+    const db = new MemoryDatabase();
 
     const mockMessage = (
         body: UserMessageBody,
@@ -26,7 +27,7 @@ describe("engine > handleMessage", async () => {
 
     beforeEach(async () => {
         await db.open();
-        engine = new Engine(db);
+        engine = new SceneEngine(db, eventBus);
     });
 
     it("should respond with unknown command for non-existent command", async () => {

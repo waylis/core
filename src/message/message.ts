@@ -1,12 +1,12 @@
 import { FileMeta } from "../file/file";
 import { bytesToMB, isFloat } from "../utils/number";
 import { randomUUID } from "../utils/random";
+import { isPlainObject } from "../utils/validation";
 import {
     DatetimeLimits,
     MessageBody,
     NumberLimits,
     ReplyRestriction,
-    Option,
     OptionLimits,
     SystemMessageBody,
     TextLimits,
@@ -14,6 +14,7 @@ import {
     OptionsLimits,
     FileLimits,
     FilesLimits,
+    UserMessageBodyType,
 } from "./types";
 
 export interface Message {
@@ -138,16 +139,16 @@ export const createUserMessage = (params: CreateUserMessageParams, replyMsg?: Me
     }
 
     if (replyMsg.replyRestriction.bodyType === "option") {
-        const bodyContent = msg.body.content as Option;
+        const bodyContent = msg.body.content as string;
         const limit = replyMsg.replyRestriction.bodyLimits as OptionLimits;
-        const existingOption = limit?.options?.find((opt) => opt?.value === bodyContent.value);
+        const existingOption = limit?.options?.find((opt) => opt?.value === bodyContent);
         if (!existingOption) {
-            throw Error("The specified option does not exist.");
+            throw Error("The provided option does not exist.");
         }
     }
 
     if (replyMsg.replyRestriction.bodyType === "options") {
-        const bodyContent = msg.body.content as Option[];
+        const bodyContent = msg.body.content as string[];
         const limit = replyMsg.replyRestriction.bodyLimits as OptionsLimits;
 
         if (limit?.maxAmount != null && bodyContent.length > limit.maxAmount) {
@@ -155,9 +156,9 @@ export const createUserMessage = (params: CreateUserMessageParams, replyMsg?: Me
         }
 
         for (const option of bodyContent) {
-            const existingOption = limit?.options?.find((lopt) => lopt?.value === option.value);
+            const existingOption = limit?.options?.find((lopt) => lopt?.value === option);
             if (!existingOption) {
-                throw Error("The specified option does not exist.");
+                throw Error("The provided option does not exist.");
             }
         }
     }
@@ -181,6 +182,72 @@ export const createUserMessage = (params: CreateUserMessageParams, replyMsg?: Me
     }
 
     return msg;
+};
+
+const allowedUserMessageBodyTypes: UserMessageBodyType[] = [
+    "text",
+    "number",
+    "boolean",
+    "datetime",
+    "option",
+    "options",
+    "file",
+    "files",
+];
+export const validateUserMessageParams = (input: any, senderID: string): CreateUserMessageParams => {
+    if (!isPlainObject(input)) throw Error("Input must be a JSON object");
+    const params = input;
+
+    if (!("chatID" in input) || typeof input.chatID !== "string") throw Error("'chatID' must be a string");
+    if ("replyTo" in input && typeof input.replyTo !== "string") throw Error("'replyTo' must be a string if provided");
+    if (!("body" in input)) throw Error("'body' must be an object");
+    if (!("type" in input.body) || typeof input.body.type !== "string") throw Error("'body.type' must be a string");
+    if (!allowedUserMessageBodyTypes.includes(input.body.type)) throw Error("Not allowed 'body.type'");
+
+    if (!("content" in input.body)) throw Error("'body.content' must be provided");
+
+    const invalidBodyContentMsg = "Invalid body.content for the provided body.type";
+    if (input.body.type === "text") {
+        if (typeof input.body.content !== "string") throw Error(invalidBodyContentMsg);
+    }
+    if (input.body.type === "number") {
+        if (typeof input.body.content !== "number") throw Error(invalidBodyContentMsg);
+    }
+    if (input.body.type === "boolean") {
+        if (typeof input.body.content !== "boolean") throw Error(invalidBodyContentMsg);
+    }
+    if (input.body.type === "datetime") {
+        if (typeof input.body.content !== "string") throw Error(invalidBodyContentMsg);
+        if (isNaN(new Date(input.body.content)?.getTime())) throw Error(invalidBodyContentMsg);
+        params.body.content = new Date(input.body.content);
+    }
+    if (input.body.type === "option") {
+        if (typeof input.body.content !== "string") throw Error(invalidBodyContentMsg);
+    }
+    if (input.body.type === "options") {
+        if (!Array.isArray(input.body.content)) throw Error(invalidBodyContentMsg);
+        params.body.content = input.body.content.map(String);
+    }
+    if (input.body.type === "file") {
+        if (!isPlainObject(input.body.content)) throw Error(invalidBodyContentMsg);
+        if (!("id" in input.body.content)) throw Error(invalidBodyContentMsg);
+        if (typeof input.body.content.id !== "string") throw Error(invalidBodyContentMsg);
+    }
+    if (input.body.type === "files") {
+        if (!Array.isArray(input.body.content)) throw Error(invalidBodyContentMsg);
+        for (const item of input.body.content) {
+            if (!isPlainObject(item)) throw Error(invalidBodyContentMsg);
+            if (!("id" in item)) throw Error(invalidBodyContentMsg);
+            if (typeof item.id !== "string") throw Error(invalidBodyContentMsg);
+        }
+    }
+
+    return {
+        senderID,
+        chatID: params.chatID,
+        replyTo: params.replyTo,
+        body: { type: params.body.type, content: params.body.content },
+    };
 };
 
 function checkFileDataLimit(limit: FileLimits, filemeta: FileMeta) {
