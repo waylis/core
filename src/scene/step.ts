@@ -19,6 +19,7 @@ export interface SceneStep<K extends string = string, T extends UserMessageBodyT
 export interface ConfirmedStepDatabase {
     addConfirmedStep(step: ConfirmedStep): Promise<void>;
     getConfirmedStepsByThreadID(threadID: string): Promise<ConfirmedStep[]>;
+    deleteConfirmedStepsByThreadIDs(threadIDs: string[]): Promise<number>;
 }
 
 export const SCENE_STEP_KEY_MIN_LEN = 1;

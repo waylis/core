@@ -25,8 +25,10 @@ export class MemoryDatabase implements Database {
         return this.chats.find((chat) => chat.id === id) || null;
     }
 
-    async getChatsByCreatorID(creatorID: string): Promise<Chat[]> {
-        return this.chats.filter((chat) => chat.creatorID === creatorID);
+    async getChatsByCreatorID(creatorID: string, page: number, limit: number): Promise<Chat[]> {
+        const filteredChats = this.chats.filter((chat) => chat.creatorID === creatorID);
+        const startIndex = (page - 1) * limit;
+        return filteredChats.slice(startIndex, startIndex + limit);
     }
 
     async deleteChatByID(id: string): Promise<Chat | null> {
@@ -84,6 +86,13 @@ export class MemoryDatabase implements Database {
 
     async getConfirmedStepsByThreadID(threadID: string): Promise<ConfirmedStep[]> {
         return this.steps.filter((step) => step.threadID === threadID);
+    }
+
+    async deleteConfirmedStepsByThreadIDs(threadIDs: string[]): Promise<number> {
+        const initialLength = this.steps.length;
+        this.steps = this.steps.filter((step) => !threadIDs.includes(step.threadID));
+
+        return initialLength - this.steps.length;
     }
 
     // File operations

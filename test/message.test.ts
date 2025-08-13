@@ -8,15 +8,8 @@ import {
     type CreateSystemMessageParams,
     type Message,
 } from "../src/message/message";
-import {
-    TextLimits,
-    NumberLimits,
-    DatetimeLimits,
-    OptionLimits,
-    FileLimits,
-    FilesLimits,
-    Option,
-} from "../src/message/types";
+import { TextLimits, NumberLimits, DatetimeLimits, OptionLimits, FileLimits, FilesLimits } from "../src/message/types";
+import { Option } from "../src/message/option";
 
 describe("createSystemMessage", () => {
     const mockUserMessage: Message = {
@@ -222,7 +215,7 @@ describe("createUserMessage", () => {
             assert.throws(
                 () =>
                     createUserMessage(
-                        { ...baseParams, body: { type: "option", content: { value: "invalid" } } },
+                        { ...baseParams, body: { type: "option", content: "invalid" } },
                         optionReplyMsg([{ value: "valid" }])
                     ),
                 { message: /does not exist/ }

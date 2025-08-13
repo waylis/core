@@ -15,4 +15,4 @@ export const createScene = <Steps extends readonly SceneStep<any, any>[]>(config
     handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody>;
 }): Scene<Steps> => {
     return config;
-}
+};

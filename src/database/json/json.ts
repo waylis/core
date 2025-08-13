@@ -61,9 +61,11 @@ export class JSONDatabase implements Database {
         return this.data.chats.find((chat) => chat.id === id) || null;
     }
 
-    async getChatsByCreatorID(creatorID: string): Promise<Chat[]> {
+    async getChatsByCreatorID(creatorID: string, page: number, limit: number): Promise<Chat[]> {
         await this.loadData();
-        return this.data.chats.filter((chat) => chat.creatorID === creatorID);
+        const filteredChats = this.data.chats.filter((chat) => chat.creatorID === creatorID);
+        const startIndex = (page - 1) * limit;
+        return filteredChats.slice(startIndex, startIndex + limit);
     }
 
     async deleteChatByID(id: string): Promise<Chat | null> {
@@ -139,6 +141,13 @@ export class JSONDatabase implements Database {
         }
         this.data.steps.push(step);
         await this.saveData();
+    }
+
+    async deleteConfirmedStepsByThreadIDs(threadIDs: string[]): Promise<number> {
+        const initialLength = this.data.steps.length;
+        this.data.steps = this.data.steps.filter((step) => !threadIDs.includes(step.threadID));
+
+        return initialLength - this.data.steps.length;
     }
 
     // File operations

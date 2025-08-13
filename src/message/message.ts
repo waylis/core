@@ -194,6 +194,7 @@ const allowedUserMessageBodyTypes: UserMessageBodyType[] = [
     "file",
     "files",
 ];
+
 export const validateUserMessageParams = (input: any, senderID: string): CreateUserMessageParams => {
     if (!isPlainObject(input)) throw Error("Input must be a JSON object");
     const params = input;
