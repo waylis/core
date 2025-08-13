@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
-import { HTTPServer } from "./server";
+import { AppServer } from "./server";
 
-export async function EventsHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+export async function EventsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.authMiddleware(req);
 
     res.writeHead(200, {

@@ -4,6 +4,7 @@ import { Database } from "../database/database";
 import {
     authHandler,
     createChatHandler,
+    deleteChatHandler,
     getChatsHandler,
     getFileHandler,
     getMessagesHandler,
@@ -24,6 +25,8 @@ import { Message } from "../message/message";
 
 export interface ServerConfig {
     port: number;
+    sseHeartbeatInterval: number;
+    defaultPageLimit: number;
 
     authHandler: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
     authMiddleware: (req: IncomingMessage) => Promise<string>;
@@ -31,12 +34,14 @@ export interface ServerConfig {
 
 const defaultConfig: ServerConfig = {
     port: 7331,
+    sseHeartbeatInterval: 5000,
+    defaultPageLimit: 20,
 
     authHandler: authHandler,
     authMiddleware: identifyUser,
 };
 
-export class HTTPServer {
+export class AppServer {
     protected config: ServerConfig = defaultConfig;
     protected eventBus: EventBus;
     protected database: Database;
@@ -62,6 +67,8 @@ export class HTTPServer {
         "POST /api/chat": createChatHandler.bind(this),
         "POST /api/message": sendMessageHandler.bind(this),
         "POST /api/file": uploadFileHandler.bind(this),
+
+        "DELETE /api/chat": deleteChatHandler.bind(this),
     };
 
     private router = async (req: IncomingMessage, res: ServerResponse) => {
@@ -93,7 +100,7 @@ export class HTTPServer {
             for (const [_, conn] of this.connections) {
                 conn.write(SSEMessage("heartbeat", "\n"));
             }
-        }, 5000);
+        }, this.config.sseHeartbeatInterval);
 
         this.eventBus.on("newSystemMessage", newSystemMessageHandler);
 

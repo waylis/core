@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from "node:http";
 import { Transform } from "node:stream";
 import { basename } from "node:path";
-import { HTTPServer } from "./server";
+import { AppServer } from "./server";
 import { createChat } from "../chat/chat";
 import { createFileMeta } from "../file/file";
 import { randomUUID } from "../utils/random";
@@ -9,7 +9,7 @@ import { defineFileExtension } from "../utils/mime";
 import { createUserMessage, Message, validateUserMessageParams } from "../message/message";
 import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL } from "./helpers";
 
-export async function getMessagesHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+export async function getMessagesHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.authMiddleware(req);
     const url = parseURL(req);
     const chatID = url.searchParams.get("chat_id");
@@ -20,19 +20,23 @@ export async function getMessagesHandler(this: HTTPServer, req: IncomingMessage,
     if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
 
     const page = Number(url.searchParams.get("page")) || 1;
-    const limit = Number(url.searchParams.get("limit")) || 20;
+    const limit = Number(url.searchParams.get("limit")) || this.config.defaultPageLimit;
     const messages = await this.database.getMessagesByChatID(chatID, page, limit);
 
     jsonData(res, messages);
 }
 
-export async function getChatsHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+export async function getChatsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.authMiddleware(req);
-    const chats = await this.database.getChatsByCreatorID(userID);
+    const url = parseURL(req);
+    const page = Number(url.searchParams.get("page")) || 1;
+    const limit = Number(url.searchParams.get("limit")) || this.config.defaultPageLimit;
+
+    const chats = await this.database.getChatsByCreatorID(userID, page, limit);
     jsonData(res, chats);
 }
 
-export async function createChatHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+export async function createChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.authMiddleware(req);
     const body = await parseJSONBody<{ name?: string }>(req);
     const chatName = body?.name ?? "";
@@ -42,7 +46,7 @@ export async function createChatHandler(this: HTTPServer, req: IncomingMessage, 
     jsonData(res, chat, 201);
 }
 
-export async function sendMessageHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+export async function sendMessageHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     try {
         const senderID = await this.config.authMiddleware(req);
         const body = await parseJSONBody(req);
@@ -78,7 +82,7 @@ export async function sendMessageHandler(this: HTTPServer, req: IncomingMessage,
     }
 }
 
-export async function getFileHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+export async function getFileHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     await this.config.authMiddleware(req);
     const url = parseURL(req);
     const fileID = url.searchParams.get("id");
@@ -96,7 +100,7 @@ export async function getFileHandler(this: HTTPServer, req: IncomingMessage, res
     stream.pipe(res);
 }
 
-export async function uploadFileHandler(this: HTTPServer, req: IncomingMessage, res: ServerResponse) {
+export async function uploadFileHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     await this.config.authMiddleware(req);
     const contentType = req.headers["content-type"];
     if (!contentType) throw new HTTPError(400, "Content-Type header required");
@@ -126,6 +130,22 @@ export async function uploadFileHandler(this: HTTPServer, req: IncomingMessage, 
     await this.database.addFile({ ...filemeta, size: actualBytes });
 
     jsonData(res, filemeta);
+}
+
+export async function deleteChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+    const userID = await this.config.authMiddleware(req);
+    const url = parseURL(req);
+    const chatID = url.searchParams.get("id");
+    if (!chatID) throw new HTTPError(400, "id query parameter is required");
+
+    const chat = await this.database.getChatByID(chatID);
+    if (!chat) throw new HTTPError(404, "Chat not found");
+    if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
+
+    await this.database.deleteChatByID(chatID);
+    const messagesCount = await this.database.deleteMessagesByChatID(chatID);
+
+    jsonMessage(res, { msg: `Chat with ${messagesCount} messages deleted` });
 }
 
 export async function authHandler(_: IncomingMessage, res: ServerResponse) {
