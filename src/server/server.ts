@@ -6,6 +6,7 @@ import {
     createChatHandler,
     deleteChatHandler,
     getChatsHandler,
+    getCommandsHandler,
     getFileHandler,
     getMessagesHandler,
     sendMessageHandler,
@@ -58,10 +59,11 @@ export class AppServer {
     }
 
     private handlers: Record<string, (req: IncomingMessage, res: ServerResponse) => Promise<void>> = {
+        "GET /api/events": EventsHandler.bind(this),
+        "GET /api/commands": getCommandsHandler.bind(this),
         "GET /api/chats": getChatsHandler.bind(this),
         "GET /api/messages": getMessagesHandler.bind(this),
         "GET /api/file": getFileHandler.bind(this),
-        "GET /api/events": EventsHandler.bind(this),
 
         "POST /api/auth": this.config.authHandler,
         "POST /api/chat": createChatHandler.bind(this),

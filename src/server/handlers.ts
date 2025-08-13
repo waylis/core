@@ -9,6 +9,11 @@ import { defineFileExtension } from "../utils/mime";
 import { createUserMessage, Message, validateUserMessageParams } from "../message/message";
 import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL } from "./helpers";
 
+export async function getCommandsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+    const commands = [...this.engine.commands.values()];
+    jsonData(res, commands);
+}
+
 export async function getMessagesHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.authMiddleware(req);
     const url = parseURL(req);

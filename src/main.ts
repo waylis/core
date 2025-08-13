@@ -1,9 +1,9 @@
 import { createCommand } from "./scene/command";
 import { createScene } from "./scene/scene";
 import { createStep } from "./scene/step";
-import { HTTPServer } from "./server/server";
+import { AppServer } from "./server/server";
 
-const app = new HTTPServer();
+const app = new AppServer();
 
 const command = createCommand({
     value: "hello",
