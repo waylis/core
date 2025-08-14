@@ -10,7 +10,7 @@ import { createStep } from "../src/scene/step";
 import { eventBus } from "../src/events/bus";
 import { MemoryDatabase } from "../src/database/memory/memory";
 
-describe("engine > handleMessage", async () => {
+describe("SceneEngine > handleMessage", async () => {
     let engine: SceneEngine;
     const db = new MemoryDatabase();
 
