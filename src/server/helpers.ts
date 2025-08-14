@@ -61,6 +61,11 @@ export class HTTPError extends Error {
     }
 }
 
+export const SSEMessage = (event: string, data: string) => {
+    const payload = `event: ${event}\ndata: ${data}\n\n`;
+    return payload;
+};
+
 export const identifyUser = async (req: IncomingMessage) => {
     const cookies = parseCookies(req.headers.cookie ?? "");
     const userID = cookies.user_id ?? "";

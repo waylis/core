@@ -7,9 +7,13 @@ import { createFileMeta } from "../file/file";
 import { randomUUID } from "../utils/random";
 import { defineFileExtension } from "../utils/mime";
 import { createUserMessage, Message, validateUserMessageParams } from "../message/message";
-import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL } from "./helpers";
+import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL, SSEMessage } from "./helpers";
 
-export async function getCommandsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+export async function getAppInfoHandler(this: AppServer, _req: IncomingMessage, res: ServerResponse) {
+    jsonData(res, this.config.appInfo);
+}
+
+export async function getCommandsHandler(this: AppServer, _req: IncomingMessage, res: ServerResponse) {
     const commands = [...this.engine.commands.values()];
     jsonData(res, commands);
 }
@@ -153,7 +157,26 @@ export async function deleteChatHandler(this: AppServer, req: IncomingMessage, r
     jsonMessage(res, { msg: `Chat with ${messagesCount} messages deleted` });
 }
 
-export async function authHandler(_: IncomingMessage, res: ServerResponse) {
+export async function EventsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+    const userID = await this.config.authMiddleware(req);
+
+    res.writeHead(200, {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+    });
+
+    res.write(SSEMessage("connection", "OK"));
+    this.connections.set(userID, res);
+
+    req.on("close", () => {
+        this.connections.delete(userID);
+    });
+
+    return;
+}
+
+export async function authHandler(_req: IncomingMessage, res: ServerResponse) {
     const userID = randomUUID();
     res.setHeader("Set-Cookie", `user_id=${userID}; HttpOnly; SameSite=Strict; Path=/`);
     jsonMessage(res, { msg: "OK" });

@@ -2,9 +2,10 @@ import { createServer, IncomingMessage, ServerResponse } from "node:http";
 import { SceneEngine } from "../scene/engine";
 import { Database } from "../database/database";
 import {
-    authHandler,
     createChatHandler,
     deleteChatHandler,
+    EventsHandler,
+    getAppInfoHandler,
     getChatsHandler,
     getCommandsHandler,
     getFileHandler,
@@ -20,27 +21,9 @@ import { FileStorage } from "../file/file";
 import { DiskFileStorage } from "../file/storage/disk";
 import { JSONDatabase } from "../database/json/json";
 import { EventBus, eventBus } from "../events/bus";
-import { parseURL, HTTPError, jsonMessage, identifyUser } from "./helpers";
-import { EventsHandler, SSEMessage } from "./sse";
+import { parseURL, HTTPError, jsonMessage, SSEMessage } from "./helpers";
 import { Message } from "../message/message";
-
-export interface ServerConfig {
-    port: number;
-    sseHeartbeatInterval: number;
-    defaultPageLimit: number;
-
-    authHandler: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
-    authMiddleware: (req: IncomingMessage) => Promise<string>;
-}
-
-const defaultConfig: ServerConfig = {
-    port: 7331,
-    sseHeartbeatInterval: 5000,
-    defaultPageLimit: 20,
-
-    authHandler: authHandler,
-    authMiddleware: identifyUser,
-};
+import { ServerConfig, defaultConfig } from "./config";
 
 export class AppServer {
     protected config: ServerConfig = defaultConfig;
@@ -59,8 +42,9 @@ export class AppServer {
     }
 
     private handlers: Record<string, (req: IncomingMessage, res: ServerResponse) => Promise<void>> = {
-        "GET /api/events": EventsHandler.bind(this),
+        "GET /api/info": getAppInfoHandler.bind(this),
         "GET /api/commands": getCommandsHandler.bind(this),
+        "GET /api/events": EventsHandler.bind(this),
         "GET /api/chats": getChatsHandler.bind(this),
         "GET /api/messages": getMessagesHandler.bind(this),
         "GET /api/file": getFileHandler.bind(this),
@@ -99,13 +83,10 @@ export class AppServer {
         };
 
         const heartbeatHandler = setInterval(() => {
-            for (const [_, conn] of this.connections) {
-                conn.write(SSEMessage("heartbeat", "\n"));
-            }
+            for (const [_, conn] of this.connections) conn.write(SSEMessage("heartbeat", "\n"));
         }, this.config.sseHeartbeatInterval);
 
         this.eventBus.on("newSystemMessage", newSystemMessageHandler);
-
         return () => {
             this.eventBus.off("newSystemMessage", newSystemMessageHandler);
             clearInterval(heartbeatHandler);
