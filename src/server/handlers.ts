@@ -154,7 +154,7 @@ export async function deleteChatHandler(this: AppServer, req: IncomingMessage, r
     await this.database.deleteChatByID(chatID);
     const messagesCount = await this.database.deleteMessagesByChatID(chatID);
 
-    jsonMessage(res, { msg: `Chat with ${messagesCount} messages deleted` });
+    jsonMessage(res, { message: `Chat with ${messagesCount} messages deleted` });
 }
 
 export async function EventsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
@@ -179,5 +179,5 @@ export async function EventsHandler(this: AppServer, req: IncomingMessage, res: 
 export async function authHandler(_req: IncomingMessage, res: ServerResponse) {
     const userID = randomUUID();
     res.setHeader("Set-Cookie", `user_id=${userID}; HttpOnly; SameSite=Strict; Path=/`);
-    jsonMessage(res, { msg: "OK" });
+    jsonMessage(res, { message: "OK" });
 }

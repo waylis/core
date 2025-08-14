@@ -5,8 +5,8 @@ export const jsonData = (res: ServerResponse, data: unknown, status = 200) => {
     res.end(JSON.stringify(data));
 };
 
-export const jsonMessage = (res: ServerResponse, options: { status?: number; msg?: string }) => {
-    jsonData(res, { message: options.msg ?? "" }, options.status);
+export const jsonMessage = (res: ServerResponse, options: { status?: number; message?: string }) => {
+    jsonData(res, { message: options.message ?? "" }, options.status);
 };
 
 export const parseURL = (req: IncomingMessage) => {

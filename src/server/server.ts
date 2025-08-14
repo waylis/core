@@ -24,21 +24,32 @@ import { EventBus, eventBus } from "../events/bus";
 import { parseURL, HTTPError, jsonMessage, SSEMessage } from "./helpers";
 import { Message } from "../message/message";
 import { ServerConfig, defaultConfig } from "./config";
+import { AppLogger, Logger } from "../logger/logger";
+
+export interface AppServerParams {
+    db?: Database;
+    fileStorage?: FileStorage;
+    config?: Partial<ServerConfig>;
+    logger?: Logger;
+}
 
 export class AppServer {
     protected config: ServerConfig = defaultConfig;
-    protected eventBus: EventBus;
     protected database: Database;
     protected fileStorage: FileStorage;
+    protected logger: Logger;
+
     protected engine: SceneEngine;
+    protected eventBus: EventBus;
     protected connections: Map<string, ServerResponse> = new Map();
 
-    constructor(params?: { db?: Database; fileStorage?: FileStorage; config?: Partial<ServerConfig> }) {
+    constructor(params?: AppServerParams) {
         this.config = { ...this.config, ...params?.config };
         this.database = params?.db ?? new JSONDatabase();
         this.fileStorage = params?.fileStorage ?? new DiskFileStorage();
         this.eventBus = eventBus;
         this.engine = new SceneEngine(this.database, this.eventBus);
+        this.logger = params?.logger ?? new AppLogger({ writeToFile: true });
     }
 
     private handlers: Record<string, (req: IncomingMessage, res: ServerResponse) => Promise<void>> = {
@@ -58,21 +69,21 @@ export class AppServer {
     };
 
     private router = async (req: IncomingMessage, res: ServerResponse) => {
-        try {
-            const url = parseURL(req);
-            const key = `${req.method} ${url.pathname}`;
-            const handler = this.handlers?.[key];
+        const url = parseURL(req);
+        const key = `${req.method} ${url.pathname}`;
 
+        try {
+            const handler = this.handlers[key];
             if (!handler) throw new HTTPError(404, "Not found");
             await handler(req, res);
         } catch (error) {
-            if (error instanceof HTTPError) {
-                jsonMessage(res, { status: error.status, msg: error.message });
+            if (!(error instanceof HTTPError)) {
+                jsonMessage(res, { status: 500, message: "Internal Server Error" });
+                this.logger.error("Uncaught server error:", `${req.method} ${url}`, error);
                 return;
             }
 
-            jsonMessage(res, { status: 500, msg: "Internal Server Error" });
-            console.error(error);
+            jsonMessage(res, { status: error.status, message: error.message });
         }
     };
 
@@ -106,7 +117,7 @@ export class AppServer {
         const port = this.config.port || 7331;
 
         server.listen(port, () => {
-            console.info("Server is running on http://localhost:" + port);
+            this.logger.info("Server is running on http://localhost:" + port);
             this.serveConnections();
         });
     }
