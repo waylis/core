@@ -4,7 +4,7 @@ import { Database } from "../database/database";
 import {
     createChatHandler,
     deleteChatHandler,
-    EventsHandler,
+    eventsHandler,
     getAppInfoHandler,
     getChatsHandler,
     getCommandsHandler,
@@ -25,6 +25,7 @@ import { parseURL, HTTPError, jsonMessage, SSEMessage } from "./helpers";
 import { Message } from "../message/message";
 import { ServerConfig, defaultConfig } from "./config";
 import { AppLogger, Logger } from "../logger/logger";
+import { cleanupFiles, cleanupMessages } from "./tasks";
 
 export interface AppServerParams {
     db?: Database;
@@ -55,7 +56,7 @@ export class AppServer {
     private handlers: Record<string, (req: IncomingMessage, res: ServerResponse) => Promise<void>> = {
         "GET /api/info": getAppInfoHandler.bind(this),
         "GET /api/commands": getCommandsHandler.bind(this),
-        "GET /api/events": EventsHandler.bind(this),
+        "GET /api/events": eventsHandler.bind(this),
         "GET /api/chats": getChatsHandler.bind(this),
         "GET /api/messages": getMessagesHandler.bind(this),
         "GET /api/file": getFileHandler.bind(this),
@@ -88,19 +89,35 @@ export class AppServer {
     };
 
     private serveConnections() {
-        const newSystemMessageHandler = async (payload: { userID: string; msg: Message }) => {
+        const handleNewSystemMessages = async (payload: { userID: string; msg: Message }) => {
             const conn = this.connections.get(payload.userID);
-            if (conn) conn.write(SSEMessage("new_message", JSON.stringify(payload.msg)));
+            if (conn) conn.write(SSEMessage("newSystemMessage", JSON.stringify(payload.msg)));
         };
 
-        const heartbeatHandler = setInterval(() => {
+        const handleHeartbeat = setInterval(() => {
             for (const [_, conn] of this.connections) conn.write(SSEMessage("heartbeat", "\n"));
         }, this.config.sseHeartbeatInterval);
 
-        this.eventBus.on("newSystemMessage", newSystemMessageHandler);
+        this.eventBus.on("newSystemMessage", handleNewSystemMessages);
+
         return () => {
-            this.eventBus.off("newSystemMessage", newSystemMessageHandler);
-            clearInterval(heartbeatHandler);
+            this.eventBus.off("newSystemMessage", handleNewSystemMessages);
+            clearInterval(handleHeartbeat);
+        };
+    }
+
+    private serveTasks() {
+        const cleanupMessagesID = setInterval(() => {
+            cleanupMessages.bind(this)();
+        }, 1000);
+
+        const cleanupFilesID = setInterval(() => {
+            cleanupFiles.bind(this)();
+        }, 1000);
+
+        return () => {
+            clearInterval(cleanupMessagesID);
+            clearInterval(cleanupFilesID);
         };
     }
 
@@ -115,11 +132,26 @@ export class AppServer {
         this.engine.listenMessages();
         const server = createServer(this.router);
         const port = this.config.port || 7331;
+        const stopEvents = this.serveConnections();
+        const stopTasks = this.serveTasks();
 
         server.listen(port, () => {
             this.logger.info("Server is running on http://localhost:" + port);
-            this.serveConnections();
         });
+
+        server.on("close", async () => {
+            stopEvents();
+            stopTasks();
+            await this.database.close();
+            await this.fileStorage.close();
+            this.logger.info("Server is gracefully closed");
+        });
+
+        server.on("error", (err) => {
+            this.logger.error("Server is dropped by error", err);
+        });
+
+        return server.close;
     }
 
     addScene<Steps extends readonly SceneStep<any, any>[]>(

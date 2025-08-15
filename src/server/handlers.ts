@@ -157,7 +157,7 @@ export async function deleteChatHandler(this: AppServer, req: IncomingMessage, r
     jsonMessage(res, { message: `Chat with ${messagesCount} messages deleted` });
 }
 
-export async function EventsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+export async function eventsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.authMiddleware(req);
 
     res.writeHead(200, {
