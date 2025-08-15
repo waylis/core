@@ -18,6 +18,9 @@ export interface ServerConfig {
     /** Authentication middleware that returns user ID or throws */
     authMiddleware: (req: IncomingMessage) => Promise<string>;
 
+    /** Interval (in seconds) for cleaning tasks */
+    cleanupInterval: number;
+
     /** System limits and constraints */
     limits: {
         /** Maximum number of chats a single user can create */
@@ -42,6 +45,7 @@ export const defaultConfig: ServerConfig = {
     defaultPageLimit: 20,
     authHandler: authHandler,
     authMiddleware: identifyUser,
+    cleanupInterval: 1200,
 
     limits: {
         maxChatsPerUser: 50,

@@ -109,11 +109,11 @@ export class AppServer {
     private serveTasks() {
         const cleanupMessagesID = setInterval(() => {
             cleanupMessages.bind(this)();
-        }, 1000);
+        }, this.config.cleanupInterval * 1000);
 
         const cleanupFilesID = setInterval(() => {
             cleanupFiles.bind(this)();
-        }, 1000);
+        }, this.config.cleanupInterval * 1000);
 
         return () => {
             clearInterval(cleanupMessagesID);
