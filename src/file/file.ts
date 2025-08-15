@@ -13,13 +13,16 @@ export interface FileStorage {
     upload(bytes: NodeJS.ReadableStream | Buffer, metadata: FileMeta): Promise<boolean>;
     download(metadata: FileMeta): Promise<NodeJS.ReadableStream>;
     deleteByID(id: string): Promise<boolean>;
+
+    open(): Promise<void>;
+    close(): Promise<void>;
 }
 
 export interface FileDatabase {
     addFile(data: FileMeta): Promise<void>;
     getFileByID(id: string): Promise<FileMeta | null>;
     getFilesByIDs(ids: string[]): Promise<FileMeta[]>;
-    deleteByIDs(ids: string[]): Promise<number>;
+    deleteOldFiles(maxDate: Date): Promise<string[]>;
 }
 
 export type CreateFileDataParams = Omit<FileMeta, "id" | "mimeType" | "createdAt"> & { mimeType?: string };

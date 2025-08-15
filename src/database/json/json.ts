@@ -5,6 +5,7 @@ import { Message } from "../../message/message";
 import { ConfirmedStep } from "../../scene/step";
 import { Database } from "../database";
 import { FileMeta } from "../../file/file";
+import { Mutex } from "../../utils/mutex";
 
 export class JSONDatabase implements Database {
     private dataPath: string;
@@ -14,6 +15,7 @@ export class JSONDatabase implements Database {
         steps: ConfirmedStep[];
         files: FileMeta[];
     };
+    private writeMutex = new Mutex();
 
     constructor(filepath: string = "./db.json") {
         this.dataPath = path.resolve(filepath);
@@ -37,7 +39,21 @@ export class JSONDatabase implements Database {
     private async saveData(): Promise<void> {
         const dir = path.dirname(this.dataPath);
         await fs.mkdir(dir, { recursive: true });
-        await fs.writeFile(this.dataPath, JSON.stringify(this.data));
+        const tmpPath = `${this.dataPath}.${process.pid}.${Date.now()}.tmp`;
+        await fs.writeFile(tmpPath, JSON.stringify(this.data));
+        await fs.rename(tmpPath, this.dataPath);
+    }
+
+    private async withWriteLock<T>(fn: () => Promise<T> | T): Promise<T> {
+        const release = await this.writeMutex.acquire();
+        try {
+            await this.loadData();
+            const result = await fn();
+            await this.saveData();
+            return result;
+        } finally {
+            release();
+        }
     }
 
     async open(): Promise<void> {
@@ -48,12 +64,12 @@ export class JSONDatabase implements Database {
 
     // Chat operations
     async addChat(chat: Chat): Promise<void> {
-        await this.loadData();
-        if (this.data.chats.some((c) => c.id === chat.id)) {
-            throw new Error(`Chat with ID ${chat.id} already exists`);
-        }
-        this.data.chats.push(chat);
-        await this.saveData();
+        await this.withWriteLock(async () => {
+            if (this.data.chats.some((c) => c.id === chat.id)) {
+                throw new Error(`Chat with ID ${chat.id} already exists`);
+            }
+            this.data.chats.push(chat);
+        });
     }
 
     async getChatByID(id: string): Promise<Chat | null> {
@@ -69,23 +85,22 @@ export class JSONDatabase implements Database {
     }
 
     async deleteChatByID(id: string): Promise<Chat | null> {
-        await this.loadData();
-        const index = this.data.chats.findIndex((chat) => chat.id === id);
-        if (index === -1) return null;
-
-        const [deletedChat] = this.data.chats.splice(index, 1);
-        await this.saveData();
-        return deletedChat;
+        return this.withWriteLock(() => {
+            const index = this.data.chats.findIndex((chat) => chat.id === id);
+            if (index === -1) return null;
+            const [deleted] = this.data.chats.splice(index, 1);
+            return deleted;
+        });
     }
 
     // Message operations
     async addMessage(msg: Message): Promise<void> {
-        await this.loadData();
-        if (this.data.messages.some((m) => m.id === msg.id)) {
-            throw new Error(`Message with ID ${msg.id} already exists`);
-        }
-        this.data.messages.push(msg);
-        await this.saveData();
+        await this.withWriteLock(async () => {
+            if (this.data.messages.some((m) => m.id === msg.id)) {
+                throw new Error(`Message with ID ${msg.id} already exists`);
+            }
+            this.data.messages.push(msg);
+        });
     }
 
     async getMessageByID(id: string): Promise<Message | null> {
@@ -113,19 +128,18 @@ export class JSONDatabase implements Database {
     }
 
     async deleteOldMessages(maxDate: Date): Promise<number> {
-        await this.loadData();
-        const initialCount = this.data.messages.length;
-        this.data.messages = this.data.messages.filter((msg) => msg.createdAt > maxDate);
-        await this.saveData();
-        return initialCount - this.data.messages.length;
+        return this.withWriteLock(() => {
+            const initialCount = this.data.messages.length;
+            this.data.messages = this.data.messages.filter((msg) => msg.createdAt > maxDate);
+            return initialCount - this.data.messages.length;
+        });
     }
-
     async deleteMessagesByChatID(chatID: string): Promise<number> {
-        await this.loadData();
-        const initialCount = this.data.messages.length;
-        this.data.messages = this.data.messages.filter((msg) => msg.chatID !== chatID);
-        await this.saveData();
-        return initialCount - this.data.messages.length;
+        return this.withWriteLock(() => {
+            const initialCount = this.data.messages.length;
+            this.data.messages = this.data.messages.filter((msg) => msg.chatID !== chatID);
+            return initialCount - this.data.messages.length;
+        });
     }
 
     // Step operations
@@ -135,28 +149,30 @@ export class JSONDatabase implements Database {
     }
 
     async addConfirmedStep(step: ConfirmedStep): Promise<void> {
-        await this.loadData();
-        if (this.data.steps.some((s) => s.id === step.id)) {
-            throw new Error(`Step with ID ${step.id} already exists`);
-        }
-        this.data.steps.push(step);
-        await this.saveData();
+        await this.withWriteLock(async () => {
+            if (this.data.steps.some((s) => s.id === step.id)) {
+                throw new Error(`Step with ID ${step.id} already exists`);
+            }
+            this.data.steps.push(step);
+        });
     }
 
-    async deleteConfirmedStepsByThreadIDs(threadIDs: string[]): Promise<number> {
-        const initialLength = this.data.steps.length;
-        this.data.steps = this.data.steps.filter((step) => !threadIDs.includes(step.threadID));
-
-        return initialLength - this.data.steps.length;
+    async deleteOldConfirmedSteps(maxDate: Date): Promise<number> {
+        return this.withWriteLock(() => {
+            const initialLength = this.data.steps.length;
+            this.data.steps = this.data.steps.filter((step) => step.createdAt > maxDate);
+            return initialLength - this.data.steps.length;
+        });
     }
 
     // File operations
     async addFile(data: FileMeta): Promise<void> {
-        if (this.data.files.some((f) => f.id === data.id)) {
-            throw new Error(`File with ID ${data.id} already exists`);
-        }
-        this.data.files.push(data);
-        await this.saveData();
+        await this.withWriteLock(async () => {
+            if (this.data.files.some((f) => f.id === data.id)) {
+                throw new Error(`File with ID ${data.id} already exists`);
+            }
+            this.data.files.push(data);
+        });
     }
 
     async getFileByID(id: string): Promise<FileMeta | null> {
@@ -167,10 +183,15 @@ export class JSONDatabase implements Database {
         return this.data.files.filter((file) => ids.includes(file.id));
     }
 
-    async deleteByIDs(ids: string[]): Promise<number> {
-        const initialCount = this.data.files.length;
-        this.data.files = this.data.files.filter((file) => !ids.includes(file.id));
-        await this.saveData();
-        return initialCount - this.data.files.length;
+    async deleteOldFiles(maxDate: Date): Promise<string[]> {
+        return this.withWriteLock(() => {
+            const deletedIDs: string[] = [];
+            this.data.files = this.data.files.filter((file) => {
+                const isOld = file.createdAt > maxDate;
+                if (isOld) deletedIDs.push(file.id);
+                return !isOld;
+            });
+            return deletedIDs;
+        });
     }
 }

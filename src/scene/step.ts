@@ -7,6 +7,7 @@ export interface ConfirmedStep {
     messageID: string;
     scene: string;
     step: string;
+    createdAt: Date;
 }
 
 export interface SceneStep<K extends string = string, T extends UserMessageBodyType = UserMessageBodyType> {
@@ -19,7 +20,7 @@ export interface SceneStep<K extends string = string, T extends UserMessageBodyT
 export interface ConfirmedStepDatabase {
     addConfirmedStep(step: ConfirmedStep): Promise<void>;
     getConfirmedStepsByThreadID(threadID: string): Promise<ConfirmedStep[]>;
-    deleteConfirmedStepsByThreadIDs(threadIDs: string[]): Promise<number>;
+    deleteOldConfirmedSteps(maxDate: Date): Promise<number>;
 }
 
 export const SCENE_STEP_KEY_MIN_LEN = 1;
@@ -40,6 +41,6 @@ export const createStep = <K extends string, T extends UserMessageBodyType>(step
     return step;
 };
 
-export const createConfirmedStep = (params: Omit<ConfirmedStep, "id">): ConfirmedStep => {
-    return { id: randomUUID(), ...params };
+export const createConfirmedStep = (params: Omit<ConfirmedStep, "id" | "createdAt">): ConfirmedStep => {
+    return { id: randomUUID(), ...params, createdAt: new Date() };
 };

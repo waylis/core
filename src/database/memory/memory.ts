@@ -88,11 +88,10 @@ export class MemoryDatabase implements Database {
         return this.steps.filter((step) => step.threadID === threadID);
     }
 
-    async deleteConfirmedStepsByThreadIDs(threadIDs: string[]): Promise<number> {
-        const initialLength = this.steps.length;
-        this.steps = this.steps.filter((step) => !threadIDs.includes(step.threadID));
-
-        return initialLength - this.steps.length;
+    async deleteOldConfirmedSteps(maxDate: Date): Promise<number> {
+        const initialCount = this.steps.length;
+        this.steps = this.steps.filter((step) => step.createdAt > maxDate);
+        return initialCount - this.steps.length;
     }
 
     // File operations
@@ -111,9 +110,14 @@ export class MemoryDatabase implements Database {
         return this.files.filter((file) => ids.includes(file.id));
     }
 
-    async deleteByIDs(ids: string[]): Promise<number> {
-        const initialCount = this.files.length;
-        this.files = this.files.filter((file) => !ids.includes(file.id));
-        return initialCount - this.files.length;
+    async deleteOldFiles(maxDate: Date): Promise<string[]> {
+        const deletedIDs: string[] = [];
+        this.files = this.files.filter((file) => {
+            const isOld = file.createdAt > maxDate;
+            if (isOld) deletedIDs.push(file.id);
+            return !isOld;
+        });
+
+        return deletedIDs;
     }
 }

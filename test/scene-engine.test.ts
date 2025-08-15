@@ -8,11 +8,11 @@ import { createScene } from "../src/scene/scene";
 import { SystemMessageBody, UserMessageBody } from "../src/message/types";
 import { createStep } from "../src/scene/step";
 import { eventBus } from "../src/events/bus";
-import { MemoryDatabase } from "../src/database/memory/memory";
+import { JSONDatabase } from "../src/database/json/json";
 
 describe("SceneEngine > handleMessage", async () => {
     let engine: SceneEngine;
-    const db = new MemoryDatabase();
+    const db = new JSONDatabase();
 
     const mockMessage = (
         body: UserMessageBody,

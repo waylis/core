@@ -21,6 +21,9 @@ export class DiskFileStorage implements FileStorage {
         return join(this.storagePath, id);
     }
 
+    async open(): Promise<void> {}
+    async close(): Promise<void> {}
+
     async upload(bytes: NodeJS.ReadableStream | Buffer, metadata: FileMeta): Promise<boolean> {
         const filePath = this.getFilePath(metadata.id);
         try {
