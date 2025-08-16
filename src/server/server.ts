@@ -17,7 +17,7 @@ import { SystemMessageBody } from "../message/types";
 import { Command } from "../scene/command";
 import { SceneResponsesMap } from "../scene/scene";
 import { SceneStep } from "../scene/step";
-import { FileStorage } from "../file/file";
+import { FileManager, FileStorage } from "../file/file";
 import { DiskFileStorage } from "../file/storage/disk";
 import { JSONDatabase } from "../database/json/json";
 import { EventBus, eventBus } from "../events/bus";
@@ -26,6 +26,7 @@ import { Message } from "../message/message";
 import { ServerConfig, defaultConfig } from "./config";
 import { AppLogger, Logger } from "../logger/logger";
 import { cleanupFiles, cleanupMessages } from "./tasks";
+import { FileManagerClass } from "../file/manager";
 
 export interface AppServerParams {
     db?: Database;
@@ -38,6 +39,7 @@ export class AppServer {
     protected config: ServerConfig = defaultConfig;
     protected database: Database;
     protected fileStorage: FileStorage;
+    protected fileManager: FileManager;
     protected logger: Logger;
 
     protected engine: SceneEngine;
@@ -51,6 +53,7 @@ export class AppServer {
         this.eventBus = eventBus;
         this.engine = new SceneEngine(this.database, this.eventBus);
         this.logger = params?.logger ?? new AppLogger({ writeToFile: true });
+        this.fileManager = new FileManagerClass(this.fileStorage, this.database, this.logger);
     }
 
     private handlers: Record<string, (req: IncomingMessage, res: ServerResponse) => Promise<void>> = {
@@ -121,17 +124,13 @@ export class AppServer {
         };
     }
 
-    protected async checkFileByID(id: string) {
-        const filemeta = await this.database.getFileByID(id);
-        if (!filemeta) throw new HTTPError(404, "File not found");
-        return filemeta;
-    }
-
     async start() {
-        await this.database.open();
+        if (!this.database.isOpen) await this.database.open();
+        if (!this.fileStorage.isOpen) await this.fileStorage.open();
+
         this.engine.listenMessages();
         const server = createServer(this.router);
-        const port = this.config.port || 7331;
+        const port = this.config.port;
         const stopEvents = this.serveConnections();
         const stopTasks = this.serveTasks();
 
@@ -144,7 +143,7 @@ export class AppServer {
             stopTasks();
             await this.database.close();
             await this.fileStorage.close();
-            this.logger.info("Server is gracefully closed");
+            this.logger.info("Server is closed");
         });
 
         server.on("error", (err) => {
@@ -162,5 +161,12 @@ export class AppServer {
         }
     ) {
         return this.engine.addScene(command, scene);
+    }
+
+    async getFileManager(): Promise<FileManager> {
+        if (!this.database.isOpen) await this.database.open();
+        if (!this.fileStorage.isOpen) await this.fileStorage.open();
+
+        return this.fileManager;
     }
 }

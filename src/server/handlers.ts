@@ -72,12 +72,19 @@ export async function sendMessageHandler(this: AppServer, req: IncomingMessage, 
             replyMsg = candidate;
         }
 
+        const fileNotFoundErr = new HTTPError(404, "File not found");
         if (msgParams.body.type === "file") {
-            msgParams.body.content = await this.checkFileByID(msgParams.body.content.id);
+            const filemeta = await this.fileManager.getFileMeta(msgParams.body.content.id);
+            if (!filemeta) throw fileNotFoundErr;
+            msgParams.body.content = filemeta;
         }
         if (msgParams.body.type === "files") {
             msgParams.body.content = await Promise.all(
-                msgParams.body.content.map(async (file) => ({ ...file, ...(await this.checkFileByID(file.id)) }))
+                msgParams.body.content.map(async (file) => {
+                    const filemeta = await this.fileManager.getFileMeta(file.id);
+                    if (!filemeta) throw fileNotFoundErr;
+                    return { ...file, ...filemeta };
+                })
             );
         }
 

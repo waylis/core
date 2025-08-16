@@ -45,7 +45,7 @@ export const defaultConfig: ServerConfig = {
     defaultPageLimit: 20,
     authHandler: authHandler,
     authMiddleware: identifyUser,
-    cleanupInterval: 1200,
+    cleanupInterval: 1200, // 20 min
 
     limits: {
         maxChatsPerUser: 50,
