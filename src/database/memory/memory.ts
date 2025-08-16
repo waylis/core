@@ -5,13 +5,19 @@ import { ConfirmedStep } from "../../scene/step";
 import { Database } from "../database";
 
 export class MemoryDatabase implements Database {
+    isOpen: boolean = false;
     private chats: Chat[] = [];
     private messages: Message[] = [];
     private steps: ConfirmedStep[] = [];
     private files: FileMeta[] = [];
 
-    async open(): Promise<void> {}
-    async close(): Promise<void> {}
+    async open(): Promise<void> {
+        this.isOpen = true;
+    }
+
+    async close(): Promise<void> {
+        this.isOpen = false;
+    }
 
     // Chat operations
     async addChat(chat: Chat): Promise<void> {
@@ -108,6 +114,14 @@ export class MemoryDatabase implements Database {
 
     async getFilesByIDs(ids: string[]): Promise<FileMeta[]> {
         return this.files.filter((file) => ids.includes(file.id));
+    }
+
+    async deleteFileByID(id: string): Promise<FileMeta | null> {
+        const index = this.files.findIndex((file) => file.id === id);
+        if (index === -1) return null;
+
+        const [deletedFile] = this.files.splice(index, 1);
+        return deletedFile;
     }
 
     async deleteOldFiles(maxDate: Date): Promise<string[]> {

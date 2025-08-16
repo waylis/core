@@ -4,6 +4,7 @@ import { pipeline } from "node:stream/promises";
 import { FileStorage, FileMeta } from "../file";
 
 export class DiskFileStorage implements FileStorage {
+    isOpen: boolean = false;
     private storagePath: string;
 
     constructor(storagePath?: string) {
@@ -21,8 +22,13 @@ export class DiskFileStorage implements FileStorage {
         return join(this.storagePath, id);
     }
 
-    async open(): Promise<void> {}
-    async close(): Promise<void> {}
+    async open(): Promise<void> {
+        this.isOpen = true;
+    }
+
+    async close(): Promise<void> {
+        this.isOpen = false;
+    }
 
     async upload(bytes: NodeJS.ReadableStream | Buffer, metadata: FileMeta): Promise<boolean> {
         const filePath = this.getFilePath(metadata.id);

@@ -8,6 +8,7 @@ import { FileMeta } from "../../file/file";
 import { Mutex } from "../../utils/mutex";
 
 export class JSONDatabase implements Database {
+    isOpen: boolean = false;
     private dataPath: string;
     private data: {
         chats: Chat[];
@@ -58,9 +59,12 @@ export class JSONDatabase implements Database {
 
     async open(): Promise<void> {
         await this.loadData();
+        this.isOpen = true;
     }
 
-    async close(): Promise<void> {}
+    async close(): Promise<void> {
+        this.isOpen = false;
+    }
 
     // Chat operations
     async addChat(chat: Chat): Promise<void> {
@@ -181,6 +185,15 @@ export class JSONDatabase implements Database {
 
     async getFilesByIDs(ids: string[]): Promise<FileMeta[]> {
         return this.data.files.filter((file) => ids.includes(file.id));
+    }
+
+    async deleteFileByID(id: string): Promise<FileMeta | null> {
+        return this.withWriteLock(() => {
+            const index = this.data.files.findIndex((file) => file.id === id);
+            if (index === -1) return null;
+            const [deleted] = this.data.files.splice(index, 1);
+            return deleted;
+        });
     }
 
     async deleteOldFiles(maxDate: Date): Promise<string[]> {

@@ -7,6 +7,7 @@ export type Database = ChatDatabase &
     MessageDatabase &
     ConfirmedStepDatabase &
     FileDatabase & {
+        isOpen: boolean;
         open(): Promise<void>;
         close(): Promise<void>;
     };

@@ -1,23 +1,23 @@
 export class Mutex {
-    private _waiting: Array<(release: () => void) => void> = [];
-    private _locked = false;
+    private waiting: Array<(release: () => void) => void> = [];
+    private locked = false;
 
     async acquire(): Promise<() => void> {
         return new Promise<() => void>((res) => {
             const waiter = (release: () => void) => res(release);
-            this._waiting.push(waiter);
-            if (!this._locked) this._dispatch();
+            this.waiting.push(waiter);
+            if (!this.locked) this.dispatch();
         });
     }
 
-    private _dispatch() {
-        if (this._locked) return;
-        const waiter = this._waiting.shift();
+    private dispatch() {
+        if (this.locked) return;
+        const waiter = this.waiting.shift();
         if (!waiter) return;
-        this._locked = true;
+        this.locked = true;
         waiter(() => {
-            this._locked = false;
-            this._dispatch();
+            this.locked = false;
+            this.dispatch();
         });
     }
 }
