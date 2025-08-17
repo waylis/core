@@ -5,6 +5,7 @@ import { Scene, SceneResponsesMap } from "./scene";
 import { createConfirmedStep, SceneStep } from "./step";
 import { Database } from "../database/database";
 import { EventBus } from "../events/bus";
+import { delay } from "../utils/async";
 
 export interface EngineConfig {}
 
@@ -42,6 +43,7 @@ export class SceneEngine {
 
     async handleMessage(msg: Message): Promise<Message> {
         await this.db.addMessage(msg);
+        await delay(1); // Need to prevent instant response
 
         if (msg.body.type === "command") return this.handleCommand(msg);
 

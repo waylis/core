@@ -185,6 +185,7 @@ export const createUserMessage = (params: CreateUserMessageParams, replyMsg?: Me
 };
 
 const allowedUserMessageBodyTypes: UserMessageBodyType[] = [
+    "command",
     "text",
     "number",
     "boolean",

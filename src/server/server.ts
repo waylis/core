@@ -99,7 +99,7 @@ export class AppServer {
 
         const handleHeartbeat = setInterval(() => {
             for (const [_, conn] of this.connections) conn.write(SSEMessage("heartbeat", "\n"));
-        }, this.config.sseHeartbeatInterval);
+        }, this.config.sseHeartbeatInterval * 1000);
 
         this.eventBus.on("newSystemMessage", handleNewSystemMessages);
 

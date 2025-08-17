@@ -59,7 +59,7 @@ export type SystemMessageBody = Extract<
 
 export type UserMessageBody = Exclude<MessageBody, { type: "markdown" }>;
 
-export type UserMessageBodyType = Exclude<MessageBodyType, "command" | "markdown">;
+export type UserMessageBodyType = Exclude<MessageBodyType, "markdown">;
 
 type LimitsMap = {
     text: TextLimits;
