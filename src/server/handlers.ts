@@ -159,9 +159,9 @@ export async function deleteChatHandler(this: AppServer, req: IncomingMessage, r
     if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
 
     await this.database.deleteChatByID(chatID);
-    const messagesCount = await this.database.deleteMessagesByChatID(chatID);
+    await this.database.deleteMessagesByChatID(chatID);
 
-    jsonMessage(res, { message: `Chat with ${messagesCount} messages deleted` });
+    jsonData(res, chat);
 }
 
 export async function eventsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
