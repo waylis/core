@@ -83,7 +83,14 @@ export class JSONDatabase implements Database {
 
     async getChatsByCreatorID(creatorID: string, page: number, limit: number): Promise<Chat[]> {
         await this.loadData();
-        const filteredChats = this.data.chats.filter((chat) => chat.creatorID === creatorID);
+        const filteredChats = this.data.chats
+            .filter((chat) => chat.creatorID === creatorID)
+            .map((chat) => {
+                chat.createdAt = new Date(chat.createdAt);
+                return chat;
+            })
+            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
         const startIndex = (page - 1) * limit;
         return filteredChats.slice(startIndex, startIndex + limit);
     }
