@@ -141,7 +141,12 @@ export class JSONDatabase implements Database {
     async deleteOldMessages(maxDate: Date): Promise<number> {
         return this.withWriteLock(() => {
             const initialCount = this.data.messages.length;
-            this.data.messages = this.data.messages.filter((msg) => msg.createdAt > maxDate);
+            this.data.messages = this.data.messages
+                .map((msg) => {
+                    msg.createdAt = new Date(msg.createdAt);
+                    return msg;
+                })
+                .filter((msg) => msg.createdAt > maxDate);
             return initialCount - this.data.messages.length;
         });
     }
@@ -171,7 +176,7 @@ export class JSONDatabase implements Database {
     async deleteOldConfirmedSteps(maxDate: Date): Promise<number> {
         return this.withWriteLock(() => {
             const initialLength = this.data.steps.length;
-            this.data.steps = this.data.steps.filter((step) => step.createdAt > maxDate);
+            this.data.steps = this.data.steps.filter((step) => new Date(step.createdAt) > maxDate);
             return initialLength - this.data.steps.length;
         });
     }
@@ -207,7 +212,7 @@ export class JSONDatabase implements Database {
         return this.withWriteLock(() => {
             const deletedIDs: string[] = [];
             this.data.files = this.data.files.filter((file) => {
-                const isOld = file.createdAt > maxDate;
+                const isOld = new Date(file.createdAt) > maxDate;
                 if (isOld) deletedIDs.push(file.id);
                 return !isOld;
             });
