@@ -13,6 +13,7 @@ describe("createStep", () => {
         { descr: "minimum length", key: "a" },
         { descr: "maximum length", key: "a".repeat(SCENE_STEP_KEY_MAX_LEN) },
         { descr: "average length", key: "a".repeat(SCENE_STEP_KEY_MAX_LEN / 2) },
+        { descr: "uppercase letters", key: "ABC" },
         { descr: "allowed symbols", key: "abcdz1234_567890" },
     ];
 
@@ -27,7 +28,6 @@ describe("createStep", () => {
     const invalidCases = [
         { descr: "empty key", key: "" },
         { descr: "too long key", key: "a".repeat(SCENE_STEP_KEY_MAX_LEN + 1) },
-        { descr: "uppercase letters", key: "ABC" },
         { descr: "special symbols", key: "^$!)#" },
     ];
 

@@ -25,7 +25,7 @@ export interface ConfirmedStepDatabase {
 
 export const SCENE_STEP_KEY_MIN_LEN = 1;
 export const SCENE_STEP_KEY_MAX_LEN = 32;
-export const SCENE_STEP_KEY_ALLOWED_SYMBOLS = /^[a-z0-9_]+$/;
+export const SCENE_STEP_KEY_ALLOWED_SYMBOLS = /^[a-zA-Z0-9_]+$/;
 
 export const createStep = <K extends string, T extends UserMessageBodyType>(step: SceneStep<K, T>): SceneStep<K, T> => {
     if (step.key.length < SCENE_STEP_KEY_MIN_LEN || step.key.length > SCENE_STEP_KEY_MAX_LEN) {
@@ -34,7 +34,7 @@ export const createStep = <K extends string, T extends UserMessageBodyType>(step
     }
 
     if (!SCENE_STEP_KEY_ALLOWED_SYMBOLS.test(step.key)) {
-        const msg = `"${step.key}" - Invalid step key format. Only lowercase letters (a-z), numbers (0-9), and underscores (_) are allowed.`;
+        const msg = `"${step.key}" - Invalid step key format. Only letters (a-z, A-Z), numbers (0-9), and underscores (_) are allowed.`;
         throw Error(msg);
     }
 
