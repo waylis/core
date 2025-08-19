@@ -163,8 +163,9 @@ export class SceneEngine {
     }
 
     private async createStepReplyMessage(msg: Message, body: SystemMessageBody): Promise<Message> {
+        const initial = await this.db.getMessageByID(msg.replyTo!);
         const replyMsg = createSystemMessage(
-            { body, replyRestriction: msg.replyRestriction, scene: msg.scene!, step: msg.step! },
+            { body, replyRestriction: initial?.replyRestriction, scene: msg.scene!, step: msg.step! },
             msg
         );
 
