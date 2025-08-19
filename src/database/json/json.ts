@@ -6,6 +6,7 @@ import { ConfirmedStep } from "../../scene/step";
 import { Database } from "../database";
 import { FileMeta } from "../../file/file";
 import { Mutex } from "../../utils/mutex";
+import { jsonDateReviver } from "../../utils/date";
 
 export class JSONDatabase implements Database {
     isOpen: boolean = false;
@@ -26,7 +27,7 @@ export class JSONDatabase implements Database {
     private async loadData(): Promise<void> {
         try {
             const fileContent = await fs.readFile(this.dataPath, "utf-8");
-            this.data = JSON.parse(fileContent);
+            this.data = JSON.parse(fileContent, jsonDateReviver);
         } catch (error) {
             if (error.code === "ENOENT") {
                 // File doesn't exist, initialize with empty data
@@ -85,10 +86,6 @@ export class JSONDatabase implements Database {
         await this.loadData();
         const filteredChats = this.data.chats
             .filter((chat) => chat.creatorID === creatorID)
-            .map((chat) => {
-                chat.createdAt = new Date(chat.createdAt);
-                return chat;
-            })
             .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
         const startIndex = (page - 1) * limit;
@@ -128,10 +125,6 @@ export class JSONDatabase implements Database {
         await this.loadData();
         const filtered = this.data.messages
             .filter((msg) => msg.chatID === chatID)
-            .map((msg) => {
-                msg.createdAt = new Date(msg.createdAt);
-                return msg;
-            })
             .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
         const start = (page - 1) * limit;
@@ -141,12 +134,7 @@ export class JSONDatabase implements Database {
     async deleteOldMessages(maxDate: Date): Promise<number> {
         return this.withWriteLock(() => {
             const initialCount = this.data.messages.length;
-            this.data.messages = this.data.messages
-                .map((msg) => {
-                    msg.createdAt = new Date(msg.createdAt);
-                    return msg;
-                })
-                .filter((msg) => msg.createdAt > maxDate);
+            this.data.messages = this.data.messages.filter((msg) => msg.createdAt > maxDate);
             return initialCount - this.data.messages.length;
         });
     }
@@ -176,7 +164,7 @@ export class JSONDatabase implements Database {
     async deleteOldConfirmedSteps(maxDate: Date): Promise<number> {
         return this.withWriteLock(() => {
             const initialLength = this.data.steps.length;
-            this.data.steps = this.data.steps.filter((step) => new Date(step.createdAt) > maxDate);
+            this.data.steps = this.data.steps.filter((step) => step.createdAt > maxDate);
             return initialLength - this.data.steps.length;
         });
     }
@@ -212,7 +200,7 @@ export class JSONDatabase implements Database {
         return this.withWriteLock(() => {
             const deletedIDs: string[] = [];
             this.data.files = this.data.files.filter((file) => {
-                const isOld = new Date(file.createdAt) > maxDate;
+                const isOld = file.createdAt > maxDate;
                 if (isOld) deletedIDs.push(file.id);
                 return !isOld;
             });
