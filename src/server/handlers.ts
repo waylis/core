@@ -50,6 +50,11 @@ export async function createChatHandler(this: AppServer, req: IncomingMessage, r
     const body = await parseJSONBody<{ name?: string }>(req);
     const chatName = body?.name ?? "";
 
+    const count = await this.database.countChatsByCreatorID(userID);
+    if (count >= this.config.limits.maxChatsPerUser) {
+        throw new HTTPError(400, "Too many chats.");
+    }
+
     const chat = createChat(chatName, userID);
     await this.database.addChat(chat);
     jsonData(res, chat, 201);
@@ -107,13 +112,17 @@ export async function getFileHandler(this: AppServer, req: IncomingMessage, res:
     const filemeta = await this.database.getFileByID(fileID);
     if (!filemeta) throw new HTTPError(404, "File not found");
 
-    const stream = await this.fileStorage.download(filemeta);
-    res.writeHead(200, {
-        "Content-Type": filemeta.mimeType,
-        "Content-Disposition": `attachment; filename="${filemeta.name}"`,
-    });
+    try {
+        const stream = await this.fileStorage.download(filemeta);
+        res.writeHead(200, {
+            "Content-Type": filemeta.mimeType,
+            "Content-Disposition": `attachment; filename="${filemeta.name}"`,
+        });
 
-    stream.pipe(res);
+        stream.pipe(res);
+    } catch (error) {
+        throw new HTTPError(500, "Unable to retrieve file from storage.");
+    }
 }
 
 export async function uploadFileHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {

@@ -92,6 +92,10 @@ export class JSONDatabase implements Database {
         return filteredChats.slice(startIndex, startIndex + limit);
     }
 
+    async countChatsByCreatorID(creatorID: string): Promise<number> {
+        return this.data.chats.filter((chat) => chat.creatorID === creatorID).length;
+    }
+
     async deleteChatByID(id: string): Promise<Chat | null> {
         return this.withWriteLock(() => {
             const index = this.data.chats.findIndex((chat) => chat.id === id);

@@ -39,6 +39,10 @@ export class MemoryDatabase implements Database {
         return filteredChats.slice(startIndex, startIndex + limit);
     }
 
+    async countChatsByCreatorID(creatorID: string): Promise<number> {
+        return this.chats.filter((chat) => chat.creatorID === creatorID).length;
+    }
+
     async deleteChatByID(id: string): Promise<Chat | null> {
         const index = this.chats.findIndex((chat) => chat.id === id);
         if (index === -1) return null;
