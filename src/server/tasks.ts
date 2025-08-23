@@ -18,7 +18,7 @@ export async function cleanupFiles(this: AppServer) {
         const deletedIDs = await this.database.deleteOldFiles(maxDate);
         await Promise.all(deletedIDs.map((id) => this.fileStorage.deleteByID(id)));
 
-        if (deletedIDs) this.logger.info(`${deletedIDs.length} outdated files were cleared`);
+        if (deletedIDs.length) this.logger.info(`${deletedIDs.length} outdated files were cleared`);
     } catch (error) {
         this.logger.warn("Error occurred while cleaning the files", error);
     }
