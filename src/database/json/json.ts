@@ -200,7 +200,7 @@ export class JSONDatabase implements Database {
         return this.withWriteLock(() => {
             const deletedIDs: string[] = [];
             this.data.files = this.data.files.filter((file) => {
-                const isOld = file.createdAt > maxDate;
+                const isOld = file.createdAt < maxDate;
                 if (isOld) deletedIDs.push(file.id);
                 return !isOld;
             });

@@ -129,7 +129,7 @@ export class MemoryDatabase implements Database {
     async deleteOldFiles(maxDate: Date): Promise<string[]> {
         const deletedIDs: string[] = [];
         this.files = this.files.filter((file) => {
-            const isOld = file.createdAt > maxDate;
+            const isOld = file.createdAt < maxDate;
             if (isOld) deletedIDs.push(file.id);
             return !isOld;
         });
