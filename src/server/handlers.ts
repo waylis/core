@@ -19,7 +19,7 @@ export async function getCommandsHandler(this: AppServer, _req: IncomingMessage,
 }
 
 export async function getMessagesHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = await this.config.authMiddleware(req);
+    const userID = await this.config.auth.middleware(req);
     const url = parseURL(req);
     const chatID = url.searchParams.get("chat_id");
     if (!chatID) throw new HTTPError(400, "chat_id query parameter is required");
@@ -36,7 +36,7 @@ export async function getMessagesHandler(this: AppServer, req: IncomingMessage, 
 }
 
 export async function getChatsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = await this.config.authMiddleware(req);
+    const userID = await this.config.auth.middleware(req);
     const url = parseURL(req);
     const page = Number(url.searchParams.get("page")) || 1;
     const limit = Number(url.searchParams.get("limit")) || this.config.defaultPageLimit;
@@ -46,7 +46,7 @@ export async function getChatsHandler(this: AppServer, req: IncomingMessage, res
 }
 
 export async function createChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = await this.config.authMiddleware(req);
+    const userID = await this.config.auth.middleware(req);
     const body = await parseJSONBody<{ name?: string }>(req);
     const chatName = body?.name ?? "";
 
@@ -62,7 +62,7 @@ export async function createChatHandler(this: AppServer, req: IncomingMessage, r
 
 export async function sendMessageHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     try {
-        const senderID = await this.config.authMiddleware(req);
+        const senderID = await this.config.auth.middleware(req);
         const body = await parseJSONBody(req);
 
         let msgParams = validateUserMessageParams(body, senderID);
@@ -104,7 +104,7 @@ export async function sendMessageHandler(this: AppServer, req: IncomingMessage, 
 }
 
 export async function getFileHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
-    await this.config.authMiddleware(req);
+    await this.config.auth.middleware(req);
     const url = parseURL(req);
     const fileID = url.searchParams.get("id");
     if (!fileID) throw new HTTPError(400, "id query parameter is required");
@@ -126,7 +126,7 @@ export async function getFileHandler(this: AppServer, req: IncomingMessage, res:
 }
 
 export async function uploadFileHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
-    await this.config.authMiddleware(req);
+    await this.config.auth.middleware(req);
     const contentType = req.headers["content-type"];
     if (!contentType) throw new HTTPError(400, "Content-Type header required");
 
@@ -158,7 +158,7 @@ export async function uploadFileHandler(this: AppServer, req: IncomingMessage, r
 }
 
 export async function deleteChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = await this.config.authMiddleware(req);
+    const userID = await this.config.auth.middleware(req);
     const url = parseURL(req);
     const chatID = url.searchParams.get("id");
     if (!chatID) throw new HTTPError(400, "id query parameter is required");
@@ -174,7 +174,7 @@ export async function deleteChatHandler(this: AppServer, req: IncomingMessage, r
 }
 
 export async function eventsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = await this.config.authMiddleware(req);
+    const userID = await this.config.auth.middleware(req);
 
     res.writeHead(200, {
         "Content-Type": "text/event-stream",
@@ -192,7 +192,7 @@ export async function eventsHandler(this: AppServer, req: IncomingMessage, res: 
     return;
 }
 
-export async function authHandler(_req: IncomingMessage, res: ServerResponse) {
+export async function simpleAuthHandler(_req: IncomingMessage, res: ServerResponse) {
     const userID = randomUUID();
     res.setHeader("Set-Cookie", `user_id=${userID}; HttpOnly; SameSite=Strict; Path=/`);
     jsonMessage(res, { message: "OK" });

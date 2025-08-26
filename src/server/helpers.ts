@@ -66,7 +66,7 @@ export const SSEMessage = (event: string, data: string) => {
     return payload;
 };
 
-export const identifyUser = async (req: IncomingMessage) => {
+export const simpleAuthMiddleware = async (req: IncomingMessage) => {
     const cookies = parseCookies(req.headers.cookie ?? "");
     const userID = cookies.user_id ?? "";
 

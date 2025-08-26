@@ -2,7 +2,7 @@ import { AppServer } from "./server";
 
 export async function cleanupMessages(this: AppServer) {
     try {
-        const maxDate = new Date(Date.now() - this.config.limits.messagesLifetime * 1000);
+        const maxDate = new Date(Date.now() - this.config.cleanup.messageTTL * 1000);
         const count = await this.database.deleteOldMessages(maxDate);
         await this.database.deleteOldConfirmedSteps(maxDate);
 
@@ -14,7 +14,7 @@ export async function cleanupMessages(this: AppServer) {
 
 export async function cleanupFiles(this: AppServer) {
     try {
-        const maxDate = new Date(Date.now() - this.config.limits.filesLifetime * 1000);
+        const maxDate = new Date(Date.now() - this.config.cleanup.fileTTL * 1000);
         const deletedIDs = await this.database.deleteOldFiles(maxDate);
         await Promise.all(deletedIDs.map((id) => this.fileStorage.deleteByID(id)));
 

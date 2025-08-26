@@ -64,7 +64,7 @@ export class AppServer {
         "GET /api/messages": getMessagesHandler.bind(this),
         "GET /api/file": getFileHandler.bind(this),
 
-        "POST /api/auth": this.config.authHandler,
+        "POST /api/auth": this.config.auth.handler,
         "POST /api/chat": createChatHandler.bind(this),
         "POST /api/message": sendMessageHandler.bind(this),
         "POST /api/file": uploadFileHandler.bind(this),
@@ -99,7 +99,7 @@ export class AppServer {
 
         const handleHeartbeat = setInterval(() => {
             for (const [_, conn] of this.connections) conn.write(SSEMessage("heartbeat", "\n"));
-        }, this.config.sseHeartbeatInterval * 1000);
+        }, this.config.sse.heartbeatInterval * 1000);
 
         this.eventBus.on("newSystemMessage", handleNewSystemMessages);
 
@@ -110,17 +110,13 @@ export class AppServer {
     }
 
     private serveTasks() {
-        const cleanupMessagesID = setInterval(() => {
+        const cleanupID = setInterval(() => {
             cleanupMessages.bind(this)();
-        }, this.config.cleanupInterval * 1000);
-
-        const cleanupFilesID = setInterval(() => {
             cleanupFiles.bind(this)();
-        }, this.config.cleanupInterval * 1000);
+        }, this.config.cleanup.interval * 1000);
 
         return () => {
-            clearInterval(cleanupMessagesID);
-            clearInterval(cleanupFilesID);
+            clearInterval(cleanupID);
         };
     }
 

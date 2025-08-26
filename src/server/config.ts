@@ -1,57 +1,73 @@
 import { IncomingMessage, ServerResponse } from "http";
-import { authHandler } from "./handlers";
-import { identifyUser } from "./helpers";
+import { simpleAuthHandler } from "./handlers";
+import { simpleAuthMiddleware } from "./helpers";
 
 export interface ServerConfig {
     /** Port number the server should listen on */
     port: number;
-
-    /** Interval (in seconds) for Server-sent Events heartbeat messages */
-    sseHeartbeatInterval: number;
-
     /** Default number of items per page for paginated endpoints */
     defaultPageLimit: number;
 
-    /** Authentication (login) handler that attach unique user ID via cookies */
-    authHandler: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
+    /** Authentication configuration */
+    auth: {
+        /** Authentication (login) handler that attach unique user ID via cookies */
+        handler: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
+        /** Authentication middleware that returns user ID or throws */
+        middleware: (req: IncomingMessage) => Promise<string>;
+    };
 
-    /** Authentication middleware that returns user ID or throws */
-    authMiddleware: (req: IncomingMessage) => Promise<string>;
-
-    /** Interval (in seconds) for cleaning tasks */
-    cleanupInterval: number;
+    /** Cleanup-related configuration */
+    cleanup: {
+        /** Interval (in seconds) for cleaning tasks */
+        interval: number;
+        /** How long (in seconds) messages should be kept before automatic cleanup */
+        messageTTL: number;
+        /** How long (in seconds) uploaded files should be kept before automatic cleanup */
+        fileTTL: number;
+    };
 
     /** System limits and constraints */
     limits: {
         /** Maximum number of chats a single user can create */
         maxChatsPerUser: number;
-        /** How long (in seconds) messages should be kept before automatic cleanup */
-        messagesLifetime: number;
-        /** How long (in seconds) uploaded files should be kept before automatic cleanup */
-        filesLifetime: number;
     };
 
-    /** Application metadata */
+    /** System metadata */
     appInfo: {
         name?: string;
         description?: string;
         faviconURL?: string;
     };
+
+    /** SSE configuration */
+    sse: {
+        /** Interval (in seconds) for Server-sent Events heartbeat messages */
+        heartbeatInterval: number;
+    };
 }
 
 export const defaultConfig: ServerConfig = {
     port: 7331,
-    sseHeartbeatInterval: 5,
     defaultPageLimit: 20,
-    authHandler: authHandler,
-    authMiddleware: identifyUser,
-    cleanupInterval: 1200, // 20 min
+
+    auth: {
+        handler: simpleAuthHandler,
+        middleware: simpleAuthMiddleware,
+    },
+
+    cleanup: {
+        interval: 1200,
+        messageTTL: 2592000, // 30 days
+        fileTTL: 2592000, // 30 days
+    },
 
     limits: {
         maxChatsPerUser: 50,
-        messagesLifetime: 2592000, // 30 days
-        filesLifetime: 2592000, // 30 days
     },
 
     appInfo: {},
+
+    sse: {
+        heartbeatInterval: 5,
+    },
 };
