@@ -57,6 +57,8 @@ export async function createChatHandler(this: AppServer, req: IncomingMessage, r
 
     const chat = createChat(chatName, userID);
     await this.database.addChat(chat);
+
+    this.logger.debug("Chat created:", JSON.stringify(chat));
     jsonData(res, chat, 201);
 }
 
@@ -95,6 +97,8 @@ export async function sendMessageHandler(this: AppServer, req: IncomingMessage, 
 
         let msg = createUserMessage({ ...msgParams, senderID }, replyMsg);
         this.eventBus.emit("newUserMessage", msg);
+        this.logger.debug("New user message:", JSON.stringify(msg));
+
         jsonData(res, msg, 201);
     } catch (error) {
         if (error instanceof HTTPError) throw error;
@@ -154,6 +158,8 @@ export async function uploadFileHandler(this: AppServer, req: IncomingMessage, r
     if (!ok) throw new HTTPError(500, "File upload failed");
     await this.database.addFile({ ...filemeta, size: actualBytes });
 
+    this.logger.debug("File uploaded:", JSON.stringify(filemeta));
+
     jsonData(res, filemeta);
 }
 
@@ -170,6 +176,8 @@ export async function deleteChatHandler(this: AppServer, req: IncomingMessage, r
     await this.database.deleteChatByID(chatID);
     await this.database.deleteMessagesByChatID(chatID);
 
+    this.logger.debug("Chat deleted:", JSON.stringify(chat));
+
     jsonData(res, chat);
 }
 
@@ -184,9 +192,11 @@ export async function eventsHandler(this: AppServer, req: IncomingMessage, res: 
 
     res.write(SSEMessage("connection", "OK"));
     this.connections.set(userID, res);
+    this.logger.debug("Connection opened:", userID);
 
     req.on("close", () => {
         this.connections.delete(userID);
+        this.logger.debug("Connection closed:", userID);
     });
 
     return;

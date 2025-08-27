@@ -24,7 +24,7 @@ import { EventBus, eventBus } from "../events/bus";
 import { parseURL, HTTPError, jsonMessage, SSEMessage } from "./helpers";
 import { Message } from "../message/message";
 import { ServerConfig, defaultConfig } from "./config";
-import { AppLogger, Logger } from "../logger/logger";
+import { DefaultLogger, Logger } from "../logger/logger";
 import { cleanupFiles, cleanupMessages } from "./tasks";
 import { FileManagerClass } from "../file/manager";
 
@@ -52,7 +52,7 @@ export class AppServer {
         this.fileStorage = params?.fileStorage ?? new DiskFileStorage();
         this.eventBus = eventBus;
         this.engine = new SceneEngine(this.database, this.eventBus);
-        this.logger = params?.logger ?? new AppLogger({ writeToFile: true });
+        this.logger = params?.logger ?? new DefaultLogger();
         this.fileManager = new FileManagerClass(this.fileStorage, this.database, this.logger);
     }
 
@@ -79,11 +79,13 @@ export class AppServer {
         try {
             const handler = this.handlers[key];
             if (!handler) throw new HTTPError(404, "Not found");
+            this.logger.debug(req.method, url.href);
+
             await handler(req, res);
         } catch (error) {
             if (!(error instanceof HTTPError)) {
                 jsonMessage(res, { status: 500, message: "Internal Server Error" });
-                this.logger.error("Uncaught server error:", `${req.method} ${url}`, error);
+                this.logger.error("Internal error:", `${req.method} ${url}`, error);
                 return;
             }
 
@@ -94,7 +96,9 @@ export class AppServer {
     private serveConnections() {
         const handleNewSystemMessages = async (payload: { userID: string; msg: Message }) => {
             const conn = this.connections.get(payload.userID);
-            if (conn) conn.write(SSEMessage("newSystemMessage", JSON.stringify(payload.msg)));
+            const json = JSON.stringify(payload.msg);
+            if (conn) conn.write(SSEMessage("newSystemMessage", json));
+            this.logger.debug("New system message:", json);
         };
 
         const handleHeartbeat = setInterval(() => {
@@ -113,6 +117,8 @@ export class AppServer {
         const cleanupID = setInterval(() => {
             cleanupMessages.bind(this)();
             cleanupFiles.bind(this)();
+
+            this.logger.debug("Cleanup cycle has been completed");
         }, this.config.cleanup.interval * 1000);
 
         return () => {

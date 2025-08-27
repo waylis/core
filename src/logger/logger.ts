@@ -8,15 +8,23 @@ export interface Logger {
     debug(...args: unknown[]): void;
 }
 
-export class AppLogger implements Logger {
+export class DefaultLogger implements Logger {
     private levels: string[];
     private logsDir: string;
     private writeToFile: boolean;
 
-    constructor(params?: { levels?: string[]; logsDir?: string; writeToFile?: boolean }) {
-        this.levels = params?.levels ?? ["error", "warn", "info", "debug"];
-        this.logsDir = params?.logsDir ?? "logs";
-        this.writeToFile = !!params?.writeToFile;
+    constructor({
+        levels = ["error", "warn", "info"],
+        logsDir = "logs",
+        writeToFile = true,
+    }: {
+        levels?: string[];
+        logsDir?: string;
+        writeToFile?: boolean;
+    } = {}) {
+        this.levels = levels;
+        this.logsDir = logsDir;
+        this.writeToFile = writeToFile;
 
         if (!fs.existsSync(this.logsDir)) fs.mkdirSync(this.logsDir, { recursive: true });
     }
