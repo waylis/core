@@ -3,7 +3,7 @@ import { Message } from "../message/message";
 
 interface AppEvents {
     newUserMessage: Message;
-    newSystemMessage: { userID: string; msg: Message };
+    newSystemResponse: { userID: string; response: Message | Message[] };
 }
 
 class EventBusClass extends EventEmitter {

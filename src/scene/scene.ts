@@ -7,12 +7,12 @@ export type SceneResponsesMap<Steps extends readonly SceneStep[]> = {
 
 export interface Scene<Steps extends readonly [...SceneStep[]]> {
     steps: Steps;
-    handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody>;
+    handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody | SystemMessageBody[]>;
 }
 
 export const createScene = <Steps extends readonly SceneStep<any, any>[]>(config: {
     steps: [...Steps];
-    handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody>;
+    handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody | SystemMessageBody[]>;
 }): Scene<Steps> => {
     return config;
 };

@@ -27,6 +27,7 @@ import { ServerConfig, defaultConfig } from "./config";
 import { DefaultLogger, Logger } from "../logger/logger";
 import { cleanupFiles, cleanupMessages } from "./tasks";
 import { FileManagerClass } from "../file/manager";
+import { delay } from "../utils/async";
 
 export interface AppServerParams {
     db?: Database;
@@ -94,21 +95,27 @@ export class AppServer {
     };
 
     private serveConnections() {
-        const handleNewSystemMessages = async (payload: { userID: string; msg: Message }) => {
+        const handleNewSystemResponse = async (payload: { userID: string; response: Message | Message[] }) => {
             const conn = this.connections.get(payload.userID);
-            const json = JSON.stringify(payload.msg);
-            if (conn) conn.write(SSEMessage("newSystemMessage", json));
-            this.logger.debug("New system message:", json);
+            const messages = Array.isArray(payload.response) ? payload.response : [payload.response];
+
+            for (const message of messages) {
+                if (!conn) continue;
+                const json = JSON.stringify(message);
+                await delay(1); // Need to prevent race reordering
+                conn.write(SSEMessage("newSystemMessage", json));
+                this.logger.debug("New system message:", json);
+            }
         };
 
         const handleHeartbeat = setInterval(() => {
             for (const [_, conn] of this.connections) conn.write(SSEMessage("heartbeat", "\n"));
         }, this.config.sse.heartbeatInterval * 1000);
 
-        this.eventBus.on("newSystemMessage", handleNewSystemMessages);
+        this.eventBus.on("newSystemResponse", handleNewSystemResponse);
 
         return () => {
-            this.eventBus.off("newSystemMessage", handleNewSystemMessages);
+            this.eventBus.off("newSystemResponse", handleNewSystemResponse);
             clearInterval(handleHeartbeat);
         };
     }
@@ -159,7 +166,7 @@ export class AppServer {
         command: Command,
         scene: {
             steps: [...Steps];
-            handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody>;
+            handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody | SystemMessageBody[]>;
         }
     ) {
         return this.engine.addScene(command, scene);

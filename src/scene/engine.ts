@@ -19,7 +19,7 @@ export class SceneEngine {
         command: Command,
         scene: {
             steps: [...Steps];
-            handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody>;
+            handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody | SystemMessageBody[]>;
         }
     ) {
         const cmd = createCommand(command);
@@ -31,7 +31,7 @@ export class SceneEngine {
         const handler = async (msg: Message) => {
             try {
                 const response = await this.handleMessage(msg);
-                this.eventBus.emit("newSystemMessage", { userID: msg.senderID, msg: response });
+                this.eventBus.emit("newSystemResponse", { userID: msg.senderID, response: response });
             } catch (error) {
                 console.error("Handle message failed", error);
             }
@@ -41,9 +41,8 @@ export class SceneEngine {
         return () => this.eventBus.off("newUserMessage", handler);
     }
 
-    async handleMessage(msg: Message): Promise<Message> {
-        await this.db.addMessage(msg);
-        await delay(1); // Need to prevent instant response
+    async handleMessage(msg: Message): Promise<Message | Message[]> {
+        await this.saveMessageToDatabase(msg);
 
         if (msg.body.type === "command") return this.handleCommand(msg);
 
@@ -57,7 +56,7 @@ export class SceneEngine {
         return this.createErrorMessage(msg, "Unknown command.");
     }
 
-    private async handleCommand(msg: Message): Promise<Message> {
+    private async handleCommand(msg: Message): Promise<Message | Message[]> {
         const scene = this.scenes.get(msg.body.content.toString());
         if (!scene) return this.createErrorMessage(msg, "Unknown command.");
 
@@ -67,10 +66,17 @@ export class SceneEngine {
         }
 
         const body = await scene.handler({});
-        return this.createSceneResponseMessage(msg, body, msg.body.content.toString());
+        const bodies = Array.isArray(body) ? body : [body];
+        const results = await Promise.all(
+            bodies.map((b, index) =>
+                delay(index + 1).then(() => this.createSceneResponseMessage(msg, b, msg.body.content.toString()))
+            )
+        );
+
+        return bodies.length > 1 ? results : results[0];
     }
 
-    private async handleSceneStep(msg: Message): Promise<Message> {
+    private async handleSceneStep(msg: Message): Promise<Message | Message[]> {
         const scene = this.scenes.get(msg.scene || "");
         if (!scene) return this.createErrorMessage(msg, "Unknown scene.");
 
@@ -87,7 +93,7 @@ export class SceneEngine {
         }
 
         return isLastStep
-            ? this.handleLastStepWithoutHandler(msg, scene, step)
+            ? this.handleLastStepWithoutHandler(msg, scene)
             : this.handleIntermediateStepWithoutHandler(msg, scene, stepIndex);
     }
 
@@ -107,23 +113,39 @@ export class SceneEngine {
         return this.createStepReplyMessage(msg, body);
     }
 
-    private async handleLastStepWithHandler(msg: Message, scene: Scene<any>, step: SceneStep): Promise<Message> {
+    private async handleLastStepWithHandler(
+        msg: Message,
+        scene: Scene<any>,
+        step: SceneStep
+    ): Promise<Message | Message[]> {
         const body = await step.handler!(msg.body.content);
         if (!body) {
             await this.confirmStep(msg);
             const responses = await this.collectStepResponses(msg);
             const finalBody = await scene.handler(responses);
-            return this.createSceneResponseMessage(msg, finalBody, msg.scene!);
+
+            const bodies = Array.isArray(finalBody) ? finalBody : [finalBody];
+            const results = await Promise.all(
+                bodies.map((b, index) =>
+                    delay(index + 1).then(() => this.createSceneResponseMessage(msg, b, msg.scene!))
+                )
+            );
+            return results.length > 1 ? results : results[0];
         }
 
         return this.createStepReplyMessage(msg, body);
     }
 
-    private async handleLastStepWithoutHandler(msg: Message, scene: Scene<any>, step: SceneStep): Promise<Message> {
+    private async handleLastStepWithoutHandler(msg: Message, scene: Scene<any>): Promise<Message | Message[]> {
         await this.confirmStep(msg);
         const stepResponses = await this.collectStepResponses(msg);
         const body = await scene.handler(stepResponses);
-        return this.createSceneResponseMessage(msg, body, msg.scene!);
+
+        const bodies = Array.isArray(body) ? body : [body];
+        const results = await Promise.all(
+            bodies.map((b, index) => delay(index + 1).then(() => this.createSceneResponseMessage(msg, b, msg.scene!)))
+        );
+        return results.length > 1 ? results : results[0];
     }
 
     private async handleIntermediateStepWithoutHandler(
@@ -138,7 +160,7 @@ export class SceneEngine {
 
     private async createErrorMessage(msg: Message, content: string): Promise<Message> {
         const errMsg = createSystemMessage({ chatID: msg.chatID, body: { type: "text", content } }, msg);
-        await this.db.addMessage(errMsg);
+        await this.saveMessageToDatabase(errMsg);
         return errMsg;
     }
 
@@ -148,7 +170,7 @@ export class SceneEngine {
             msg
         );
 
-        await this.db.addMessage(promptMsg);
+        await this.saveMessageToDatabase(promptMsg);
         return promptMsg;
     }
 
@@ -158,7 +180,7 @@ export class SceneEngine {
         sceneKey: string
     ): Promise<Message> {
         const respMsg = createSystemMessage({ body, scene: sceneKey }, msg);
-        await this.db.addMessage(respMsg);
+        await this.saveMessageToDatabase(respMsg);
         return respMsg;
     }
 
@@ -169,7 +191,7 @@ export class SceneEngine {
             msg
         );
 
-        await this.db.addMessage(replyMsg);
+        await this.saveMessageToDatabase(replyMsg);
         return replyMsg;
     }
 
@@ -187,5 +209,10 @@ export class SceneEngine {
             acc[cm.step as string] = cm.body.content;
             return acc;
         }, {});
+    }
+
+    private async saveMessageToDatabase(msg: Message) {
+        await this.db.addMessage(msg);
+        await delay(1); // Need to prevent instant response
     }
 }
