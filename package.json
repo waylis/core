@@ -1,25 +1,26 @@
 {
-  "name": "bot-ui",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsdown",
-    "test": "npx tsx --test"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "@types/node": "^24.2.1",
-    "tsdown": "^0.13.4",
-    "tsx": "^4.20.3",
-    "typescript": "^5.9.2"
-  },
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "dependencies": {
-    "mime": "^4.0.7"
-  }
+    "name": "bot-ui",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsdown",
+        "test": "npx tsx --test",
+        "dev": "npx tsx --watch src/main.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "devDependencies": {
+        "@types/node": "^24.2.1",
+        "tsdown": "^0.13.4",
+        "tsx": "^4.20.3",
+        "typescript": "^5.9.2"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "dependencies": {
+        "mime": "^4.0.7"
+    }
 }
