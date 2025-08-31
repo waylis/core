@@ -1,25 +1,27 @@
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { SceneEngine } from "../src/scene/engine";
-import { createUserMessage, Message } from "../src/message/message";
+import { Message, MessageManager } from "../src/message/message";
 import { randomString } from "../src/utils/random";
 import { createCommand } from "../src/scene/command";
 import { createScene } from "../src/scene/scene";
 import { SystemMessageBody, UserMessageBody } from "../src/message/types";
-import { createStep } from "../src/scene/step";
+import { createStep, StepManager } from "../src/scene/step";
 import { eventBus } from "../src/events/bus";
 import { JSONDatabase } from "../src/database/json/json";
 
 describe("SceneEngine > handleMessage", async () => {
     let engine: SceneEngine;
     const db = new JSONDatabase();
+    const messageManager = new MessageManager();
+    const stepManager = new StepManager();
 
     const mockMessage = (
         body: UserMessageBody,
         chatID = randomString(),
         senderID = randomString(),
         replyMsg?: Message
-    ) => createUserMessage({ chatID, senderID, body: body }, replyMsg);
+    ) => messageManager.createUserMessage({ chatID, senderID, body: body }, replyMsg);
 
     const mockSimpleScene = (response: SystemMessageBody) => {
         return createScene({ steps: [], handler: async () => response });
@@ -27,7 +29,7 @@ describe("SceneEngine > handleMessage", async () => {
 
     beforeEach(async () => {
         await db.open();
-        engine = new SceneEngine(db, eventBus);
+        engine = new SceneEngine(db, eventBus, messageManager, stepManager);
     });
 
     it("should respond with unknown command for non-existent command", async () => {

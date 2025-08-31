@@ -1,12 +1,11 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 import {
-    createSystemMessage,
-    createUserMessage,
     CreateUserMessageParams,
+    MessageManager,
     SYSTEM_SENDER_ID,
-    type CreateSystemMessageParams,
-    type Message,
+    CreateSystemMessageParams,
+    Message,
 } from "../src/message/message";
 import { TextLimits, NumberLimits, DatetimeLimits, OptionLimits, FileLimits, FilesLimits } from "../src/message/types";
 import { Option } from "../src/message/option";
@@ -26,8 +25,10 @@ describe("createSystemMessage", () => {
         chatID: "default-chat-id",
     };
 
+    const manager = new MessageManager();
+
     it("should create system message with user message reference", () => {
-        const result = createSystemMessage(baseParams, mockUserMessage);
+        const result = manager.createSystemMessage(baseParams, mockUserMessage);
 
         assert.deepStrictEqual(result, {
             id: result.id,
@@ -42,7 +43,7 @@ describe("createSystemMessage", () => {
     });
 
     it("should create system message without user message", () => {
-        const result = createSystemMessage(baseParams);
+        const result = manager.createSystemMessage(baseParams);
 
         assert.deepStrictEqual(result, {
             id: result.id,
@@ -57,23 +58,23 @@ describe("createSystemMessage", () => {
 
     it("should throw error when no chatID provided without user message", () => {
         const params: CreateSystemMessageParams = { body: { type: "text", content: "test" } };
-        assert.throws(() => createSystemMessage(params), { name: "Error" });
+        assert.throws(() => manager.createSystemMessage(params), { name: "Error" });
     });
 
     it("should override params.chatID when user message provided", () => {
         const paramsWithChatID = { ...baseParams, chatID: "should-be-overridden" };
-        const result = createSystemMessage(paramsWithChatID, mockUserMessage);
+        const result = manager.createSystemMessage(paramsWithChatID, mockUserMessage);
 
         assert.strictEqual(result.chatID, mockUserMessage.chatID);
     });
 
     it("should generate new threadID when no user message", () => {
-        const result = createSystemMessage(baseParams);
+        const result = manager.createSystemMessage(baseParams);
         assert.equal(typeof result.threadID, "string");
     });
 
     it("should use user message threadID when provided", () => {
-        const result = createSystemMessage(baseParams, mockUserMessage);
+        const result = manager.createSystemMessage(baseParams, mockUserMessage);
         assert.strictEqual(result.threadID, mockUserMessage.threadID);
     });
 });
@@ -95,9 +96,11 @@ describe("createUserMessage", () => {
         replyRestriction: undefined,
     };
 
+    const manager = new MessageManager();
+
     describe("Basic message creation", () => {
         it("should create simple user message without reply", () => {
-            const result = createUserMessage(baseParams);
+            const result = manager.createUserMessage(baseParams);
 
             assert.deepStrictEqual(result, {
                 id: result.id,
@@ -109,7 +112,7 @@ describe("createUserMessage", () => {
         });
 
         it("should create message with reply but without restrictions", () => {
-            const result = createUserMessage(baseParams, mockReplyMessage);
+            const result = manager.createUserMessage(baseParams, mockReplyMessage);
 
             assert.strictEqual(result.replyTo, mockReplyMessage.id);
             assert.strictEqual(result.threadID, mockReplyMessage.threadID);
@@ -127,7 +130,7 @@ describe("createUserMessage", () => {
             };
 
             assert.throws(
-                () => createUserMessage({ ...baseParams, body: { type: "text", content: "Short" } }, replyMsg),
+                () => manager.createUserMessage({ ...baseParams, body: { type: "text", content: "Short" } }, replyMsg),
                 { message: /at least 10 characters/ }
             );
         });
@@ -142,7 +145,11 @@ describe("createUserMessage", () => {
             };
 
             assert.throws(
-                () => createUserMessage({ ...baseParams, body: { type: "text", content: "Too long text" } }, replyMsg),
+                () =>
+                    manager.createUserMessage(
+                        { ...baseParams, body: { type: "text", content: "Too long text" } },
+                        replyMsg
+                    ),
                 { message: /no more than 5 characters/ }
             );
         });
@@ -160,7 +167,7 @@ describe("createUserMessage", () => {
         it("should validate integer only", () => {
             assert.throws(
                 () =>
-                    createUserMessage(
+                    manager.createUserMessage(
                         { ...baseParams, body: { type: "number", content: 3.14 } },
                         numberReplyMsg({ integerOnly: true })
                     ),
@@ -171,7 +178,7 @@ describe("createUserMessage", () => {
         it("should validate min number", () => {
             assert.throws(
                 () =>
-                    createUserMessage(
+                    manager.createUserMessage(
                         { ...baseParams, body: { type: "number", content: 5 } },
                         numberReplyMsg({ min: 10 })
                     ),
@@ -193,7 +200,7 @@ describe("createUserMessage", () => {
             const minDate = new Date("2023-01-01");
             assert.throws(
                 () =>
-                    createUserMessage(
+                    manager.createUserMessage(
                         { ...baseParams, body: { type: "datetime", content: new Date("2022-12-31") } },
                         dateReplyMsg({ min: minDate })
                     ),
@@ -214,7 +221,7 @@ describe("createUserMessage", () => {
         it("should validate option exists", () => {
             assert.throws(
                 () =>
-                    createUserMessage(
+                    manager.createUserMessage(
                         { ...baseParams, body: { type: "option", content: "invalid" } },
                         optionReplyMsg([{ value: "valid" }])
                     ),
@@ -244,7 +251,7 @@ describe("createUserMessage", () => {
         it("should validate file size", () => {
             assert.throws(
                 () =>
-                    createUserMessage(
+                    manager.createUserMessage(
                         { ...baseParams, body: { type: "file", content: { ...validFile, size: 10485760 } } },
                         fileReplyMsg({ maxSize: 5242880 })
                     ),
@@ -284,7 +291,7 @@ describe("createUserMessage", () => {
         it("should validate max files amount", () => {
             assert.throws(
                 () =>
-                    createUserMessage(
+                    manager.createUserMessage(
                         { ...baseParams, body: { type: "files", content: [...validFiles, ...validFiles] } },
                         filesReplyMsg({ maxAmount: 2 })
                     ),

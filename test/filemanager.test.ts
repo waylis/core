@@ -3,12 +3,12 @@ import assert from "node:assert";
 import { Readable } from "node:stream";
 import { MemoryDatabase } from "./../src/database/memory/memory";
 import { AppServer } from "./../src/server/server";
-import { FileManager } from "../src/file/file";
+import { CreateFileMetaParams, FileManager, FileMeta } from "../src/file/file";
 
 describe("FileManager", () => {
     let fileManager: FileManager;
     const app = new AppServer({ db: new MemoryDatabase() });
-    const testFileIDs: string[] = [] // need to cleanup after tests
+    const testFileIDs: string[] = []; // need to cleanup after tests
 
     before(async () => {
         fileManager = await app.getFileManager();
@@ -28,7 +28,7 @@ describe("FileManager", () => {
         };
 
         const uploaded = await fileManager.uploadFile(testData, meta);
-        testFileIDs.push(uploaded.id)
+        testFileIDs.push(uploaded.id);
 
         assert.ok(uploaded.id);
         assert.strictEqual(uploaded.name, meta.name);
@@ -50,7 +50,7 @@ describe("FileManager", () => {
 
         const readable = Readable.from([testData]);
         const uploaded = await fileManager.uploadFile(readable, meta);
-        testFileIDs.push(uploaded.id)
+        testFileIDs.push(uploaded.id);
 
         const downloadStream = await fileManager.downloadFile(uploaded.id);
         const chunks: Buffer<ArrayBuffer>[] = [];
@@ -99,7 +99,7 @@ describe("FileManager", () => {
         };
 
         const uploaded = await fileManager.uploadFile(testData, meta);
-        testFileIDs.push(uploaded.id)
+        testFileIDs.push(uploaded.id);
 
         const downloadStream = await fileManager.downloadFile(uploaded.id);
 
@@ -122,15 +122,78 @@ describe("FileManager", () => {
         };
 
         const uploaded = await fileManager.uploadFile(testData, meta);
-        testFileIDs.push(uploaded.id)
+        testFileIDs.push(uploaded.id);
 
         assert.ok(uploaded.mimeType); // Should have some default value
+    });
+
+    test("generateFileMeta with generated id and detected mimeType", () => {
+        const params: CreateFileMetaParams = {
+            name: "document.pdf",
+            size: 1024,
+        };
+
+        const result = fileManager.generateFileMeta(params);
+
+        assert.deepStrictEqual(result, {
+            id: result.id,
+            name: "document.pdf",
+            size: 1024,
+            mimeType: "application/pdf",
+            createdAt: result.createdAt,
+        } satisfies FileMeta);
+    });
+
+    test("generateFileMeta should use provided mimeType when given", () => {
+        const params: CreateFileMetaParams = {
+            name: "document.unknown",
+            size: 2048,
+            mimeType: "application/octet-stream",
+        };
+
+        const result = fileManager.generateFileMeta(params);
+
+        assert.strictEqual(result.mimeType, "application/octet-stream");
+    });
+
+    test("generateFileMeta should throw when mimeType cannot be determined", () => {
+        const params: CreateFileMetaParams = {
+            name: "file.unknown",
+            size: 512,
+        };
+
+        assert.throws(() => fileManager.generateFileMeta(params), {
+            name: "Error",
+            message: 'Unable to identify the MIME type of the file - "file.unknown".',
+        });
+    });
+
+    test("generateFileMeta should require name and size parameters", () => {
+        assert.throws(() => fileManager.generateFileMeta({} as FileMeta), { name: "Error" });
+    });
+
+    test("generateFileMeta should handle different file types correctly", () => {
+        const testCases = [
+            {
+                input: { name: "image.png", size: 1024 },
+                expectedMime: "image/png",
+            },
+            {
+                input: { name: "report.pdf", size: 2048, mimeType: "application/pdf" },
+                expectedMime: "application/pdf",
+            },
+        ];
+
+        for (const { input, expectedMime } of testCases) {
+            const result = fileManager.generateFileMeta(input);
+            assert.strictEqual(result.mimeType, expectedMime);
+        }
     });
 
     // Cleanup
     after(async () => {
         for (const id of testFileIDs) {
-            await fileManager.deleteFile(id)
+            await fileManager.deleteFile(id);
         }
-    })
+    });
 });

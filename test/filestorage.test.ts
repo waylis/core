@@ -3,8 +3,9 @@ import assert from "node:assert/strict";
 import { createWriteStream, promises } from "node:fs";
 import { pipeline } from "node:stream/promises";
 import * as path from "path";
-import { createFileMeta, FileMeta } from "../src/file/file";
+import { FileMeta } from "../src/file/file";
 import { DiskFileStorage } from "../src/file/storage/disk";
+import { randomString } from "../src/utils/random";
 
 const uploadDir = path.resolve(__dirname, "test_uploads");
 let storage: DiskFileStorage;
@@ -19,7 +20,13 @@ describe("DiskFileStorage", () => {
         const content = `This is a test file.\nGenerated: ${new Date().toISOString()}`;
         const buffer = Buffer.from(content, "utf-8");
 
-        metadata = createFileMeta({ name: "test.txt", size: buffer.length });
+        metadata = {
+            id: randomString(),
+            name: "test.txt",
+            size: buffer.length,
+            mimeType: "text/plain",
+            createdAt: new Date(),
+        };
 
         const uploaded = await storage.upload(buffer, metadata);
         assert.ok(uploaded, "File should upload successfully");
