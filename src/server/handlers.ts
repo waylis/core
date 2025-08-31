@@ -200,8 +200,10 @@ export async function eventsHandler(this: AppServer, req: IncomingMessage, res: 
     return;
 }
 
-export async function simpleAuthHandler(_req: IncomingMessage, res: ServerResponse) {
-    const userID = randomUUID();
+export async function simpleAuthHandler(req: IncomingMessage, res: ServerResponse) {
+    const url = parseURL(req);
+    const customID = url.searchParams.get("id");
+    const userID = customID || randomUUID();
     res.setHeader("Set-Cookie", `user_id=${userID}; HttpOnly; SameSite=Strict; Path=/`);
     jsonMessage(res, { message: "OK" });
 }
