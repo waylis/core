@@ -106,14 +106,13 @@ export class AppServer {
     private serveConnections() {
         const handleNewSystemResponse = async (payload: { userID: string; response: Message | Message[] }) => {
             const conn = this.connections.get(payload.userID);
-            const messages = Array.isArray(payload.response) ? payload.response : [payload.response];
+            if (!conn) return;
 
-            for (const message of messages) {
-                if (!conn) continue;
-                const json = JSON.stringify(message);
-                conn.write(SSEMessage("newSystemMessage", json));
-                this.logger.debug("New system message:", json);
-            }
+            const messages = Array.isArray(payload.response) ? payload.response : [payload.response];
+            const json = JSON.stringify(messages);
+
+            conn.write(SSEMessage("newSystemResponse", json));
+            this.logger.debug("New system response:", json);
         };
 
         const handleHeartbeat = setInterval(() => {
