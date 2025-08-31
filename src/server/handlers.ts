@@ -2,15 +2,13 @@ import { IncomingMessage, ServerResponse } from "node:http";
 import { Transform } from "node:stream";
 import { basename } from "node:path";
 import { AppServer } from "./server";
-import { createChat } from "../chat/chat";
-import { createFileMeta } from "../file/file";
 import { randomUUID } from "../utils/random";
 import { defineFileExtension } from "../utils/mime";
-import { createUserMessage, Message, validateUserMessageParams } from "../message/message";
+import { Message } from "../message/message";
 import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL, SSEMessage } from "./helpers";
 
 export async function getAppInfoHandler(this: AppServer, _req: IncomingMessage, res: ServerResponse) {
-    jsonData(res, this.config.appInfo);
+    jsonData(res, this.config.app);
 }
 
 export async function getCommandsHandler(this: AppServer, _req: IncomingMessage, res: ServerResponse) {
@@ -55,7 +53,7 @@ export async function createChatHandler(this: AppServer, req: IncomingMessage, r
         throw new HTTPError(400, "Too many chats.");
     }
 
-    const chat = createChat(chatName, userID);
+    const chat = this.chatManager.createChat(chatName, userID);
     await this.database.addChat(chat);
 
     this.logger.debug("Chat created:", JSON.stringify(chat));
@@ -67,7 +65,7 @@ export async function sendMessageHandler(this: AppServer, req: IncomingMessage, 
         const senderID = await this.config.auth.middleware(req);
         const body = await parseJSONBody(req);
 
-        let msgParams = validateUserMessageParams(body, senderID);
+        let msgParams = this.messageManager.validateUserMessageParams(body, senderID);
         let replyMsg: Message | undefined;
 
         const chat = await this.database.getChatByID(msgParams.chatID);
@@ -95,7 +93,7 @@ export async function sendMessageHandler(this: AppServer, req: IncomingMessage, 
             );
         }
 
-        let msg = createUserMessage({ ...msgParams, senderID }, replyMsg);
+        let msg = this.messageManager.createUserMessage({ ...msgParams, senderID }, replyMsg);
         this.eventBus.emit("newUserMessage", msg);
         this.logger.debug("New user message:", JSON.stringify(msg));
 
@@ -152,7 +150,7 @@ export async function uploadFileHandler(this: AppServer, req: IncomingMessage, r
         },
     });
     const fileStream = req.pipe(counterStream);
-    const filemeta = createFileMeta({ name: filename, size: declaredBytes, mimeType: contentType });
+    const filemeta = this.fileManager.generateFileMeta({ name: filename, size: declaredBytes, mimeType: contentType });
     const ok = await this.fileStorage.upload(fileStream, filemeta);
 
     if (!ok) throw new HTTPError(500, "File upload failed");

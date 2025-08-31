@@ -15,6 +15,10 @@ export interface ChatDatabase {
     deleteChatByID(id: string): Promise<Chat | null>;
 }
 
-export const createChat = (name: string, creatorID: string): Chat => {
-    return { id: randomUUID(), name, creatorID, createdAt: new Date() };
-};
+export class ChatManager {
+    constructor(private generateID: () => string = randomUUID) {}
+
+    createChat(name: string, creatorID: string): Chat {
+        return { id: this.generateID(), name, creatorID, createdAt: new Date() };
+    }
+}

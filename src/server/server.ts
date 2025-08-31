@@ -16,18 +16,18 @@ import {
 import { SystemMessageBody } from "../message/types";
 import { Command } from "../scene/command";
 import { SceneResponsesMap } from "../scene/scene";
-import { SceneStep } from "../scene/step";
+import { SceneStep, StepManager } from "../scene/step";
 import { FileManager, FileStorage } from "../file/file";
 import { DiskFileStorage } from "../file/storage/disk";
 import { JSONDatabase } from "../database/json/json";
 import { EventBus, eventBus } from "../events/bus";
 import { parseURL, HTTPError, jsonMessage, SSEMessage } from "./helpers";
-import { Message } from "../message/message";
+import { Message, MessageManager } from "../message/message";
 import { ServerConfig, defaultConfig } from "./config";
 import { DefaultLogger, Logger } from "../logger/logger";
 import { cleanupFiles, cleanupMessages } from "./tasks";
 import { FileManagerClass } from "../file/manager";
-import { delay } from "../utils/async";
+import { ChatManager } from "../chat/chat";
 
 export interface AppServerParams {
     db?: Database;
@@ -41,6 +41,9 @@ export class AppServer {
     protected database: Database;
     protected fileStorage: FileStorage;
     protected fileManager: FileManager;
+    protected chatManager: ChatManager;
+    protected messageManager: MessageManager;
+    protected stepManager: StepManager;
     protected logger: Logger;
 
     protected engine: SceneEngine;
@@ -49,12 +52,18 @@ export class AppServer {
 
     constructor(params?: AppServerParams) {
         this.config = { ...this.config, ...params?.config };
+        this.logger = params?.logger ?? new DefaultLogger();
+        this.eventBus = eventBus;
+
         this.database = params?.db ?? new JSONDatabase();
         this.fileStorage = params?.fileStorage ?? new DiskFileStorage();
-        this.eventBus = eventBus;
-        this.engine = new SceneEngine(this.database, this.eventBus);
-        this.logger = params?.logger ?? new DefaultLogger();
-        this.fileManager = new FileManagerClass(this.fileStorage, this.database, this.logger);
+
+        this.fileManager = new FileManagerClass(this.fileStorage, this.database, this.config.idGenerator, this.logger);
+        this.chatManager = new ChatManager(this.config.idGenerator);
+        this.messageManager = new MessageManager(this.config.idGenerator);
+        this.stepManager = new StepManager(this.config.idGenerator);
+
+        this.engine = new SceneEngine(this.database, this.eventBus, this.messageManager, this.stepManager);
     }
 
     private handlers: Record<string, (req: IncomingMessage, res: ServerResponse) => Promise<void>> = {
@@ -102,7 +111,6 @@ export class AppServer {
             for (const message of messages) {
                 if (!conn) continue;
                 const json = JSON.stringify(message);
-                await delay(1); // Need to prevent race reordering
                 conn.write(SSEMessage("newSystemMessage", json));
                 this.logger.debug("New system message:", json);
             }

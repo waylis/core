@@ -27,6 +27,14 @@ export const SCENE_STEP_KEY_MIN_LEN = 1;
 export const SCENE_STEP_KEY_MAX_LEN = 32;
 export const SCENE_STEP_KEY_ALLOWED_SYMBOLS = /^[a-zA-Z0-9_]+$/;
 
+export class StepManager {
+    constructor(private generateID: () => string = randomUUID) {}
+
+    createConfirmedStep(params: Omit<ConfirmedStep, "id" | "createdAt">): ConfirmedStep {
+        return { id: this.generateID(), ...params, createdAt: new Date() };
+    }
+}
+
 export const createStep = <K extends string, T extends UserMessageBodyType>(step: SceneStep<K, T>): SceneStep<K, T> => {
     if (step.key.length < SCENE_STEP_KEY_MIN_LEN || step.key.length > SCENE_STEP_KEY_MAX_LEN) {
         const msg = `"${step.key}" - Invalid step key length. Must be from ${SCENE_STEP_KEY_MIN_LEN} to ${SCENE_STEP_KEY_MAX_LEN}.`;
@@ -39,8 +47,4 @@ export const createStep = <K extends string, T extends UserMessageBodyType>(step
     }
 
     return step;
-};
-
-export const createConfirmedStep = (params: Omit<ConfirmedStep, "id" | "createdAt">): ConfirmedStep => {
-    return { id: randomUUID(), ...params, createdAt: new Date() };
 };

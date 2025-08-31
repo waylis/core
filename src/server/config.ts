@@ -1,12 +1,15 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { simpleAuthHandler } from "./handlers";
 import { simpleAuthMiddleware } from "./helpers";
+import { randomUUID } from "../utils/random";
 
 export interface ServerConfig {
     /** Port number the server should listen on */
     port: number;
     /** Default number of items per page for paginated endpoints */
     defaultPageLimit: number;
+    // Default function for generating unique identifiers
+    idGenerator: () => string;
 
     /** Authentication configuration */
     auth: {
@@ -33,7 +36,7 @@ export interface ServerConfig {
     };
 
     /** System metadata */
-    appInfo: {
+    app: {
         name?: string;
         description?: string;
         faviconURL?: string;
@@ -49,6 +52,7 @@ export interface ServerConfig {
 export const defaultConfig: ServerConfig = {
     port: 7331,
     defaultPageLimit: 20,
+    idGenerator: randomUUID,
 
     auth: {
         handler: simpleAuthHandler,
@@ -65,7 +69,7 @@ export const defaultConfig: ServerConfig = {
         maxChatsPerUser: 50,
     },
 
-    appInfo: {},
+    app: {},
 
     sse: {
         heartbeatInterval: 5,

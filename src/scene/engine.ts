@@ -1,19 +1,22 @@
-import { createSystemMessage, Message } from "../message/message";
+import { Message, MessageManager } from "../message/message";
 import { SystemMessageBody } from "../message/types";
 import { Command, createCommand } from "./command";
 import { Scene, SceneResponsesMap } from "./scene";
-import { createConfirmedStep, SceneStep } from "./step";
+import { SceneStep, StepManager } from "./step";
 import { Database } from "../database/database";
 import { EventBus } from "../events/bus";
 import { delay } from "../utils/async";
-
-export interface EngineConfig {}
 
 export class SceneEngine {
     commands: Map<string, Command> = new Map();
     scenes: Map<string, Scene<any>> = new Map();
 
-    constructor(private db: Database, protected eventBus: EventBus, private readonly config?: EngineConfig) {}
+    constructor(
+        private db: Database,
+        protected eventBus: EventBus,
+        protected messageManager: MessageManager,
+        protected stepManager: StepManager
+    ) {}
 
     addScene<Steps extends readonly SceneStep<any, any>[]>(
         command: Command,
@@ -159,13 +162,16 @@ export class SceneEngine {
     }
 
     private async createErrorMessage(msg: Message, content: string): Promise<Message> {
-        const errMsg = createSystemMessage({ chatID: msg.chatID, body: { type: "text", content } }, msg);
+        const errMsg = this.messageManager.createSystemMessage(
+            { chatID: msg.chatID, body: { type: "text", content } },
+            msg
+        );
         await this.saveMessageToDatabase(errMsg);
         return errMsg;
     }
 
     private async createStepPromptMessage(msg: Message, step: SceneStep, sceneKey: string): Promise<Message> {
-        const promptMsg = createSystemMessage(
+        const promptMsg = this.messageManager.createSystemMessage(
             { body: step.prompt, replyRestriction: step.replyRestriction, scene: sceneKey, step: step.key },
             msg
         );
@@ -179,14 +185,14 @@ export class SceneEngine {
         body: SystemMessageBody,
         sceneKey: string
     ): Promise<Message> {
-        const respMsg = createSystemMessage({ body, scene: sceneKey }, msg);
+        const respMsg = this.messageManager.createSystemMessage({ body, scene: sceneKey }, msg);
         await this.saveMessageToDatabase(respMsg);
         return respMsg;
     }
 
     private async createStepReplyMessage(msg: Message, body: SystemMessageBody): Promise<Message> {
         const initial = await this.db.getMessageByID(msg.replyTo!);
-        const replyMsg = createSystemMessage(
+        const replyMsg = this.messageManager.createSystemMessage(
             { body, replyRestriction: initial?.replyRestriction, scene: msg.scene!, step: msg.step! },
             msg
         );
@@ -198,7 +204,14 @@ export class SceneEngine {
     private async confirmStep(msg: Message): Promise<void> {
         const scene = msg.scene || "__unknown";
         const step = msg.step || "__unknown";
-        await this.db.addConfirmedStep(createConfirmedStep({ messageID: msg.id, threadID: msg.threadID, scene, step }));
+        const confirmed = this.stepManager.createConfirmedStep({
+            messageID: msg.id,
+            threadID: msg.threadID,
+            scene,
+            step,
+        });
+
+        await this.db.addConfirmedStep(confirmed);
     }
 
     private async collectStepResponses(msg: Message): Promise<SceneResponsesMap<any>> {

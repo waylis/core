@@ -1,17 +1,23 @@
 import { Database } from "../database/database";
 import { Logger } from "../logger/logger";
-import { CreateFileDataParams, createFileMeta, FileManager, FileMeta, FileStorage } from "./file";
+import { defineMimeType } from "../utils/mime";
+import { CreateFileMetaParams, FileManager, FileMeta, FileStorage } from "./file";
 
 export class FileManagerClass implements FileManager {
-    constructor(private storage: FileStorage, private db: Database, private logger: Logger) {}
+    constructor(
+        private storage: FileStorage,
+        private db: Database,
+        private generateID: () => string,
+        private logger: Logger
+    ) {}
 
     async getFileMeta(id: string) {
         const filemeta = await this.db.getFileByID(id);
         return filemeta;
     }
 
-    async uploadFile(bytes: NodeJS.ReadableStream | Buffer, meta: CreateFileDataParams): Promise<FileMeta> {
-        const filemeta = createFileMeta(meta);
+    async uploadFile(bytes: NodeJS.ReadableStream | Buffer, meta: CreateFileMetaParams): Promise<FileMeta> {
+        const filemeta = this.generateFileMeta(meta);
         if (Buffer.isBuffer(bytes)) filemeta.size = bytes.length;
 
         const ok = await this.storage.upload(bytes, filemeta);
@@ -44,5 +50,12 @@ export class FileManagerClass implements FileManager {
         if (!ok) this.logger.warn("File deletion from storage not succeed", JSON.stringify(deleted));
 
         return deleted;
+    }
+
+    generateFileMeta(meta: CreateFileMetaParams): FileMeta {
+        const id = this.generateID();
+        const mimeType = meta.mimeType || defineMimeType(meta.name);
+        if (!mimeType) throw Error(`Unable to identify the MIME type of the file - "${meta.name}".`);
+        return { id, ...meta, mimeType, createdAt: new Date() };
     }
 }
