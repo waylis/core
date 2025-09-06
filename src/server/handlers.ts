@@ -26,9 +26,9 @@ export async function getMessagesHandler(this: AppServer, req: IncomingMessage, 
     if (!chat) throw new HTTPError(404, "Chat not found");
     if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
 
-    const page = Number(url.searchParams.get("page")) || 1;
+    const offset = Number(url.searchParams.get("offset")) ?? 0;
     const limit = Number(url.searchParams.get("limit")) || this.config.defaultPageLimit;
-    const messages = await this.database.getMessagesByChatID(chatID, page, limit);
+    const messages = await this.database.getMessagesByChatID(chatID, offset, limit);
 
     jsonData(res, messages);
 }
@@ -36,10 +36,10 @@ export async function getMessagesHandler(this: AppServer, req: IncomingMessage, 
 export async function getChatsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.auth.middleware(req);
     const url = parseURL(req);
-    const page = Number(url.searchParams.get("page")) || 1;
+    const offset = Number(url.searchParams.get("offset")) ?? 0;
     const limit = Number(url.searchParams.get("limit")) || this.config.defaultPageLimit;
 
-    const chats = await this.database.getChatsByCreatorID(userID, page, limit);
+    const chats = await this.database.getChatsByCreatorID(userID, offset, limit);
     jsonData(res, chats);
 }
 

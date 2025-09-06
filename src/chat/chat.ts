@@ -10,7 +10,7 @@ export interface Chat {
 export interface ChatDatabase {
     addChat(chat: Chat): Promise<void>;
     getChatByID(id: string): Promise<Chat | null>;
-    getChatsByCreatorID(creatorID: string, page: number, limit: number): Promise<Chat[]>;
+    getChatsByCreatorID(creatorID: string, offset: number, limit: number): Promise<Chat[]>;
     countChatsByCreatorID(creatorID: string): Promise<number>;
     deleteChatByID(id: string): Promise<Chat | null>;
 }

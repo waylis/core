@@ -31,12 +31,12 @@ export class MemoryDatabase implements Database {
         return this.chats.find((chat) => chat.id === id) || null;
     }
 
-    async getChatsByCreatorID(creatorID: string, page: number, limit: number): Promise<Chat[]> {
+    async getChatsByCreatorID(creatorID: string, offset: number, limit: number): Promise<Chat[]> {
         const filteredChats = this.chats
             .filter((chat) => chat.creatorID === creatorID)
             .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-        const startIndex = (page - 1) * limit;
-        return filteredChats.slice(startIndex, startIndex + limit);
+
+        return filteredChats.slice(offset, offset + limit);
     }
 
     async countChatsByCreatorID(creatorID: string): Promise<number> {
@@ -67,13 +67,12 @@ export class MemoryDatabase implements Database {
         return this.messages.filter((msg) => ids.includes(msg.id));
     }
 
-    async getMessagesByChatID(chatID: string, page: number = 1, limit: number = 50): Promise<Message[]> {
+    async getMessagesByChatID(chatID: string, offset: number, limit: number): Promise<Message[]> {
         const filtered = this.messages
             .filter((msg) => msg.chatID === chatID)
             .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
-        const start = (page - 1) * limit;
-        return filtered.slice(start, start + limit);
+        return filtered.slice(offset, offset + limit);
     }
 
     async deleteOldMessages(maxDate: Date): Promise<number> {

@@ -34,7 +34,7 @@ export interface MessageDatabase {
     addMessage(msg: Message): Promise<void>;
     getMessageByID(id: string): Promise<Message | null>;
     getMessagesByIDs(ids: string[]): Promise<Message[]>;
-    getMessagesByChatID(chatID: string, page: number, limit: number): Promise<Message[]>;
+    getMessagesByChatID(chatID: string, offset: number, limit: number): Promise<Message[]>;
     deleteOldMessages(maxDate: Date): Promise<number>;
     deleteMessagesByChatID(chatID: string): Promise<number>;
 }
