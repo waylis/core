@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from "http";
-import { simpleAuthHandler } from "./handlers";
+import { simpleAuthHandler, simpleLogoutHandler } from "./handlers";
 import { simpleAuthMiddleware } from "./helpers";
 import { randomUUID } from "../utils/random";
 
@@ -17,6 +17,8 @@ export interface ServerConfig {
         handler: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
         /** Authentication middleware that returns user ID or throws */
         middleware: (req: IncomingMessage) => Promise<string>;
+        /** Handler that clear the authentication cookie */
+        logoutHandler: (req: IncomingMessage, res: ServerResponse) => Promise<void>;
     };
 
     /** Cleanup-related configuration */
@@ -57,6 +59,7 @@ export const defaultConfig: ServerConfig = {
     auth: {
         handler: simpleAuthHandler,
         middleware: simpleAuthMiddleware,
+        logoutHandler: simpleLogoutHandler,
     },
 
     cleanup: {

@@ -207,3 +207,8 @@ export async function simpleAuthHandler(req: IncomingMessage, res: ServerRespons
     res.setHeader("Set-Cookie", `user_id=${userID}; HttpOnly; SameSite=Strict; Path=/`);
     jsonMessage(res, { message: "OK" });
 }
+
+export async function simpleLogoutHandler(_req: IncomingMessage, res: ServerResponse) {
+    res.setHeader("Set-Cookie", `user_id=; HttpOnly; SameSite=Strict; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+    return jsonMessage(res, { message: "OK" });
+}

@@ -75,6 +75,8 @@ export class AppServer {
         "GET /api/file": getFileHandler.bind(this),
 
         "POST /api/auth": this.config.auth.handler,
+        "POST /api/logout": this.config.auth.handler,
+
         "POST /api/chat": createChatHandler.bind(this),
         "POST /api/message": sendMessageHandler.bind(this),
         "POST /api/file": uploadFileHandler.bind(this),
