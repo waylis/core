@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from "node:http";
 import { Transform } from "node:stream";
 import { basename } from "node:path";
 import { AppServer } from "./server";
-import { randomUUID } from "../utils/random";
+import { randomString, randomUUID } from "../utils/random";
 import { defineFileExtension } from "../utils/mime";
 import { Message } from "../message/message";
 import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL, SSEMessage } from "./helpers";
@@ -46,7 +46,7 @@ export async function getChatsHandler(this: AppServer, req: IncomingMessage, res
 export async function createChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.auth.middleware(req);
     const body = await parseJSONBody<{ name?: string }>(req);
-    const chatName = body?.name ?? "";
+    const chatName = body?.name ?? `Chat #${randomString(6)}`;
 
     const count = await this.database.countChatsByCreatorID(userID);
     if (count >= this.config.limits.maxChatsPerUser) {
