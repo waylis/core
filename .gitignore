@@ -1,5 +1,6 @@
 dist
 build
+dev
 node_modules
 db.json
 files
