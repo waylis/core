@@ -3,7 +3,7 @@ export { createCommand, Command } from "./scene/command";
 export { createStep, SceneStep } from "./scene/step";
 export { createScene, Scene, SceneResponsesMap } from "./scene/scene";
 export { Logger, DefaultLogger } from "./logger/logger";
-export { FileMeta, FileStorage, FileDatabase, CreateFileDataParams, FileManager } from "./file/file";
+export { FileMeta, FileStorage, FileDatabase, CreateFileMetaParams, FileManager } from "./file/file";
 export { DiskFileStorage } from "./file/storage/disk";
 export { Database } from "./database/database";
 export { MemoryDatabase } from "./database/memory/memory";
