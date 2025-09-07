@@ -23,5 +23,15 @@
     },
     "dependencies": {
         "mime": "^4.0.7"
+    },
+    "types": "./build/index.d.ts",
+    "files": ["build"],
+    "exports": {
+        ".": {
+            "types": "./build/index.d.ts",
+            "require": "./build/index.cjs",
+            "import": "./build/index.js",
+            "default": "./build/index.js"
+        }
     }
 }
