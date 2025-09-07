@@ -1,7 +1,8 @@
 {
-    "name": "bot-ui",
-    "version": "1.0.0",
+    "name": "@waylis/core",
+    "version": "0.1.0",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "build": "tsdown",
         "test": "npx tsx --test",
