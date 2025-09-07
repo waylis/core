@@ -1,7 +1,7 @@
 import { EventEmitter } from "node:events";
 import { Message } from "../message/message";
 
-interface AppEvents {
+export interface AppEvents {
     newUserMessage: Message;
     newSystemResponse: { userID: string; response: Message | Message[] };
 }
