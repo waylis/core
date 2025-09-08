@@ -14,7 +14,7 @@ export class DefaultLogger implements Logger {
     private writeToFile: boolean;
 
     constructor({
-        levels = ["error", "warn", "info"],
+        levels = ["error", "warn", "info", "debug"],
         logsDir = "logs",
         writeToFile = true,
     }: {
