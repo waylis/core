@@ -11,6 +11,7 @@ import {
     getFileHandler,
     getMessagesHandler,
     sendMessageHandler,
+    staticHandler,
     uploadFileHandler,
 } from "./handlers";
 import { SystemMessageBody } from "../message/types";
@@ -89,8 +90,12 @@ export class AppServer {
         const key = `${req.method} ${url.pathname}`;
 
         try {
-            const handler = this.handlers[key];
-            if (!handler) throw new HTTPError(404, "Not found");
+            let handler = this.handlers[key];
+            if (!handler) {
+                if (req.method !== "GET") throw new HTTPError(404, "Not found");
+                handler = staticHandler;
+            }
+
             this.logger.debug(req.method, url.href);
 
             await handler(req, res);

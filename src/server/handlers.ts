@@ -1,11 +1,35 @@
+import { defineMimeType } from "./../utils/mime";
 import { IncomingMessage, ServerResponse } from "node:http";
 import { Transform } from "node:stream";
-import { basename } from "node:path";
+import { basename, join } from "node:path";
 import { AppServer } from "./server";
 import { randomString, randomUUID } from "../utils/random";
 import { defineFileExtension } from "../utils/mime";
 import { Message } from "../message/message";
 import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL, SSEMessage } from "./helpers";
+import { readFile } from "node:fs";
+import { getDirname } from "../utils/fs";
+
+export async function staticHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+    const url = parseURL(req);
+    const file = url.pathname === "/" ? "/index.html" : url.pathname;
+    const staticPath = join(getDirname(), "public", file);
+    const contentType = defineMimeType(file) || "text/plain";
+
+    readFile(staticPath, (err, content) => {
+        if (err) {
+            if (err.code === "ENOENT") {
+                res.writeHead(404, { "Content-Type": "text/html" });
+                res.end("<h1>404 - File Not Found</h1>");
+            } else {
+                throw new HTTPError(500, `Server Error: ${err.code}`);
+            }
+        } else {
+            res.writeHead(200, { "Content-Type": contentType, "Cache-Control": "public, max-age=3600" });
+            res.end(content, "utf-8");
+        }
+    });
+}
 
 export async function getAppInfoHandler(this: AppServer, _req: IncomingMessage, res: ServerResponse) {
     jsonData(res, this.config.app);
