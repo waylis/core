@@ -52,7 +52,7 @@ export interface ServerConfig {
 }
 
 export const defaultConfig: ServerConfig = {
-    port: 7331,
+    port: 7770,
     defaultPageLimit: 20,
     idGenerator: randomUUID,
 
