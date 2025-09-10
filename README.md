@@ -22,12 +22,7 @@ npm install @waylis/core
 Write some code:
 
 ```ts
-import {
-  AppServer,
-  createCommand,
-  createScene,
-  createStep,
-} from "@waylis/core";
+import {AppServer, createCommand, createScene, createStep} from "@waylis/core";
 
 const command = createCommand({ value: "hello", label: "Hello World" });
 
