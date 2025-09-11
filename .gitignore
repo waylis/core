@@ -1,5 +1,5 @@
 dist
-build
+build*
 dev
 node_modules
 db.json

@@ -1,0 +1,6 @@
+{
+  "name": "@waylis/shared",
+  "version": "0.1.0",
+  "types": "index.shared.d.ts",
+  "files": ["index.shared.d.ts"]
+}

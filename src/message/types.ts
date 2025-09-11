@@ -61,7 +61,7 @@ export type UserMessageBody = Exclude<MessageBody, { type: "markdown" }>;
 
 export type UserMessageBodyType = Exclude<MessageBodyType, "markdown">;
 
-type LimitsMap = {
+export type MessageBodyLimitsMap = {
     text: TextLimits;
     number: NumberLimits;
     file: FileLimits;
@@ -73,5 +73,5 @@ type LimitsMap = {
 
 export type ReplyRestriction<T extends UserMessageBodyType = UserMessageBodyType> = {
     bodyType: T;
-    bodyLimits?: T extends keyof LimitsMap ? LimitsMap[T] : never;
+    bodyLimits?: T extends keyof MessageBodyLimitsMap ? MessageBodyLimitsMap[T] : never;
 };

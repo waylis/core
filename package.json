@@ -4,9 +4,9 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "build": "tsdown",
+        "dev": "npx tsx --watch dev/main.ts",
         "test": "npx tsx --test",
-        "dev": "npx tsx --watch src/main.ts"
+        "build": "tsdown && cp package.shared.json build-shared/package.json"
     },
     "keywords": [],
     "author": "",
