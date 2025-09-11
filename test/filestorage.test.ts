@@ -1,3 +1,4 @@
+import { getDirname } from "./../src/utils/fs";
 import { before, after, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { createWriteStream, promises } from "node:fs";
@@ -7,7 +8,7 @@ import { FileMeta } from "../src/file/file";
 import { DiskFileStorage } from "../src/file/storage/disk";
 import { randomString } from "../src/utils/random";
 
-const uploadDir = path.resolve(__dirname, "test_uploads");
+const uploadDir = path.resolve(getDirname(), "test_uploads");
 let storage: DiskFileStorage;
 let metadata: FileMeta;
 let downloadedPath: string;
@@ -35,7 +36,7 @@ describe("DiskFileStorage", () => {
     it("should download uploaded file and match content", async () => {
         const stream = await storage.download(metadata);
 
-        downloadedPath = path.resolve(__dirname, "downloaded_test.txt");
+        downloadedPath = path.resolve(getDirname(), "downloaded_test.txt");
         const writeStream = createWriteStream(downloadedPath);
         await pipeline(stream, writeStream);
 
