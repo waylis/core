@@ -4,6 +4,7 @@ import { Database } from "../database/database";
 import {
     createChatHandler,
     deleteChatHandler,
+    editChatHandler,
     eventsHandler,
     getAppInfoHandler,
     getChatsHandler,
@@ -77,10 +78,11 @@ export class AppServer {
 
         "POST /api/auth": this.config.auth.handler,
         "POST /api/logout": this.config.auth.handler,
-
         "POST /api/chat": createChatHandler.bind(this),
         "POST /api/message": sendMessageHandler.bind(this),
         "POST /api/file": uploadFileHandler.bind(this),
+
+        "PUT /api/chat": editChatHandler.bind(this),
 
         "DELETE /api/chat": deleteChatHandler.bind(this),
     };

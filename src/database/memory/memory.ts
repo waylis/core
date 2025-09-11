@@ -43,6 +43,20 @@ export class MemoryDatabase implements Database {
         return this.chats.filter((chat) => chat.creatorID === creatorID).length;
     }
 
+    async editChatByID(id: string, updated: Partial<Chat>): Promise<Chat | null> {
+        const index = this.chats.findIndex((chat) => chat.id === id);
+        if (index === -1) return null;
+
+        this.chats[index] = {
+            ...this.chats[index],
+            ...updated,
+            id: this.chats[index].id,
+            createdAt: this.chats[index].createdAt,
+        };
+
+        return this.chats[index];
+    }
+
     async deleteChatByID(id: string): Promise<Chat | null> {
         const index = this.chats.findIndex((chat) => chat.id === id);
         if (index === -1) return null;

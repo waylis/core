@@ -96,6 +96,22 @@ export class JSONDatabase implements Database {
         return this.data.chats.filter((chat) => chat.creatorID === creatorID).length;
     }
 
+    async editChatByID(id: string, updated: Partial<Chat>): Promise<Chat | null> {
+        return this.withWriteLock(() => {
+            const index = this.data.chats.findIndex((chat) => chat.id === id);
+            if (index === -1) return null;
+
+            this.data.chats[index] = {
+                ...this.data.chats[index],
+                ...updated,
+                id: this.data.chats[index].id,
+                createdAt: this.data.chats[index].createdAt,
+            };
+
+            return this.data.chats[index];
+        });
+    }
+
     async deleteChatByID(id: string): Promise<Chat | null> {
         return this.withWriteLock(() => {
             const index = this.data.chats.findIndex((chat) => chat.id === id);

@@ -185,6 +185,25 @@ export async function uploadFileHandler(this: AppServer, req: IncomingMessage, r
     jsonData(res, filemeta);
 }
 
+export async function editChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+    const userID = await this.config.auth.middleware(req);
+    const url = parseURL(req);
+    const chatID = url.searchParams.get("id");
+    if (!chatID) throw new HTTPError(400, "id query parameter is required");
+
+    const chat = await this.database.getChatByID(chatID);
+    if (!chat) throw new HTTPError(404, "Chat not found");
+    if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
+
+    const body = await parseJSONBody<{ name?: string }>(req);
+    const newName = body?.name ?? chat.name;
+    const updated = await this.database.editChatByID(chatID, { name: newName });
+
+    this.logger.debug("Chat edited:", JSON.stringify(updated));
+
+    jsonData(res, updated);
+}
+
 export async function deleteChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.auth.middleware(req);
     const url = parseURL(req);
