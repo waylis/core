@@ -1,6 +1,18 @@
 {
     "name": "@waylis/core",
     "version": "0.1.0",
+    "author": "cheatsnake",
+    "license": "MIT",
+    "description": "A simple way to interact with your backend.",
+    "keywords": ["chat", "server"],
+    "homepage": "https://github.com/waylis/core#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/waylis/core.git"
+    },
+    "bugs": {
+        "url": "https://github.com/waylis/core/issues"
+    },
     "main": "index.js",
     "type": "module",
     "scripts": {
@@ -8,10 +20,7 @@
         "test": "npx tsx --test",
         "build": "tsdown && cp package.shared.json build-shared/package.json"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "description": "",
+    
     "devDependencies": {
         "@types/node": "^24.3.1",
         "tsdown": "^0.14.2",
