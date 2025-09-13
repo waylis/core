@@ -1,46 +1,54 @@
 {
-    "name": "@waylis/core",
-    "version": "0.1.0",
-    "author": "cheatsnake",
-    "license": "MIT",
-    "description": "A simple way to interact with your backend.",
-    "keywords": ["chat", "server"],
-    "homepage": "https://github.com/waylis/core#readme",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/waylis/core.git"
-    },
-    "bugs": {
-        "url": "https://github.com/waylis/core/issues"
-    },
-    "main": "index.js",
-    "type": "module",
-    "scripts": {
-        "dev": "npx tsx --watch dev/main.ts",
-        "test": "npx tsx --test",
-        "build": "tsdown && cp package.shared.json build-shared/package.json"
-    },
-    
-    "devDependencies": {
-        "@types/node": "^24.3.1",
-        "tsdown": "^0.14.2",
-        "tsx": "^4.20.5",
-        "typescript": "^5.9.2"
-    },
-    "engines": {
-        "node": ">=20.0.0"
-    },
-    "dependencies": {
-        "mime": "^4.0.7"
-    },
-    "types": "./build/index.d.ts",
-    "files": ["build"],
-    "exports": {
-        ".": {
-            "types": "./build/index.d.ts",
-            "require": "./build/index.cjs",
-            "import": "./build/index.js",
-            "default": "./build/index.js"
-        }
+  "name": "@waylis/core",
+  "version": "0.1.0",
+  "author": "cheatsnake",
+  "license": "MIT",
+  "description": "A simple way to interact with your backend.",
+  "keywords": [
+    "chat",
+    "server"
+  ],
+  "homepage": "https://github.com/waylis/core#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/waylis/core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/waylis/core/issues"
+  },
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "npx tsx --watch dev/main.ts",
+    "test": "npx tsx --test",
+    "build": "tsdown && cp package.shared.json build-shared/package.json",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.1",
+    "tsdown": "^0.14.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vitepress": "^2.0.0-alpha.12"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "mime": "^4.0.7"
+  },
+  "types": "./build/index.d.ts",
+  "files": [
+    "build"
+  ],
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "require": "./build/index.cjs",
+      "import": "./build/index.js",
+      "default": "./build/index.js"
     }
+  }
 }

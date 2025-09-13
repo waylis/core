@@ -1,7 +1,12 @@
 dist
 build*
-dev
 node_modules
-db.json
+
+dev
 files
 logs
+
+docs/.vitepress/dist
+docs/.vitepress/cache
+
+db.json
