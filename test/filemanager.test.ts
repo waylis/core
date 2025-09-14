@@ -56,9 +56,9 @@ describe("FileManager", () => {
         const chunks: Buffer<ArrayBuffer>[] = [];
 
         for await (const chunk of downloadStream) {
-            const bufferChunk = typeof chunk === "string" ? Buffer.from(chunk) : chunk;
-            chunks.push(bufferChunk);
+            chunks.push(Buffer.from(chunk));
         }
+
         const downloadedContent = Buffer.concat(chunks).toString();
 
         assert.strictEqual(downloadedContent, testData);
