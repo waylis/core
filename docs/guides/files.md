@@ -47,11 +47,7 @@ const fileScene = createScene({
         const chunks: Buffer<ArrayBuffer>[] = [];
 
         for await (const chunk of stream) {
-            if (typeof chunk === string) {
-                chunks.push(Buffer.from(chunk));
-            } else {
-                chunks.push(chunk);
-            }
+            chunks.push(Buffer.from(chunk));
         }
 
         const content = Buffer.concat(chunks).toString();
@@ -65,3 +61,5 @@ You can also delete files yourself by their IDs:
 ```ts
 const deletedFile = await fileManager.deleteFile(fileID);
 ```
+
+By default, files are stored on disk thanks to the built-in [DiskFileStorage](https://github.com/waylis/core/blob/master/src/file/storage/disk.ts) class. But you can connect any other storage by reading [this](/guides/file-storage) guide.
