@@ -115,7 +115,11 @@ replyRestriction: {
 }
 ```
 
-> See the full [API Reference](/api) for better understaning.
+::: tip
+
+See the full [API Reference](/api) for better understaning.
+
+:::
 
 ## Handler
 
