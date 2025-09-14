@@ -61,7 +61,7 @@ export class HTTPError extends Error {
     }
 }
 
-export const SSEMessage = (event: string, data: string) => {
+export const sseMessage = (event: string, data: string) => {
     const payload = `event: ${event}\ndata: ${data}\n\n`;
     return payload;
 };

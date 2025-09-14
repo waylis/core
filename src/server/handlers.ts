@@ -6,7 +6,7 @@ import { AppServer } from "./server";
 import { randomString, randomUUID } from "../utils/random";
 import { defineFileExtension } from "../utils/mime";
 import { Message } from "../message/message";
-import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL, SSEMessage } from "./helpers";
+import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL, sseMessage } from "./helpers";
 import { readFile } from "node:fs";
 import { getDirname } from "../utils/fs";
 
@@ -231,7 +231,7 @@ export async function eventsHandler(this: AppServer, req: IncomingMessage, res: 
         Connection: "keep-alive",
     });
 
-    res.write(SSEMessage("connection", "OK"));
+    res.write(sseMessage("connection", "OK"));
     this.connections.set(userID, res);
     this.logger.debug("Connection opened:", userID);
 

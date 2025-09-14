@@ -23,7 +23,7 @@ import { FileManager, FileStorage } from "../file/file";
 import { DiskFileStorage } from "../file/storage/disk";
 import { JSONDatabase } from "../database/json/json";
 import { EventBus, eventBus } from "../events/bus";
-import { parseURL, HTTPError, jsonMessage, SSEMessage } from "./helpers";
+import { parseURL, HTTPError, jsonMessage, sseMessage } from "./helpers";
 import { Message, MessageManager } from "../message/message";
 import { ServerConfig, defaultConfig } from "./config";
 import { DefaultLogger, Logger } from "../logger/logger";
@@ -120,12 +120,12 @@ export class AppServer {
             const messages = Array.isArray(payload.response) ? payload.response : [payload.response];
             const json = JSON.stringify(messages);
 
-            conn.write(SSEMessage("newSystemResponse", json));
+            conn.write(sseMessage("newSystemResponse", json));
             this.logger.debug("New system response:", json);
         };
 
         const handleHeartbeat = setInterval(() => {
-            for (const [_, conn] of this.connections) conn.write(SSEMessage("heartbeat", "\n"));
+            for (const [_, conn] of this.connections) conn.write(sseMessage("heartbeat", "\n"));
         }, this.config.sse.heartbeatInterval * 1000);
 
         this.eventBus.on("newSystemResponse", handleNewSystemResponse);
