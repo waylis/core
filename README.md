@@ -2,14 +2,17 @@
 
 **Waylis** is a Node.js package for interacting with your app’s backend through predefined chat scenes. It’s a complete solution that can free you from writing a separate frontend part. Abstracting user interaction into reusable dialog blocks, Waylis allows you to fully focus on business logic by automatically collecting, validating user input and displaying processing results.
 
+> [!WARNING]
+> Waylis is a new project and currently in beta phase. Updates released before version 1.0 may introduce breaking changes.
+
 ## Features
 
-- **Wide range of usage**: from standalone offline tools to online services, from prototypes and demo showcases to production-ready solutions.
-- **Built-in input validation**: accept only the data you need from users (strings, numbers, booleans, dates, files).
-- **Configurable**: comes with flexible configuration.
-- **Pluggable**: supports custom databases, file storages, loggers by implementing simple interfaces.
-- **No heavy dependencies**: all core functions and the HTTP server are written using only the standard Node.js library.
-- **Minimalistic web UI**: with responsive layout and themes.
+-   **Wide range of usage**: from standalone offline tools to online services, from prototypes and demo showcases to production-ready solutions.
+-   **Built-in input validation**: accept only the data you need from users (strings, numbers, booleans, dates, files).
+-   **Configurable**: comes with flexible configuration.
+-   **Pluggable**: supports custom databases, file storages, loggers by implementing simple interfaces.
+-   **No heavy dependencies**: all core functions and the HTTP server are written using only the standard Node.js library.
+-   **Minimalistic web UI**: with responsive layout and themes.
 
 ## Quick start
 
@@ -22,21 +25,21 @@ npm install @waylis/core
 Write some code:
 
 ```ts
-import {AppServer, createCommand, createScene, createStep} from "@waylis/core";
+import { AppServer, createCommand, createScene, createStep } from "@waylis/core";
 
 const command = createCommand({ value: "hello", label: "Hello World" });
 
 const step = createStep({
-  key: "name",
-  prompt: { type: "text", content: "What is your name?" },
-  replyRestriction: { bodyType: "text" },
+    key: "name",
+    prompt: { type: "text", content: "What is your name?" },
+    replyRestriction: { bodyType: "text" },
 });
 
 const scene = createScene({
-  steps: [step],
-  handler: async (answers) => {
-    return { type: "text", content: `Hello, ${answers.name}!` };
-  },
+    steps: [step],
+    handler: async (answers) => {
+        return { type: "text", content: `Hello, ${answers.name}!` };
+    },
 });
 
 const app = new AppServer();
