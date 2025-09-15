@@ -3,6 +3,7 @@ import { simpleAuthHandler, simpleLogoutHandler } from "./handlers";
 import { simpleAuthMiddleware } from "./helpers";
 import { randomUUID } from "../utils/random";
 
+//** HTTP server configuration file */
 export interface ServerConfig {
     /** Port number the server should listen on */
     port: number;
@@ -10,6 +11,16 @@ export interface ServerConfig {
     defaultPageLimit: number;
     // Default function for generating unique identifiers
     idGenerator: () => string;
+
+    /** Your app metadata */
+    app: {
+        /** The name of your application */
+        name?: string;
+        /** Description for your application */
+        description?: string;
+        /** URL to web page icon */
+        faviconURL?: string;
+    };
 
     /** Authentication configuration */
     auth: {
@@ -37,13 +48,6 @@ export interface ServerConfig {
         maxChatsPerUser: number;
     };
 
-    /** System metadata */
-    app: {
-        name?: string;
-        description?: string;
-        faviconURL?: string;
-    };
-
     /** SSE configuration */
     sse: {
         /** Interval (in seconds) for Server-sent Events heartbeat messages */
@@ -55,6 +59,10 @@ export const defaultConfig: ServerConfig = {
     port: 7770,
     defaultPageLimit: 20,
     idGenerator: randomUUID,
+
+    app: {
+        name: "Waylis",
+    },
 
     auth: {
         handler: simpleAuthHandler,
@@ -71,8 +79,6 @@ export const defaultConfig: ServerConfig = {
     limits: {
         maxChatsPerUser: 50,
     },
-
-    app: {},
 
     sse: {
         heartbeatInterval: 5,
