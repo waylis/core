@@ -8,7 +8,7 @@ export interface Logger {
     debug(...args: unknown[]): void;
 }
 
-export class DefaultLogger implements Logger {
+export class SimpleLogger implements Logger {
     private levels: string[];
     private logsDir: string;
     private writeToFile: boolean;

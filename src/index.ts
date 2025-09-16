@@ -2,7 +2,7 @@ export { AppServer, type AppServerParams } from "./server/server";
 export { createCommand, type Command } from "./scene/command";
 export { createStep, type SceneStep } from "./scene/step";
 export { createScene, type Scene, type SceneResponsesMap } from "./scene/scene";
-export { type Logger, DefaultLogger } from "./logger/logger";
+export { type Logger, SimpleLogger } from "./logger/logger";
 export {
     type FileMeta,
     type FileStorage,

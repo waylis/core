@@ -26,7 +26,7 @@ import { EventBus, eventBus } from "../events/bus";
 import { parseURL, HTTPError, jsonMessage, sseMessage } from "./helpers";
 import { Message, MessageManager } from "../message/message";
 import { ServerConfig, defaultConfig } from "./config";
-import { DefaultLogger, Logger } from "../logger/logger";
+import { SimpleLogger, Logger } from "../logger/logger";
 import { cleanupFiles, cleanupMessages } from "./tasks";
 import { FileManagerClass } from "../file/manager";
 import { ChatManager } from "../chat/chat";
@@ -54,7 +54,7 @@ export class AppServer {
 
     constructor(params?: AppServerParams) {
         this.config = { ...this.config, ...params?.config };
-        this.logger = params?.logger ?? new DefaultLogger();
+        this.logger = params?.logger ?? new SimpleLogger();
         this.eventBus = eventBus;
 
         this.database = params?.db ?? new JSONDatabase();
