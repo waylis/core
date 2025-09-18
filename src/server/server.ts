@@ -6,7 +6,7 @@ import {
     deleteChatHandler,
     editChatHandler,
     eventsHandler,
-    getAppInfoHandler,
+    getConfigHandler,
     getChatsHandler,
     getCommandsHandler,
     getFileHandler,
@@ -69,7 +69,7 @@ export class AppServer {
     }
 
     private handlers: Record<string, (req: IncomingMessage, res: ServerResponse) => Promise<void>> = {
-        "GET /api/info": getAppInfoHandler.bind(this),
+        "GET /api/config": getConfigHandler.bind(this),
         "GET /api/commands": getCommandsHandler.bind(this),
         "GET /api/events": eventsHandler.bind(this),
         "GET /api/chats": getChatsHandler.bind(this),

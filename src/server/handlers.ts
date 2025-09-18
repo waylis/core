@@ -31,8 +31,11 @@ export async function staticHandler(this: AppServer, req: IncomingMessage, res: 
     });
 }
 
-export async function getAppInfoHandler(this: AppServer, _req: IncomingMessage, res: ServerResponse) {
-    jsonData(res, this.config.app);
+export async function getConfigHandler(this: AppServer, _req: IncomingMessage, res: ServerResponse) {
+    jsonData(res, {
+        app: this.config.app,
+        defaultPageLimit: this.config.defaultPageLimit,
+    });
 }
 
 export async function getCommandsHandler(this: AppServer, _req: IncomingMessage, res: ServerResponse) {
