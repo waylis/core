@@ -3,6 +3,7 @@ export { type FileMeta } from "./file/file";
 export { type Command } from "./scene/command";
 export { type Option } from "./message/option";
 export { type Message } from "./message/message";
+export { type ServerConfig } from "./server/config";
 export {
     type TextLimits,
     type NumberLimits,
