@@ -1,9 +1,11 @@
-export { type Chat } from "./chat/chat";
-export { type FileMeta } from "./file/file";
+export { type Chat, type ChatDatabase } from "./chat/chat";
+export { type FileMeta, type FileDatabase } from "./file/file";
 export { type Command } from "./scene/command";
 export { type Option } from "./message/option";
-export { type Message } from "./message/message";
+export { type Message, type MessageDatabase } from "./message/message";
+export { type ConfirmedStep, type ConfirmedStepDatabase } from "./scene/step";
 export { type ServerConfig } from "./server/config";
+export { type Database } from "./database/database";
 export {
     type TextLimits,
     type NumberLimits,
