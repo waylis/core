@@ -8,7 +8,7 @@ import {
     Message,
 } from "../src/message/message";
 import { TextLimits, NumberLimits, DatetimeLimits, OptionLimits, FileLimits, FilesLimits } from "../src/message/types";
-import { Option } from "../src/message/option";
+import { Option } from "../src/message/types";
 
 describe("createSystemMessage", () => {
     const mockUserMessage: Message = {
