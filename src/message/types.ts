@@ -1,5 +1,27 @@
 import { FileMeta } from "../file/file";
-import { Option } from "./option";
+
+export interface Option {
+    value: string;
+    label?: string;
+}
+
+/**
+ * More info: https://mantine.dev/charts/line-chart/
+ */
+export interface LineChart {
+    data: Record<string, any>[];
+    dataKey: string;
+    series: { name: string; color?: string; label?: string; yAxisId?: string }[];
+    curveType?: "bump" | "linear" | "natural" | "monotone" | "step" | "stepBefore" | "stepAfter";
+    height?: number | string;
+    xAxisProps?: Record<string, any>;
+    yAxisProps?: Record<string, any>;
+}
+
+export interface Table {
+    head: string[];
+    body: (string | number)[][];
+}
 
 export interface TextLimits {
     minLength?: number;
@@ -44,6 +66,8 @@ export type MessageBodyMap = {
     options: string[];
     datetime: Date;
     markdown: string;
+    linechart: LineChart;
+    table: Table;
 };
 
 export type MessageBodyType = keyof MessageBodyMap;
@@ -54,12 +78,17 @@ export type MessageBody = {
 
 export type SystemMessageBody = Extract<
     MessageBody,
-    { type: "text" } | { type: "markdown" } | { type: "file" } | { type: "files" }
+    | { type: "text" }
+    | { type: "markdown" }
+    | { type: "file" }
+    | { type: "files" }
+    | { type: "linechart" }
+    | { type: "table" }
 >;
 
-export type UserMessageBody = Exclude<MessageBody, { type: "markdown" }>;
+export type UserMessageBody = Exclude<MessageBody, { type: "markdown" } | { type: "linechart" } | { type: "table" }>;
 
-export type UserMessageBodyType = Exclude<MessageBodyType, "markdown">;
+export type UserMessageBodyType = Exclude<MessageBodyType, "markdown" | "linechart" | "table">;
 
 export type MessageBodyLimitsMap = {
     text: TextLimits;

@@ -16,8 +16,10 @@ export { MemoryDatabase } from "./database/memory/memory";
 export { JSONDatabase } from "./database/json/json";
 export { type Chat, type ChatDatabase } from "./chat/chat";
 export { type Message, type MessageDatabase } from "./message/message";
-export { type Option } from "./message/option";
 export {
+    type Option,
+    type LineChart,
+    type Table,
     type TextLimits,
     type NumberLimits,
     type DatetimeLimits,
