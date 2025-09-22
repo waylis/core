@@ -81,8 +81,6 @@ return {
 Under the hood, markdown rendered by [react-markdown](https://www.npmjs.com/package/react-markdown) package and [remark-gfm](https://www.npmjs.com/package/remark-gfm) plugin on the frontend side.
 :::
 
-It also support _file_ and _files_ types, which are described in detail [here](/guides/files).
-
 ```ts
 const data = Buffer.from("some content");
 const meta = {
@@ -94,3 +92,11 @@ const meta = {
 const file = await fileManager.uploadFile(data, meta);
 return { type: "file", content: file };
 ```
+
+:::tip
+_file_ and _files_ types are described in detail [here](/guides/files).
+:::
+
+:::tip
+You can also find [_linechart_](/examples#send-line-chart) and [_table_](/examples#send-table) types in the examples.
+:::

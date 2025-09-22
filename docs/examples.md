@@ -102,19 +102,16 @@ const scene = createScene({
 ```ts
 const command = createCommand({ value: "option_example" });
 
+const options = [
+    { value: "red", label: "Red color" },
+    { value: "green", label: "Green color" },
+    { value: "blue", label: "Blue color" },
+];
+
 const step = createStep({
     key: "data",
     prompt: { type: "text", content: "Please pick an option" },
-    replyRestriction: {
-        bodyType: "option",
-        bodyLimits: {
-            options: [
-                { value: "red", label: "Red color" },
-                { value: "green", label: "Green color" },
-                { value: "blue", label: "Blue color" },
-            ],
-        },
-    },
+    replyRestriction: { bodyType: "option", bodyLimits: { options } },
 });
 
 const scene = createScene({
@@ -132,21 +129,20 @@ const scene = createScene({
 ```ts
 const command = createCommand({ value: "options_example" });
 
+const options = [
+    { value: "red", label: "Red color" },
+    { value: "green", label: "Green color" },
+    { value: "blue", label: "Blue color" },
+    { value: "black", label: "Black color" },
+    { value: "white", label: "White color" },
+];
+
 const step = createStep({
     key: "data",
     prompt: { type: "text", content: "Please pick options" },
     replyRestriction: {
         bodyType: "options",
-        bodyLimits: {
-            options: [
-                { value: "red", label: "Red color" },
-                { value: "green", label: "Green color" },
-                { value: "blue", label: "Blue color" },
-                { value: "black", label: "Black color" },
-                { value: "white", label: "White color" },
-            ],
-            maxAmount: 2,
-        },
+        bodyLimits: { options, maxAmount: 2 },
     },
 });
 
@@ -299,6 +295,65 @@ const scene = createScene({
         const audio = await fileManager.uploadFile(audioData, audioMeta);
 
         return { type: "files", content: [video, image, audio] };
+    },
+});
+```
+
+## Send line chart
+
+<video controls="controls" autoplay loop src="./assets/send_linechart.mp4" />
+
+Read [this](https://mantine.dev/charts/line-chart/) for detailed information about the chart parameters.
+
+```ts
+const command = createCommand({ value: "linechart_example" });
+
+const data = [
+    { day: "Mar 22", Apples: 2890, Oranges: 2338, Tomatoes: 2452 },
+    { day: "Mar 23", Apples: 2756, Oranges: 2103, Tomatoes: 2402 },
+    { day: "Mar 24", Apples: 3322, Oranges: 986, Tomatoes: 1821 },
+    { day: "Mar 25", Apples: 3470, Oranges: 2108, Tomatoes: 2809 },
+    { day: "Mar 26", Apples: 3129, Oranges: 1726, Tomatoes: 2290 },
+];
+
+const series = [
+    { name: "Apples", color: "indigo.6" },
+    { name: "Oranges", color: "blue.6" },
+    { name: "Tomatoes", color: "teal.6" },
+];
+
+const scene = createScene({
+    steps: [],
+    handler: async () => {
+        return {
+            type: "linechart",
+            content: { data, dataKey: "day", series, curveType: "linear" },
+        };
+    },
+});
+```
+
+## Send table
+
+<video controls="controls" autoplay loop src="./assets/send_table.mp4" />
+
+```ts
+const command = createCommand({ value: "table_example" });
+
+const head = ["Element position", "Atomic mass", "Symbol", "Element name"];
+
+const body = [
+    [6, 12.011, "C", "Carbon"],
+    [7, 14.007, "N", "Nitrogen"],
+    [39, 88.906, "Y", "Yttrium"],
+    [56, 137.33, "Ba", "Barium"],
+    [58, 140.12, "Ce", "Cerium"],
+];
+
+const scene = createScene({
+    steps: [],
+    handler: async () => {
+        return { type: "table", content: { head, body } };
     },
 });
 ```
