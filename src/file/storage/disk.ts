@@ -68,7 +68,7 @@ export class DiskFileStorage implements FileStorage {
             await promises.rm(filePath);
             return true;
         } catch (error) {
-            if (error.code === "ENOENT") {
+            if (error instanceof Error && (error as NodeJS.ErrnoException).code === "ENOENT") {
                 return false;
             }
             console.error("Delete failed:", error);

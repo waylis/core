@@ -29,7 +29,7 @@ export class JSONDatabase implements Database {
             const fileContent = await fs.readFile(this.dataPath, "utf-8");
             this.data = JSON.parse(fileContent, jsonDateReviver);
         } catch (error) {
-            if (error.code === "ENOENT") {
+            if (error instanceof Error && (error as NodeJS.ErrnoException).code === "ENOENT") {
                 // File doesn't exist, initialize with empty data
                 await this.saveData();
             } else {
