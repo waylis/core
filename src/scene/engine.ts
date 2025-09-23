@@ -1,5 +1,5 @@
 import { Message, MessageManager } from "../message/message";
-import { SystemMessageBody } from "../message/types";
+import { MessageBodyMap, SystemMessageBody, UserMessageBodyType } from "../message/types";
 import { Command, createCommand } from "./command";
 import { Scene, SceneResponsesMap } from "./scene";
 import { SceneStep, StepManager } from "./step";
@@ -106,7 +106,7 @@ export class SceneEngine {
         step: SceneStep,
         stepIndex: number
     ): Promise<Message> {
-        const body = await step.handler!(msg.body.content);
+        const body = await step.handler!(msg.body.content as MessageBodyMap[UserMessageBodyType]);
         if (!body) {
             await this.confirmStep(msg);
             const nextStep = scene.steps[stepIndex + 1];
@@ -121,7 +121,7 @@ export class SceneEngine {
         scene: Scene<any>,
         step: SceneStep
     ): Promise<Message | Message[]> {
-        const body = await step.handler!(msg.body.content);
+        const body = await step.handler!(msg.body.content as MessageBodyMap[UserMessageBodyType]);
         if (!body) {
             await this.confirmStep(msg);
             const responses = await this.collectStepResponses(msg);

@@ -10,6 +10,7 @@ export const getDirname = () => {
     } catch {}
 
     // ESM
+    // @ts-ignore
     const url = import.meta.url;
     return dirname(fileURLToPath(url));
 };
