@@ -1,6 +1,18 @@
+/**
+ * Represents a command that can trigger a scene.
+ */
 export interface Command {
+    /**
+     * The unique identifier or value of the command.
+     */
     value: string;
+    /**
+     * A human-readable label for the command.
+     */
     label?: string;
+    /**
+     * A short description explaining what the command does.
+     */
     description?: string;
 }
 
@@ -10,6 +22,24 @@ export const COMMAND_LABEL_MAX_LEN = 64;
 export const COMMAND_DESCR_MAX_LEN = 512;
 export const COMMAND_ALLOWED_SYMBOLS = /^[a-z0-9_]+$/;
 
+/**
+ * Create a new `Command` object.
+ *
+ * This function is a simple factory for creating `Command` instances,
+ * ensuring the object matches the expected interface and restrictions.
+ *
+ * @param params - The parameters for the command.
+ * @returns The newly created `Command` object.
+ *
+ * @example
+ * ```ts
+ * const myCommand = createCommand({
+ *   value: "start",
+ *   label: "Start",
+ *   description: "Start the main scene."
+ * });
+ * ```
+ */
 export const createCommand = (params: Command): Command => {
     const { value, label, description } = params;
 

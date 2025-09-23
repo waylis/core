@@ -31,13 +31,35 @@ import { cleanupFiles, cleanupMessages } from "./tasks";
 import { FileManagerClass } from "../file/manager";
 import { ChatManager } from "../chat/chat";
 
+/**
+ * Parameters for initializing application server.
+ */
 export interface AppServerParams {
+    /**
+     * Database instance used by the server for persistence.
+     */
     db?: Database;
+    /**
+     * File storage implementation for handling file uploads and storage.
+     */
     fileStorage?: FileStorage;
+    /**
+     * Server configuration options.
+     * Can be partially provided; defaults will be applied for missing values.
+     */
     config?: Partial<ServerConfig>;
+    /**
+     * Logger instance for capturing and formatting logs.
+     */
     logger?: Logger;
 }
 
+/**
+ * Main application server.
+ *
+ * This class encapsulates the initialization and lifecycle management
+ * of the server, including database, file storage, configuration, and logging.
+ */
 export class AppServer {
     protected config: ServerConfig = defaultConfig;
     protected database: Database;
@@ -52,6 +74,12 @@ export class AppServer {
     protected eventBus: EventBus;
     protected connections: Map<string, ServerResponse> = new Map();
 
+    /**
+     * Create a new application server instance.
+     *
+     * @param params - Optional initialization parameters used to configure
+     *   the server. If omitted, defaults will be applied.
+     */
     constructor(params?: AppServerParams) {
         this.config = { ...this.config, ...params?.config };
         this.logger = params?.logger ?? new SimpleLogger();
@@ -149,6 +177,11 @@ export class AppServer {
         };
     }
 
+    /**
+     * Start the application server.
+     *
+     * @returns A function that, when called, closes the server and triggers cleanup.
+     */
     async start() {
         if (!this.database.isOpen) await this.database.open();
         if (!this.fileStorage.isOpen) await this.fileStorage.open();
@@ -178,6 +211,17 @@ export class AppServer {
         return server.close;
     }
 
+    /**
+     * Add a new scene to the application.
+     *
+     * A scene represents a sequence of steps that the engine will execute
+     * when the specified command is triggered.
+     *
+     * @typeParam Steps - A tuple of `SceneStep` definitions representing
+     *   the ordered steps of the scene.
+     * @param command - The command that will trigger this scene.
+     * @param scene - The actual scene.
+     */
     addScene<Steps extends readonly SceneStep<any, any>[]>(
         command: Command,
         scene: {
@@ -185,9 +229,14 @@ export class AppServer {
             handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody | SystemMessageBody[]>;
         }
     ) {
-        return this.engine.addScene(command, scene);
+        this.engine.addScene(command, scene);
     }
 
+    /**
+     * Get the `FileManager` instance for managing files.
+     *
+     * @returns A promise that resolves to the `FileManager` instance.
+     */
     async getFileManager(): Promise<FileManager> {
         if (!this.database.isOpen) await this.database.open();
         if (!this.fileStorage.isOpen) await this.fileStorage.open();
