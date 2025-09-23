@@ -37,6 +37,13 @@ Default pagination size for endpoints (chats, messages).
 
 Function for generating unique identifiers (IDs) for all elements in the system.
 
+## chatNameGenerator
+
+-   Type: `() => string`
+-   Default: `() => "Chat #abc123"`
+
+Default function for generating chat names, unless explicitly specified by the user.
+
 ## app.name
 
 -   Type: `string`

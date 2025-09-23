@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { simpleAuthHandler, simpleLogoutHandler } from "./handlers";
 import { simpleAuthMiddleware } from "./helpers";
-import { randomUUID } from "../utils/random";
+import { randomString, randomUUID } from "../utils/random";
 
 //** HTTP server configuration file */
 export interface ServerConfig {
@@ -9,8 +9,10 @@ export interface ServerConfig {
     port: number;
     /** Default number of items per page for paginated endpoints */
     defaultPageLimit: number;
-    // Default function for generating unique identifiers
+    /** Default function for generating unique identifiers */
     idGenerator: () => string;
+    /** Default function for generating chat names, unless explicitly specified by the user */
+    chatNameGenerator: () => string;
 
     /** Your app metadata */
     app: {
@@ -58,7 +60,9 @@ export interface ServerConfig {
 export const defaultConfig: ServerConfig = {
     port: 7770,
     defaultPageLimit: 20,
+
     idGenerator: randomUUID,
+    chatNameGenerator: () => `Chat #${randomString(6)}`,
 
     app: {
         name: "Waylis",
