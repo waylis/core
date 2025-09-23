@@ -1,6 +1,8 @@
 import path from "node:path";
 import fs from "node:fs";
 
+export type LogLevel = "error" | "warn" | "info" | "debug";
+
 export interface Logger {
     info(...args: unknown[]): void;
     warn(...args: unknown[]): void;
@@ -9,7 +11,7 @@ export interface Logger {
 }
 
 export class SimpleLogger implements Logger {
-    private levels: string[];
+    private levels: LogLevel[];
     private logsDir: string;
     private writeToFile: boolean;
 
@@ -18,7 +20,7 @@ export class SimpleLogger implements Logger {
         logsDir = "logs",
         writeToFile = true,
     }: {
-        levels?: string[];
+        levels?: LogLevel[];
         logsDir?: string;
         writeToFile?: boolean;
     } = {}) {
@@ -29,11 +31,11 @@ export class SimpleLogger implements Logger {
         if (!fs.existsSync(this.logsDir)) fs.mkdirSync(this.logsDir, { recursive: true });
     }
 
-    private shouldLog(level: string): boolean {
+    private shouldLog(level: LogLevel): boolean {
         return this.levels.includes(level);
     }
 
-    private log(level: string, ...args: unknown[]) {
+    private log(level: LogLevel, ...args: unknown[]) {
         if (!this.shouldLog(level)) return;
 
         const timestamp = new Date().toLocaleString();
