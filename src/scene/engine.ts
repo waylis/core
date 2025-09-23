@@ -83,7 +83,7 @@ export class SceneEngine {
         const scene = this.scenes.get(msg.scene || "");
         if (!scene) return this.createErrorMessage(msg, "Unknown scene.");
 
-        const stepIndex = scene.steps.findIndex((s) => s.key === msg.step);
+        const stepIndex = scene.steps.findIndex((s: SceneStep) => s.key === msg.step);
         if (stepIndex === -1) return this.createErrorMessage(msg, "Unknown step.");
 
         const step = scene.steps[stepIndex];
@@ -218,8 +218,9 @@ export class SceneEngine {
         const confirmedSteps = await this.db.getConfirmedStepsByThreadID(msg.threadID);
         const confirmedMessages = await this.db.getMessagesByIDs(confirmedSteps.map((c) => c.messageID));
 
-        return confirmedMessages.reduce((acc, cm) => {
-            acc[cm.step as string] = cm.body.content;
+        return confirmedMessages.reduce((acc: Record<string, MessageBodyMap[UserMessageBodyType]>, cm) => {
+            if (!cm.step) return acc;
+            acc[cm.step] = cm.body.content as MessageBodyMap[UserMessageBodyType];
             return acc;
         }, {});
     }
