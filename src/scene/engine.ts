@@ -5,7 +5,6 @@ import { Scene, SceneResponsesMap } from "./scene";
 import { SceneStep, StepManager } from "./step";
 import { Database } from "../database/database";
 import { EventBus } from "../events/bus";
-import { delay } from "../utils/async";
 
 export class SceneEngine {
     commands: Map<string, Command> = new Map();
@@ -71,9 +70,7 @@ export class SceneEngine {
         const body = await scene.handler({});
         const bodies = Array.isArray(body) ? body : [body];
         const results = await Promise.all(
-            bodies.map((b, index) =>
-                delay(index + 1).then(() => this.createSceneResponseMessage(msg, b, msg.body.content.toString()))
-            )
+            bodies.map((b) => this.createSceneResponseMessage(msg, b, msg.body.content.toString()))
         );
 
         return bodies.length > 1 ? results : results[0];
@@ -128,11 +125,7 @@ export class SceneEngine {
             const finalBody = await scene.handler(responses);
 
             const bodies = Array.isArray(finalBody) ? finalBody : [finalBody];
-            const results = await Promise.all(
-                bodies.map((b, index) =>
-                    delay(index + 1).then(() => this.createSceneResponseMessage(msg, b, msg.scene!))
-                )
-            );
+            const results = await Promise.all(bodies.map((b) => this.createSceneResponseMessage(msg, b, msg.scene!)));
             return results.length > 1 ? results : results[0];
         }
 
@@ -145,9 +138,7 @@ export class SceneEngine {
         const body = await scene.handler(stepResponses);
 
         const bodies = Array.isArray(body) ? body : [body];
-        const results = await Promise.all(
-            bodies.map((b, index) => delay(index + 1).then(() => this.createSceneResponseMessage(msg, b, msg.scene!)))
-        );
+        const results = await Promise.all(bodies.map((b) => this.createSceneResponseMessage(msg, b, msg.scene!)));
         return results.length > 1 ? results : results[0];
     }
 
@@ -227,6 +218,5 @@ export class SceneEngine {
 
     private async saveMessageToDatabase(msg: Message) {
         await this.db.addMessage(msg);
-        await delay(1); // Need to prevent instant response
     }
 }

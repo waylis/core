@@ -1,5 +1,3 @@
-import { randomUUID } from "../utils/random";
-
 export interface Chat {
     id: string;
     name: string;
@@ -17,7 +15,7 @@ export interface ChatDatabase {
 }
 
 export class ChatManager {
-    constructor(private generateID: () => string = randomUUID) {}
+    constructor(private generateID: () => string) {}
 
     createChat(name: string, creatorID: string): Chat {
         return { id: this.generateID(), name, creatorID, createdAt: new Date() };

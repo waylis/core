@@ -1,3 +1,4 @@
+import { createSortableIdGenerator } from "./../src/utils/random";
 import { describe, it } from "node:test";
 import assert from "node:assert";
 import {
@@ -25,7 +26,7 @@ describe("createSystemMessage", () => {
         chatID: "default-chat-id",
     };
 
-    const manager = new MessageManager();
+    const manager = new MessageManager(createSortableIdGenerator());
 
     it("should create system message with user message reference", () => {
         const result = manager.createSystemMessage(baseParams, mockUserMessage);
@@ -96,7 +97,7 @@ describe("createUserMessage", () => {
         replyRestriction: undefined,
     };
 
-    const manager = new MessageManager();
+    const manager = new MessageManager(createSortableIdGenerator());
 
     describe("Basic message creation", () => {
         it("should create simple user message without reply", () => {

@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { simpleAuthHandler, simpleLogoutHandler } from "./handlers";
 import { simpleAuthMiddleware } from "./helpers";
-import { randomString, randomUUID } from "../utils/random";
+import { createSortableIdGenerator, randomString } from "../utils/random";
 
 //** HTTP server configuration file */
 export interface ServerConfig {
@@ -61,7 +61,7 @@ export const defaultConfig: ServerConfig = {
     port: 7770,
     defaultPageLimit: 20,
 
-    idGenerator: randomUUID,
+    idGenerator: createSortableIdGenerator(),
     chatNameGenerator: () => `Chat #${randomString(6)}`,
 
     app: {

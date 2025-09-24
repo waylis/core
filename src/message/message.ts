@@ -1,6 +1,5 @@
 import { FileMeta } from "../file/file";
 import { bytesToMB, isFloat } from "../utils/number";
-import { randomUUID } from "../utils/random";
 import { isPlainObject } from "../utils/validation";
 import {
     DatetimeLimits,
@@ -66,7 +65,7 @@ const allowedUserMessageBodyTypes: UserMessageBodyType[] = [
 ];
 
 export class MessageManager {
-    constructor(private generateID: () => string = randomUUID) {}
+    constructor(private generateID: () => string) {}
 
     createSystemMessage(params: CreateSystemMessageParams, userMsg?: Message): Message {
         if (!userMsg && !params.chatID) {

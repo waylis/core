@@ -84,7 +84,8 @@ export class MemoryDatabase implements Database {
     async getMessagesByChatID(chatID: string, offset: number, limit: number): Promise<Message[]> {
         const filtered = this.messages
             .filter((msg) => msg.chatID === chatID)
-            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+            .sort((a, b) => b.id.localeCompare(a.id));
 
         return filtered.slice(offset, offset + limit);
     }

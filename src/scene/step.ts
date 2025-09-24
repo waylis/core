@@ -1,5 +1,5 @@
 import { UserMessageBodyType, SystemMessageBody, ReplyRestriction, MessageBodyMap } from "../message/types";
-import { randomUUID } from "../utils/random";
+import { createSortableIdGenerator } from "../utils/random";
 
 export interface ConfirmedStep {
     id: string;
@@ -28,7 +28,7 @@ export const SCENE_STEP_KEY_MAX_LEN = 32;
 export const SCENE_STEP_KEY_ALLOWED_SYMBOLS = /^[a-zA-Z0-9_]+$/;
 
 export class StepManager {
-    constructor(private generateID: () => string = randomUUID) {}
+    constructor(private generateID: () => string = createSortableIdGenerator()) {}
 
     createConfirmedStep(params: Omit<ConfirmedStep, "id" | "createdAt">): ConfirmedStep {
         return { id: this.generateID(), ...params, createdAt: new Date() };

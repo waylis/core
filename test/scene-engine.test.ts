@@ -2,7 +2,7 @@ import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { SceneEngine } from "../src/scene/engine";
 import { Message, MessageManager } from "../src/message/message";
-import { randomString } from "../src/utils/random";
+import { createSortableIdGenerator, randomString } from "../src/utils/random";
 import { createCommand } from "../src/scene/command";
 import { createScene } from "../src/scene/scene";
 import { SystemMessageBody, UserMessageBody } from "../src/message/types";
@@ -13,7 +13,7 @@ import { JSONDatabase } from "../src/database/json/json";
 describe("SceneEngine > handleMessage", async () => {
     let engine: SceneEngine;
     const db = new JSONDatabase();
-    const messageManager = new MessageManager();
+    const messageManager = new MessageManager(createSortableIdGenerator());
     const stepManager = new StepManager();
 
     const mockMessage = (

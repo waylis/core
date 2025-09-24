@@ -146,7 +146,8 @@ export class JSONDatabase implements Database {
 
         const filtered = this.data.messages
             .filter((msg) => msg.chatID === chatID)
-            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+            .sort((a, b) => b.id.localeCompare(a.id));
 
         return filtered.slice(offset, offset + limit);
     }
