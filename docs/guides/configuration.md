@@ -33,9 +33,11 @@ Default pagination size for endpoints (chats, messages).
 ## idGenerator
 
 -   Type: `() => string`
--   Default: `crypto.randomUUID()`
+-   Default: [Custom sortable ID](https://github.com/waylis/core/blob/master/src/utils/random.ts)
 
 Function for generating unique identifiers (IDs) for all elements in the system.
+
+It is highly recommended to use only sortable IDs with [monotonic mode](https://github.com/ulid/spec?tab=readme-ov-file#monotonicity) (e.g., ULID, UUIDv7). This is because messages can be stored within the same millisecond, making it impossible to guarantee the correct order based solely on the creation timestamp.
 
 ## chatNameGenerator
 
