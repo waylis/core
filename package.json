@@ -4,10 +4,7 @@
   "author": "cheatsnake",
   "license": "MIT",
   "description": "A simple way to interact with your backend.",
-  "keywords": [
-    "chat",
-    "server"
-  ],
+  "keywords": ["chat", "server"],
   "homepage": "https://github.com/waylis/core#readme",
   "repository": {
     "type": "git",
@@ -40,15 +37,17 @@
     "mime": "^4.1.0"
   },
   "types": "./build/index.d.ts",
-  "files": [
-    "build"
-  ],
+  "files": ["build"],
   "exports": {
     ".": {
       "types": "./build/index.d.ts",
       "require": "./build/index.cjs",
       "import": "./build/index.js",
       "default": "./build/index.js"
+    },
+    "./cjs": {
+      "require": "./build/index.cjs",
+      "types": "./build/index.d.cts"
     }
   }
 }
