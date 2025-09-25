@@ -35,22 +35,17 @@ import { ChatManager } from "../chat/chat";
  * Parameters for initializing application server.
  */
 export interface AppServerParams {
-    /**
-     * Database instance used by the server for persistence.
-     */
+    /** Database instance used by the server for persistence. */
     db?: Database;
-    /**
-     * File storage implementation for handling file uploads and storage.
-     */
+    /** File storage implementation for handling file uploads and storage. */
     fileStorage?: FileStorage;
+
     /**
      * Server configuration options.
      * Can be partially provided; defaults will be applied for missing values.
      */
     config?: Partial<ServerConfig>;
-    /**
-     * Logger instance for capturing and formatting logs.
-     */
+    /** Logger instance for capturing and formatting logs. */
     logger?: Logger;
 }
 

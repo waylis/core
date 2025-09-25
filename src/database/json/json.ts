@@ -8,6 +8,7 @@ import { FileMeta } from "../../file/file";
 import { Mutex } from "../../utils/mutex";
 import { jsonDateReviver } from "../../utils/date";
 
+/** Simple JSON file–based database implementation. */
 export class JSONDatabase implements Database {
     isOpen: boolean = false;
     private dataPath: string;
@@ -19,6 +20,10 @@ export class JSONDatabase implements Database {
     };
     private writeMutex = new Mutex();
 
+    /**
+     * Create a new JSONDatabase instance.
+     * @param filepath Path to the JSON file (defaults to `"db.json"`).
+     */
     constructor(filepath: string = "./db.json") {
         this.dataPath = path.resolve(filepath);
         this.data = { chats: [], messages: [], steps: [], files: [] };

@@ -1,8 +1,14 @@
 import path from "node:path";
 import fs from "node:fs";
 
+/**
+ * Represents the available logging levels.
+ */
 export type LogLevel = "error" | "warn" | "info" | "debug";
 
+/**
+ * A logging interface defining standard log methods.
+ */
 export interface Logger {
     info(...args: unknown[]): void;
     warn(...args: unknown[]): void;
@@ -10,11 +16,21 @@ export interface Logger {
     debug(...args: unknown[]): void;
 }
 
+/**
+ * A simple logger implementation with configurable log levels and optional file output.
+ */
 export class SimpleLogger implements Logger {
     private levels: LogLevel[];
     private logsDir: string;
     private writeToFile: boolean;
 
+    /**
+     * Creates a new SimpleLogger instance.
+     * @param options Configuration options.
+     * @param options.levels Logging levels to enable. Defaults to all levels.
+     * @param options.logsDir Directory where log files will be stored. Defaults to `"logs"`.
+     * @param options.writeToFile Whether to write logs to files in addition to console. Defaults to `true`.
+     */
     constructor({
         levels = ["error", "warn", "info", "debug"],
         logsDir = "logs",

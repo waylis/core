@@ -4,6 +4,11 @@ import { Message } from "../../message/message";
 import { ConfirmedStep } from "../../scene/step";
 import { Database } from "../database";
 
+/**
+ * Simple in-memory database implementation.
+ *
+ * Data is lost when the process exits.
+ */
 export class MemoryDatabase implements Database {
     isOpen: boolean = false;
     private chats: Chat[] = [];

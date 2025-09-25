@@ -3,10 +3,17 @@ import { promises, createWriteStream, createReadStream, existsSync, mkdirSync } 
 import { pipeline } from "node:stream/promises";
 import { FileStorage, FileMeta } from "../file";
 
+/**
+ * File storage implementation that saves files to the local disk.
+ */
 export class DiskFileStorage implements FileStorage {
     isOpen: boolean = false;
     private storagePath: string;
 
+    /**
+     * Create a new disk-based file storage.
+     * @param storagePath Optional root directory path (defaults to `"files"`).
+     */
     constructor(storagePath?: string) {
         this.storagePath = storagePath || "files";
         this.ensureDirectoryExists();

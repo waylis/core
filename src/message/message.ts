@@ -16,29 +16,80 @@ import {
     UserMessageBodyType,
 } from "./types";
 
+/**
+ * Represents a chat message.
+ */
 export interface Message {
+    /** Unique identifier of the message. */
     id: string;
+    /** ID of the chat this message belongs to. */
     chatID: string;
+    /** ID of the user who sent the message. */
     senderID: string;
+    /** ID of the message this one replies to, if any. */
     replyTo?: string;
+    /** ID of the thread this message belongs to. */
     threadID: string;
+    /** Optional scene identifier for workflow tracking. */
     scene?: string;
+    /** Optional step identifier within a scene. */
     step?: string;
+    /** Message content. */
     body: MessageBody;
+    /** Restriction settings for replies, if any. */
     replyRestriction?: ReplyRestriction;
+    /** Timestamp when the message was created. */
     createdAt: Date;
 }
 
+/**
+ * Abstraction for message persistence operations.
+ */
 export interface MessageDatabase {
+    /**
+     * Add a new message to the database.
+     * @param msg Message to store.
+     */
     addMessage(msg: Message): Promise<void>;
+
+    /**
+     * Retrieve a message by its ID.
+     * @param id Message identifier.
+     * @returns Message if found, otherwise null.
+     */
     getMessageByID(id: string): Promise<Message | null>;
+
+    /**
+     * Retrieve multiple messages by IDs.
+     * @param ids List of message identifiers.
+     */
     getMessagesByIDs(ids: string[]): Promise<Message[]>;
+
+    /**
+     * Retrieve messages from a chat.
+     * @param chatID Chat identifier.
+     * @param offset Skip this many results.
+     * @param limit Maximum number of results.
+     */
     getMessagesByChatID(chatID: string, offset: number, limit: number): Promise<Message[]>;
+
+    /**
+     * Delete all messages created before a given date.
+     * @param maxDate Cutoff date.
+     * @returns Number of deleted messages.
+     */
     deleteOldMessages(maxDate: Date): Promise<number>;
+
+    /**
+     * Delete all messages belonging to a chat.
+     * @param chatID Chat identifier.
+     * @returns Number of deleted messages.
+     */
     deleteMessagesByChatID(chatID: string): Promise<number>;
 }
 
 type CreateMessageParams = Omit<Message, "id" | "createdAt">;
+
 export type CreateSystemMessageParams = Omit<
     CreateMessageParams,
     "senderID" | "replyTo" | "threadID" | "chatID" | "body"
