@@ -1,4 +1,4 @@
-import { UserMessageBodyType, SystemMessageBody, ReplyRestriction, MessageBodyMap } from "../message/types";
+import { UserMessageBodyType, SystemMessageBody, ExpectedReply, MessageBodyMap } from "../message/types";
 import { createSortableIdGenerator } from "../utils/random";
 
 /** Represents a confirmed step in a scene flow. */
@@ -24,7 +24,7 @@ export interface SceneStep<K extends string = string, T extends UserMessageBodyT
     /** Prompt message shown to the user. */
     prompt: SystemMessageBody;
     /** Restriction on expected reply. */
-    reply: ReplyRestriction<T>;
+    reply: ExpectedReply<T>;
 
     /**
      * Optional handler to process (validate) the user's reply.

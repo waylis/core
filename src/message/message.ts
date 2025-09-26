@@ -5,7 +5,7 @@ import {
     DatetimeLimits,
     MessageBody,
     NumberLimits,
-    ReplyRestriction,
+    ExpectedReply,
     OptionLimits,
     SystemMessageBody,
     TextLimits,
@@ -37,7 +37,7 @@ export interface Message {
     /** Message content. */
     body: MessageBody;
     /** Restriction settings for replies, if any. */
-    reply?: ReplyRestriction;
+    reply?: ExpectedReply;
     /** Timestamp when the message was created. */
     createdAt: Date;
 }

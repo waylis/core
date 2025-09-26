@@ -140,9 +140,9 @@ export type MessageBodyLimitsMap = {
 };
 
 /**
- * Restriction on replies, enforcing a specific body type and limits.
+ * Defines the expected shape and constraints of a reply.
  */
-export type ReplyRestriction<T extends UserMessageBodyType = UserMessageBodyType> = {
+export type ExpectedReply<T extends UserMessageBodyType = UserMessageBodyType> = {
     /** Required body type for the reply. */
     bodyType: T;
     /** Optional limits for that body type. */

@@ -22,5 +22,5 @@ export {
     type UserMessageBody,
     type UserMessageBodyType,
     type MessageBodyLimitsMap,
-    type ReplyRestriction,
+    type ExpectedReply,
 } from "./message/types";
