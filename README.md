@@ -32,7 +32,7 @@ const command = createCommand({ value: "hello", label: "Hello World" });
 const step = createStep({
     key: "name",
     prompt: { type: "text", content: "What is your name?" },
-    replyRestriction: { bodyType: "text" },
+    reply: { bodyType: "text" },
 });
 
 const scene = createScene({

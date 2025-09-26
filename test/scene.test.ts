@@ -6,7 +6,7 @@ describe("createStep", () => {
     const createMockStep = (key: string): SceneStep => ({
         key,
         prompt: { type: "text", content: "test" },
-        replyRestriction: { bodyType: "text" },
+        reply: { bodyType: "text" },
     });
 
     const validCases = [

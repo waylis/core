@@ -14,7 +14,7 @@ import { createStep } from "@waylis/core";
 const ageStep = createStep({
     key: "age",
     prompt: { type: "text", content: "How old are you?" },
-    replyRestriction: { bodyType: "number" },
+    reply: { bodyType: "number" },
     handler: async (age) => {
         if (age < 18) {
             return { type: "text", content: "You must be at least 18." };
@@ -27,15 +27,15 @@ const ageStep = createStep({
     -   must be 1–32 characters
     -   allowed: lowercase letters (a-z), numbers (0-9), underscores (\_)
 -   `prompt` (required) — The message/question sent to the user. See [system responses](/fundamentals/scenes#system-responses).
--   `replyRestriction` (required) — Defines which type of response is allowed and restriction for it.
+-   `reply` (required) — Defines which type of response is allowed and restriction for it.
 -   `handler` (optional) — Async function called immediately after the user responds. Used for custom validation.
 
 ## Reply restriction
 
-The `replyRestriction` defines what type of user response is expected and applies optional validation rules.
+The `reply` defines what type of user response is expected and applies optional validation rules.
 
 ```ts
-replyRestriction: { bodyType: string; bodyLimits?: Object };
+reply: { bodyType: string; bodyLimits?: Object };
 ```
 
 Supported `bodyType` values:
@@ -54,21 +54,21 @@ Supported `bodyType` values:
 Some body types supports `bodyLimits` object for basic auto validation:
 
 ```ts
-replyRestriction: {
+reply: {
   bodyType: "text",
   bodyLimits: { minLength: 2, maxLength: 50 }
 }
 ```
 
 ```ts
-replyRestriction: {
+reply: {
   bodyType: "number",
   bodyLimits: { min: 0, max: 100, integerOnly: true }
 }
 ```
 
 ```ts
-replyRestriction: {
+reply: {
   bodyType: "file",
   bodyLimits: {
     mimeTypes: ["application/json",],
@@ -78,7 +78,7 @@ replyRestriction: {
 ```
 
 ```ts
-replyRestriction: {
+reply: {
   bodyType: "files",
   bodyLimits: {
     maxAmount: 3,
@@ -89,7 +89,7 @@ replyRestriction: {
 ```
 
 ```ts
-replyRestriction: {
+reply: {
   bodyType: "option",
   bodyLimits: {
     options: [
@@ -102,7 +102,7 @@ replyRestriction: {
 ```
 
 ```ts
-replyRestriction: {
+reply: {
   bodyType: "options",
   bodyLimits: {
     options: [

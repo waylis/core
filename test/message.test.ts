@@ -94,7 +94,7 @@ describe("createUserMessage", () => {
         threadID: "thread-101",
         body: { type: "text", content: "Original message" },
         createdAt: new Date(),
-        replyRestriction: undefined,
+        reply: undefined,
     };
 
     const manager = new MessageManager(createSortableIdGenerator());
@@ -124,7 +124,7 @@ describe("createUserMessage", () => {
         it("should validate text length (min)", () => {
             const replyMsg: Message = {
                 ...mockReplyMessage,
-                replyRestriction: {
+                reply: {
                     bodyType: "text",
                     bodyLimits: { minLength: 10 } as TextLimits,
                 },
@@ -139,7 +139,7 @@ describe("createUserMessage", () => {
         it("should validate text length (max)", () => {
             const replyMsg: Message = {
                 ...mockReplyMessage,
-                replyRestriction: {
+                reply: {
                     bodyType: "text",
                     bodyLimits: { maxLength: 5 } as TextLimits,
                 },
@@ -159,7 +159,7 @@ describe("createUserMessage", () => {
     describe("Number restrictions", () => {
         const numberReplyMsg = (limits: Partial<NumberLimits>): Message => ({
             ...mockReplyMessage,
-            replyRestriction: {
+            reply: {
                 bodyType: "number",
                 bodyLimits: limits as NumberLimits,
             },
@@ -191,7 +191,7 @@ describe("createUserMessage", () => {
     describe("Datetime restrictions", () => {
         const dateReplyMsg = (limits: Partial<DatetimeLimits>): Message => ({
             ...mockReplyMessage,
-            replyRestriction: {
+            reply: {
                 bodyType: "datetime",
                 bodyLimits: limits as DatetimeLimits,
             },
@@ -213,7 +213,7 @@ describe("createUserMessage", () => {
     describe("Option restrictions", () => {
         const optionReplyMsg = (options: Option[]): Message => ({
             ...mockReplyMessage,
-            replyRestriction: {
+            reply: {
                 bodyType: "option",
                 bodyLimits: { options } as OptionLimits,
             },
@@ -243,7 +243,7 @@ describe("createUserMessage", () => {
 
         const fileReplyMsg = (limits: Partial<FileLimits>): Message => ({
             ...mockReplyMessage,
-            replyRestriction: {
+            reply: {
                 bodyType: "file",
                 bodyLimits: limits as FileLimits,
             },
@@ -283,7 +283,7 @@ describe("createUserMessage", () => {
 
         const filesReplyMsg = (limits: Partial<FilesLimits>): Message => ({
             ...mockReplyMessage,
-            replyRestriction: {
+            reply: {
                 bodyType: "files",
                 bodyLimits: limits as FilesLimits,
             },

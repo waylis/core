@@ -37,7 +37,7 @@ export interface Message {
     /** Message content. */
     body: MessageBody;
     /** Restriction settings for replies, if any. */
-    replyRestriction?: ReplyRestriction;
+    reply?: ReplyRestriction;
     /** Timestamp when the message was created. */
     createdAt: Date;
 }
@@ -151,15 +151,15 @@ export class MessageManager {
             };
         }
 
-        if (!replyMsg?.replyRestriction) return msg;
+        if (!replyMsg?.reply) return msg;
 
-        if (replyMsg.replyRestriction.bodyType !== msg.body.type) {
-            throw Error(`Invalid body type. Expected ${replyMsg.replyRestriction.bodyType}`);
+        if (replyMsg.reply.bodyType !== msg.body.type) {
+            throw Error(`Invalid body type. Expected ${replyMsg.reply.bodyType}`);
         }
 
-        if (replyMsg.replyRestriction.bodyType === "text") {
+        if (replyMsg.reply.bodyType === "text") {
             const bodyContent = params.body.content.toString();
-            const limit = replyMsg.replyRestriction.bodyLimits as TextLimits;
+            const limit = replyMsg.reply.bodyLimits as TextLimits;
             msg.body.content = bodyContent;
 
             if (limit?.minLength != null && bodyContent.length < limit.minLength) {
@@ -173,9 +173,9 @@ export class MessageManager {
             }
         }
 
-        if (replyMsg.replyRestriction.bodyType === "number") {
+        if (replyMsg.reply.bodyType === "number") {
             const bodyContent = Number(params.body.content) || 0;
-            const limit = replyMsg.replyRestriction.bodyLimits as NumberLimits;
+            const limit = replyMsg.reply.bodyLimits as NumberLimits;
             msg.body.content = bodyContent;
 
             if (limit?.integerOnly && isFloat(bodyContent)) {
@@ -191,9 +191,9 @@ export class MessageManager {
             }
         }
 
-        if (replyMsg.replyRestriction.bodyType === "datetime") {
+        if (replyMsg.reply.bodyType === "datetime") {
             const bodyContent = params.body.content as Date;
-            const limit = replyMsg.replyRestriction.bodyLimits as DatetimeLimits;
+            const limit = replyMsg.reply.bodyLimits as DatetimeLimits;
             msg.body.content = bodyContent;
 
             if (limit?.min != null && bodyContent.getTime() < limit.min.getTime()) {
@@ -205,18 +205,18 @@ export class MessageManager {
             }
         }
 
-        if (replyMsg.replyRestriction.bodyType === "option") {
+        if (replyMsg.reply.bodyType === "option") {
             const bodyContent = msg.body.content as string;
-            const limit = replyMsg.replyRestriction.bodyLimits as OptionLimits;
+            const limit = replyMsg.reply.bodyLimits as OptionLimits;
             const existingOption = limit?.options?.find((opt) => opt?.value === bodyContent);
             if (!existingOption) {
                 throw Error("The provided option does not exist.");
             }
         }
 
-        if (replyMsg.replyRestriction.bodyType === "options") {
+        if (replyMsg.reply.bodyType === "options") {
             const bodyContent = msg.body.content as string[];
-            const limit = replyMsg.replyRestriction.bodyLimits as OptionsLimits;
+            const limit = replyMsg.reply.bodyLimits as OptionsLimits;
 
             if (limit?.maxAmount != null && bodyContent.length > limit.maxAmount) {
                 throw Error(`Too many options. The maximum allowed is ${limit.maxAmount}`);
@@ -230,15 +230,15 @@ export class MessageManager {
             }
         }
 
-        if (replyMsg.replyRestriction.bodyType === "file") {
+        if (replyMsg.reply.bodyType === "file") {
             const bodyContent = msg.body.content as FileMeta;
-            const limit = replyMsg.replyRestriction.bodyLimits as FileLimits;
+            const limit = replyMsg.reply.bodyLimits as FileLimits;
             this.checkFileDataLimit(limit, bodyContent);
         }
 
-        if (replyMsg.replyRestriction.bodyType === "files") {
+        if (replyMsg.reply.bodyType === "files") {
             const bodyContent = msg.body.content as FileMeta[];
-            const limit = replyMsg.replyRestriction.bodyLimits as FilesLimits;
+            const limit = replyMsg.reply.bodyLimits as FilesLimits;
             if (limit?.maxAmount != null && bodyContent.length > limit.maxAmount) {
                 throw Error(`Too many files. The maximum allowed is ${limit.maxAmount}`);
             }

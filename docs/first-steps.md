@@ -34,7 +34,7 @@ const command = w.createCommand({ value: "hello", label: "Hello World" });
 const step = w.createStep({
     key: "name",
     prompt: { type: "text", content: "What is your name?" },
-    replyRestriction: { bodyType: "text" },
+    reply: { bodyType: "text" },
 });
 
 const scene = w.createScene({

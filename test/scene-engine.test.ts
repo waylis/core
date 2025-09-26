@@ -69,7 +69,7 @@ describe("SceneEngine > handleMessage", async () => {
         const step = createStep({
             key: "name",
             prompt: { type: "text", content: "What is your name?" },
-            replyRestriction: { bodyType: "text" },
+            reply: { bodyType: "text" },
         });
 
         const scene = createScene({
@@ -95,13 +95,13 @@ describe("SceneEngine > handleMessage", async () => {
         const step1 = createStep({
             key: "num1",
             prompt: { type: "text", content: "Enter first number" },
-            replyRestriction: { bodyType: "number" },
+            reply: { bodyType: "number" },
         });
 
         const step2 = createStep({
             key: "num2",
             prompt: { type: "text", content: "Enter second number" },
-            replyRestriction: { bodyType: "number" },
+            reply: { bodyType: "number" },
         });
 
         const scene = createScene({
@@ -133,7 +133,7 @@ describe("SceneEngine > handleMessage", async () => {
         const step = createStep({
             key: "name",
             prompt: { type: "text", content: "What is your name?" },
-            replyRestriction: { bodyType: "text", bodyLimits: { minLength: 3 } },
+            reply: { bodyType: "text", bodyLimits: { minLength: 3 } },
         });
 
         const scene = createScene({

@@ -12,7 +12,7 @@ const command = createCommand({ value: "text_example" });
 const step = createStep({
     key: "data",
     prompt: { type: "text", content: "Please enter text" },
-    replyRestriction: {
+    reply: {
         bodyType: "text",
         bodyLimits: { minLength: 3, maxLength: 50 },
     },
@@ -36,7 +36,7 @@ const command = createCommand({ value: "number_example" });
 const step = createStep({
     key: "data",
     prompt: { type: "text", content: "Please enter a number" },
-    replyRestriction: {
+    reply: {
         bodyType: "number",
         bodyLimits: { min: 1, max: 9999, integerOnly: true },
     },
@@ -60,7 +60,7 @@ const command = createCommand({ value: "boolean_example" });
 const step = createStep({
     key: "data",
     prompt: { type: "text", content: "Please pick yes or no" },
-    replyRestriction: { bodyType: "boolean" },
+    reply: { bodyType: "boolean" },
 });
 
 const scene = createScene({
@@ -81,7 +81,7 @@ const command = createCommand({ value: "datetime_example" });
 const step = createStep({
     key: "data",
     prompt: { type: "text", content: "Please pick a date" },
-    replyRestriction: {
+    reply: {
         bodyType: "datetime",
         bodyLimits: { max: new Date() },
     },
@@ -111,7 +111,7 @@ const options = [
 const step = createStep({
     key: "data",
     prompt: { type: "text", content: "Please pick an option" },
-    replyRestriction: { bodyType: "option", bodyLimits: { options } },
+    reply: { bodyType: "option", bodyLimits: { options } },
 });
 
 const scene = createScene({
@@ -140,7 +140,7 @@ const options = [
 const step = createStep({
     key: "data",
     prompt: { type: "text", content: "Please pick options" },
-    replyRestriction: {
+    reply: {
         bodyType: "options",
         bodyLimits: { options, maxAmount: 2 },
     },
@@ -164,7 +164,7 @@ const command = createCommand({ value: "file_example" });
 const step = createStep({
     key: "data",
     prompt: { type: "text", content: "Please pick a file" },
-    replyRestriction: {
+    reply: {
         bodyType: "file",
         bodyLimits: { mimeTypes: ["image/gif"], maxSize: 1_000_000 },
     },
@@ -191,7 +191,7 @@ const command = createCommand({ value: "files_example" });
 const step = createStep({
     key: "data",
     prompt: { type: "text", content: "Please pick files" },
-    replyRestriction: {
+    reply: {
         bodyType: "files",
         bodyLimits: {
             mimeTypes: ["image/png"],

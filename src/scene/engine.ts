@@ -163,7 +163,7 @@ export class SceneEngine {
 
     private async createStepPromptMessage(msg: Message, step: SceneStep, sceneKey: string): Promise<Message> {
         const promptMsg = this.messageManager.createSystemMessage(
-            { body: step.prompt, replyRestriction: step.replyRestriction, scene: sceneKey, step: step.key },
+            { body: step.prompt, reply: step.reply, scene: sceneKey, step: step.key },
             msg
         );
 
@@ -184,7 +184,7 @@ export class SceneEngine {
     private async createStepReplyMessage(msg: Message, body: SystemMessageBody): Promise<Message> {
         const initial = await this.db.getMessageByID(msg.replyTo!);
         const replyMsg = this.messageManager.createSystemMessage(
-            { body, replyRestriction: initial?.replyRestriction, scene: msg.scene!, step: msg.step! },
+            { body, reply: initial?.reply, scene: msg.scene!, step: msg.step! },
             msg
         );
 

@@ -12,13 +12,13 @@ import { createScene, createStep } from "@waylis/core";
 const nameStep = createStep({
     key: "name",
     prompt: { type: "text", content: "What is your name?" },
-    replyRestriction: { bodyType: "text" },
+    reply: { bodyType: "text" },
 });
 
 const ageStep = createStep({
     key: "age",
     prompt: { type: "text", content: "How old are you?" },
-    replyRestriction: { bodyType: "number" },
+    reply: { bodyType: "number" },
 });
 
 const scene = createScene({

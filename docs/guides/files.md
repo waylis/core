@@ -38,7 +38,7 @@ const fileScene = createScene({
         createStep({
             key: "file",
             prompt: { type: "text", content: "Please upload a file." },
-            replyRestriction: { bodyType: "file" },
+            reply: { bodyType: "file" },
         }),
     ],
     handler: async (answers) => {

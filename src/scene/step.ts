@@ -24,7 +24,7 @@ export interface SceneStep<K extends string = string, T extends UserMessageBodyT
     /** Prompt message shown to the user. */
     prompt: SystemMessageBody;
     /** Restriction on expected reply. */
-    replyRestriction: ReplyRestriction<T>;
+    reply: ReplyRestriction<T>;
 
     /**
      * Optional handler to process (validate) the user's reply.
