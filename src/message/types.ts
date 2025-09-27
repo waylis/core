@@ -22,12 +22,8 @@ export interface LineChart {
     series: { name: string; color?: string; label?: string; yAxisId?: string }[];
     /** Curve interpolation type. */
     curveType?: "bump" | "linear" | "natural" | "monotone" | "step" | "stepBefore" | "stepAfter";
-    /** Chart height. */
-    height?: number | string;
-    /** Extra props passed to the X-axis. */
-    xAxisProps?: Record<string, any>;
-    /** Extra props passed to the Y-axis. */
-    yAxisProps?: Record<string, any>;
+    /** Any other parameters. */
+    extra?: Record<string, any>;
 }
 
 /**
