@@ -30,6 +30,8 @@ import { SimpleLogger, Logger } from "../logger/logger";
 import { cleanupFiles, cleanupMessages } from "./tasks";
 import { FileManagerClass } from "../file/manager";
 import { ChatManager } from "../chat/chat";
+import { DeepPartial } from "../utils/types";
+import { mergeDeep } from "../utils/object";
 
 /**
  * Parameters for initializing application server.
@@ -44,7 +46,7 @@ export interface AppServerParams {
      * Server configuration options.
      * Can be partially provided; defaults will be applied for missing values.
      */
-    config?: Partial<ServerConfig>;
+    config?: DeepPartial<ServerConfig>;
     /** Logger instance for capturing and formatting logs. */
     logger?: Logger;
 }
@@ -76,7 +78,7 @@ export class AppServer {
      *   the server. If omitted, defaults will be applied.
      */
     constructor(params?: AppServerParams) {
-        this.config = { ...this.config, ...params?.config };
+        this.config = mergeDeep(this.config, params?.config);
         this.logger = params?.logger ?? new SimpleLogger();
         this.eventBus = eventBus;
 
