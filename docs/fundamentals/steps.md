@@ -30,7 +30,7 @@ const ageStep = createStep({
 -   `reply` (required) — Defines which type of response is allowed and restriction for it.
 -   `handler` (optional) — Async function called immediately after the user responds. Used for custom validation.
 
-## Reply restriction
+## Expected reply
 
 The `reply` defines what type of user response is expected and applies optional validation rules.
 
