@@ -1,4 +1,5 @@
 export { AppServer, type AppServerParams } from "./server/server";
+export { type ServerConfig } from "./server/config";
 export { createCommand, type Command } from "./scene/command";
 export { createStep, type SceneStep, type ConfirmedStep, type ConfirmedStepDatabase } from "./scene/step";
 export { createScene, type Scene, type SceneResponsesMap } from "./scene/scene";
@@ -27,5 +28,11 @@ export {
     type OptionsLimits,
     type FileLimits,
     type FilesLimits,
+    type MessageBody,
+    type MessageBodyType,
     type SystemMessageBody,
+    type MessageBodyMap,
+    type ExpectedReply,
+    type UserMessageBodyType,
+    type MessageBodyLimitsMap,
 } from "./message/types";
