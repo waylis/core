@@ -58,7 +58,9 @@ export interface FileLimits {
 }
 
 /** Limits for multiple files. */
-export type FilesLimits = FileLimits & { maxAmount?: number };
+export interface FilesLimits extends FileLimits {
+    maxAmount?: number;
+}
 
 /** Limits for selecting a single option. */
 export interface OptionLimits {
@@ -138,9 +140,9 @@ export type MessageBodyLimitsMap = {
 /**
  * Defines the expected shape and constraints of a reply.
  */
-export type ExpectedReply<T extends UserMessageBodyType = UserMessageBodyType> = {
+export interface ExpectedReply<T extends UserMessageBodyType = UserMessageBodyType> {
     /** Required body type for the reply. */
     bodyType: T;
     /** Optional limits for that body type. */
     bodyLimits?: T extends keyof MessageBodyLimitsMap ? MessageBodyLimitsMap[T] : never;
-};
+}
