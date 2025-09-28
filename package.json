@@ -18,7 +18,12 @@
   "scripts": {
     "dev": "npx tsx --watch dev/main.ts",
     "test": "npx tsx --test",
-    "build": "tsdown && cp package.shared.json build-shared/package.json",
+    "build:server": "tsdown && cp package.shared.json build-shared/package.json",
+    "build:client": "npm run build --prefix ./ui",
+    "build": "npm run build:server && npm run build:client && cp -r ./ui/dist ./build/public",
+    "ui:init": "git submodule update --init ./ui",
+    "ui:install": "npm install --prefix ./ui",
+    "ui:update": "git submodule update --remote ./ui && git add ./ui && git commit -m 'chore: pull updates from ui'",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
