@@ -4,7 +4,10 @@
   "author": "cheatsnake",
   "license": "MIT",
   "description": "A simple way to interact with your backend.",
-  "keywords": ["chat", "server"],
+  "keywords": [
+    "chat",
+    "server"
+  ],
   "homepage": "https://github.com/waylis/core#readme",
   "repository": {
     "type": "git",
@@ -24,6 +27,7 @@
     "ui:init": "git submodule update --init ./ui",
     "ui:install": "npm install --prefix ./ui",
     "ui:update": "git submodule update --remote ./ui && git add ./ui && git commit -m 'chore: pull updates from ui'",
+    "predocs": "typedoc",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
@@ -32,6 +36,9 @@
     "@types/node": "^24.5.0",
     "tsdown": "^0.15.1",
     "tsx": "^4.20.5",
+    "typedoc": "^0.28.13",
+    "typedoc-plugin-markdown": "^4.9.0",
+    "typedoc-vitepress-theme": "^1.1.2",
     "typescript": "^5.9.2",
     "vitepress": "^2.0.0-alpha.12"
   },
@@ -42,7 +49,9 @@
     "mime": "^4.1.0"
   },
   "types": "./build/index.d.ts",
-  "files": ["build"],
+  "files": [
+    "build"
+  ],
   "exports": {
     ".": {
       "types": "./build/index.d.ts",
