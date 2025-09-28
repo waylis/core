@@ -38,7 +38,7 @@ const step = createStep({
     prompt: { type: "text", content: "Please enter a number" },
     reply: {
         bodyType: "number",
-        bodyLimits: { min: 1, max: 9999, integerOnly: true },
+        bodyLimits: { min: 1, max: 999, integerOnly: true },
     },
 });
 

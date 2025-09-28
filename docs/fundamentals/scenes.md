@@ -2,7 +2,7 @@
 
 A Scene is a complete conversation flow. It can combine multiple steps into a sequence and defines what happens when all the required data is collected.
 
-You define a scene using `createScene`:
+You define a scene using [`createScene`](/api/functions/createScene):
 
 ```ts
 import { createScene, createStep } from "@waylis/core";
@@ -60,7 +60,7 @@ handler: async (answers) => {
 
 ## System responses
 
-Inside the [scene handler](#handlers), you must return a system response. Exactly the same system responses must be returned inside the `prompt` and `handler` from [steps](/fundamentals/steps).
+Inside the [scene handler](#handlers), you must return a [`SystemMessageBody`](/api/type-aliases/SystemMessageBody). Exactly the same system message must be returned inside the `prompt` and `handler` from [steps](/fundamentals/steps).
 
 ```ts
 return {

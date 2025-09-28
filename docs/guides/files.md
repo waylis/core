@@ -2,7 +2,7 @@
 
 Waylis has built-in support for file uploads and downloads.
 
-The [AppServer](/fundamentals/app-server) class provides a method to get a [FileManager]() instance, which you can use in your [scene](/fundamentals/scenes#handlers) or [step handlers](/fundamentals/steps#handler) to process files.
+The [AppServer](/fundamentals/app-server) class provides a method to get a [FileManager](/api/interfaces/FileManager) instance, which you can use in your [scene](/fundamentals/scenes#handlers) or [step handlers](/fundamentals/steps#handler) to process files.
 
 ```ts
 const app = new AppServer();
@@ -62,4 +62,4 @@ You can also delete files yourself by their IDs:
 const deletedFile = await fileManager.deleteFile(fileID);
 ```
 
-By default, files are stored on disk thanks to the built-in [DiskFileStorage](https://github.com/waylis/core/blob/master/src/file/storage/disk.ts) class. But you can connect any other storage by reading [this](/guides/file-storage) guide.
+By default, files are stored on disk thanks to the built-in [DiskFileStorage](/api/classes/DiskFileStorage) class. But you can connect any other storage by reading [this](/guides/file-storage) guide.

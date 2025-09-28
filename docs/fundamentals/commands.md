@@ -2,7 +2,7 @@
 
 Commands are the entry point to functions of your app.
 
-Use `createCommand` to make a new command:
+Use [`createCommand`](/api/functions/createCommand) to make a new command:
 
 ```ts
 import { createCommand } from "@waylis/core";

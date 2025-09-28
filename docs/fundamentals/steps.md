@@ -4,7 +4,7 @@ Steps are the building blocks of [scenes](/fundamentals/scenes). Each step asks 
 
 ## Basic usage
 
-You create a step using `createStep`:
+You create a step using [`createStep`](/api/functions/createStep):
 
 ```ts
 import { createStep } from "@waylis/core";
@@ -27,18 +27,14 @@ const ageStep = createStep({
     -   must be 1–32 characters
     -   allowed: lowercase letters (a-z), numbers (0-9), underscores (\_)
 -   `prompt` (required) — The message/question sent to the user. See [system responses](/fundamentals/scenes#system-responses).
--   `reply` (required) — Defines which type of response is allowed and restriction for it.
--   `handler` (optional) — Async function called immediately after the user responds. Used for custom validation.
+-   [`reply`](/api/interfaces/ExpectedReply) (required) — Defines which type of response is allowed and restriction for it.
+-   [`handler`](/api/interfaces/SceneStep#handler) (optional) — Async function called immediately after the user responds. Used for custom validation.
 
 ## Expected reply
 
 The `reply` defines what type of user response is expected and applies optional validation rules.
 
-```ts
-reply: { bodyType: string; bodyLimits?: Object };
-```
-
-Supported `bodyType` values:
+Supported [`bodyType`](/api/type-aliases/UserMessageBodyType) values:
 
 | Type       | Description                             |
 | ---------- | --------------------------------------- |
@@ -51,7 +47,7 @@ Supported `bodyType` values:
 | `file`     | a single file                           |
 | `files`    | multiple files                          |
 
-Some body types supports `bodyLimits` object for basic auto validation:
+Some body types supports [`bodyLimits`](/api/type-aliases/MessageBodyLimitsMap) object for basic auto validation:
 
 ```ts
 reply: {
@@ -117,7 +113,7 @@ reply: {
 
 ::: tip
 
-See the full [API Reference](/api) for better understaning.
+See the full [API Reference](/api/type-aliases/MessageBodyLimitsMap) for better understaning.
 
 :::
 
@@ -133,7 +129,7 @@ handler: async (username) => {
 };
 ```
 
-The handler receives the parsed and validated response from the user. If `bodyType` is _number_, the handler receives a number. If `bodyType` is _file_, it receives a [FileMeta](/api) object. See all type matches in the [reference](/api).
+The handler receives the parsed and validated response from the user. If `bodyType` is _number_, the handler receives a number primitive. If `bodyType` is _file_, it receives a [FileMeta](/api/interfaces/FileMeta) object. See all type matches in the [reference](/api/type-aliases/MessageBodyMap).
 
 The handler can return:
 

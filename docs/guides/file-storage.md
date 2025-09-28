@@ -6,7 +6,7 @@ Waylis allows you to work with files (upload, download, and delete). This requir
 
 The `@waylis/core` package includes one implementations of such storage:
 
--   [DiskFileStorage](https://github.com/waylis/core/blob/master/src/file/storage/disk.ts) — Simple implementation of file storage based on the server's file system (used by default).
+-   [DiskFileStorage](/api/classes/DiskFileStorage) — Simple implementation of file storage based on the server's file system (used by default).
 
 ```ts
 import { DiskFileStorage } from "@waylis/core";
@@ -20,4 +20,4 @@ const app = new AppServer({
 
 ## Any other file storage
 
-Waylis makes it easy to implement any other file storage implementation that satisfies the [FileStorage](https://github.com/waylis/core/blob/master/src/file/file.ts#L9) interface.
+Waylis makes it easy to implement any other file storage implementation that satisfies the [FileStorage](/api/interfaces/FileStorage) interface.

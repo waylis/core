@@ -2,7 +2,7 @@
 
 Waylis outputs logs to the terminal and also has a built-in ability to save them to files.
 
-By default, a simple built-in [SimpleLogger](https://github.com/waylis/core/blob/master/src/logger/logger.ts) is used:
+By default, a simple built-in [SimpleLogger](/api/classes/SimpleLogger) is used:
 
 ```ts
 import { SimpleLogger } from "@waylis/core";
@@ -18,7 +18,7 @@ const app = new AppServer({
 });
 ```
 
-If you wish, you can use your own logger, which must satisfy the [Logger]() interface:
+If you wish, you can use your own logger, which must satisfy the [Logger](/api/interfaces/Logger) interface:
 
 ```ts
 interface Logger {

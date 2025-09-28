@@ -1,6 +1,6 @@
 # Server configuration
 
-The [App Server](/fundamentals/app-server) class supports configuration via the `config` argument when creating a new instance.
+The [App Server](/fundamentals/app-server) class supports configuration via the [`config`](/api/interfaces/ServerConfig) argument when creating a new instance.
 
 ```ts
 import { AppServer } from "@waylis/core";
@@ -70,7 +70,7 @@ URL to web page icon. Displayed by the browser in the tab before the page title.
 ## auth.handler
 
 -   Type: `(req: IncomingMessage, res: ServerResponse) => Promise<void>`
--   Default: [simpleAuthHandler](https://github.com/waylis/core/blob/master/src/server/handlers.ts#L246)
+-   Default: [simpleAuthHandler](https://github.com/waylis/core/blob/master/src/server/handlers.ts#L249)
 
 Authentication (login) handler that attach unique user ID via cookies.
 
@@ -86,7 +86,7 @@ Authentication middleware that extracts a unique user identifier from the HTTP c
 ## auth.logoutHandler
 
 -   Type: `(req: IncomingMessage, res: ServerResponse) => Promise<void>`
--   Default: [simpleLogoutHandler](https://github.com/waylis/core/blob/master/src/server/handlers.ts#L254)
+-   Default: [simpleLogoutHandler](https://github.com/waylis/core/blob/master/src/server/handlers.ts#L257)
 
 Handler that clear the authentication cookie.
 
