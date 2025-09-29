@@ -1,0 +1,7 @@
+:root {
+  --vp-home-hero-name-color: dark;
+}
+
+.dark {
+  --vp-home-hero-name-color: white;
+}

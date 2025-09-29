@@ -3,10 +3,13 @@ import typedocSidebar from "../api/typedoc-sidebar.json";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+    lang: "en-US",
     title: "Waylis",
     description: "A simple way to interact with your backend",
+    head: [["link", { rel: "icon", href: "/favicon.ico" }]],
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
+        logo: "/logo-black-white.svg",
         nav: [
             { text: "Home", link: "/" },
             { text: "Documentation", link: "/intro" },
@@ -39,7 +42,21 @@ export default defineConfig({
             },
             { text: "API reference", items: typedocSidebar },
         ],
+        footer: {
+            message: "Released under the MIT License.",
+        },
 
         socialLinks: [{ icon: "github", link: "https://github.com/waylis/core" }],
+        search: {
+            provider: "local",
+        },
+        lastUpdated: {
+            text: "Updated at",
+            formatOptions: {
+                dateStyle: "short",
+                timeStyle: "short",
+            },
+        },
     },
+    ignoreDeadLinks: true,
 });
