@@ -156,6 +156,14 @@ export async function getFileHandler(this: AppServer, req: IncomingMessage, res:
 
 export async function uploadFileHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     await this.config.auth.middleware(req);
+
+    const url = parseURL(req);
+    const replyTo = url.searchParams.get("reply_to");
+    if (!replyTo) throw new HTTPError(400, "reply_to query parameter is required");
+
+    const systemMsg = await this.database.getMessageByID(replyTo);
+    if (!systemMsg) throw new HTTPError(404, "Invalid replyTo: message not found");
+
     const contentType = req.headers["content-type"];
     if (!contentType) throw new HTTPError(400, "Content-Type header required");
 
