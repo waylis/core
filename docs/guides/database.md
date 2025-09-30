@@ -32,7 +32,7 @@ const app = new AppServer({ db: new MemoryDatabase() });
 
 Over time, as needed, ready-made packages for integration with various databases will become available for Waylis. These may be either official packages or those created by other developers.
 
--   [SqliteDatabase](https://github.com/waylis/sqlite-db) — Official package for the [Sqlite](https://en.wikipedia.org/wiki/SQLite) database.
+-   [@waylis/sqlite-db](https://github.com/waylis/sqlite-db) — Official package for the [Sqlite](https://en.wikipedia.org/wiki/SQLite) database.
 
 ## Any other database
 
