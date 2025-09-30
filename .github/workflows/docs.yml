@@ -40,7 +40,7 @@ jobs:
             - name: Deploy to waylis.github.io
               uses: peaceiris/actions-gh-pages@v4
               with:
-                  github_token: ${{ secrets.PERSONAL_TOKEN }}
+                  personal_token: ${{ secrets.PERSONAL_TOKEN }}
                   publish_dir: docs/.vitepress/dist
                   external_repository: waylis/waylis.github.io
                   publish_branch: gh-pages
