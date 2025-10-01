@@ -6,7 +6,7 @@
 
 # Interface: `FileStorage`
 
-Defined in: [src/file/file.ts:20](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L20)
+Defined in: [src/file/file.ts:20](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L20)
 
 Abstraction for file storage operations.
 
@@ -18,7 +18,7 @@ Abstraction for file storage operations.
 isOpen: boolean;
 ```
 
-Defined in: [src/file/file.ts:44](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L44)
+Defined in: [src/file/file.ts:44](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L44)
 
 Indicates whether the storage connection is open.
 
@@ -30,7 +30,7 @@ Indicates whether the storage connection is open.
 close(): Promise<void>;
 ```
 
-Defined in: [src/file/file.ts:50](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L50)
+Defined in: [src/file/file.ts:50](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L50)
 
 Close the storage connection.
 
@@ -46,7 +46,7 @@ Close the storage connection.
 deleteByID(id: string): Promise<boolean>;
 ```
 
-Defined in: [src/file/file.ts:41](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L41)
+Defined in: [src/file/file.ts:41](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L41)
 
 Delete a file from storage by its ID.
 
@@ -72,7 +72,7 @@ True if deletion succeeded.
 download(metadata: FileMeta): Promise<ReadableStream>;
 ```
 
-Defined in: [src/file/file.ts:34](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L34)
+Defined in: [src/file/file.ts:34](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L34)
 
 Download a file from storage.
 
@@ -98,7 +98,7 @@ File content as a readable stream.
 open(): Promise<void>;
 ```
 
-Defined in: [src/file/file.ts:47](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L47)
+Defined in: [src/file/file.ts:47](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L47)
 
 Open the storage connection.
 
@@ -114,7 +114,7 @@ Open the storage connection.
 upload(bytes: ReadableStream | Buffer<ArrayBufferLike>, metadata: FileMeta): Promise<boolean>;
 ```
 
-Defined in: [src/file/file.ts:27](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L27)
+Defined in: [src/file/file.ts:27](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L27)
 
 Upload a file into storage.
 

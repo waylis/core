@@ -6,7 +6,7 @@
 
 # Interface: `Database`
 
-Defined in: [src/database/database.ts:7](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/database.ts#L7)
+Defined in: [src/database/database.ts:7](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/database.ts#L7)
 
 Unified database interface combining chats, messages, confirmed steps, and files.
 
@@ -22,7 +22,7 @@ Unified database interface combining chats, messages, confirmed steps, and files
 close: () => Promise<void>;
 ```
 
-Defined in: [src/database/database.ts:9](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/database.ts#L9)
+Defined in: [src/database/database.ts:9](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/database.ts#L9)
 
 #### Returns
 
@@ -36,7 +36,7 @@ Defined in: [src/database/database.ts:9](https://github.com/waylis/core/blob/cf8
 isOpen: boolean;
 ```
 
-Defined in: [src/database/database.ts:8](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/database.ts#L8)
+Defined in: [src/database/database.ts:8](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/database.ts#L8)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [src/database/database.ts:8](https://github.com/waylis/core/blob/cf8
 open: () => Promise<void>;
 ```
 
-Defined in: [src/database/database.ts:10](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/database.ts#L10)
+Defined in: [src/database/database.ts:10](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/database.ts#L10)
 
 #### Returns
 
@@ -60,7 +60,7 @@ Defined in: [src/database/database.ts:10](https://github.com/waylis/core/blob/cf
 addChat(chat: Chat): Promise<void>;
 ```
 
-Defined in: [src/chat/chat.ts:23](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/chat/chat.ts#L23)
+Defined in: [src/chat/chat.ts:23](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L23)
 
 Add a new chat to the database.
 
@@ -88,7 +88,7 @@ Chat object to store.
 addConfirmedStep(step: ConfirmedStep): Promise<void>;
 ```
 
-Defined in: [src/scene/step.ts:43](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/scene/step.ts#L43)
+Defined in: [src/scene/step.ts:43](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L43)
 
 Store a confirmed step.
 
@@ -116,7 +116,7 @@ Step to add.
 addFile(data: FileMeta): Promise<void>;
 ```
 
-Defined in: [src/file/file.ts:61](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L61)
+Defined in: [src/file/file.ts:61](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L61)
 
 Add file metadata to the database.
 
@@ -144,7 +144,7 @@ File metadata to store.
 addMessage(msg: Message): Promise<void>;
 ```
 
-Defined in: [src/message/message.ts:53](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L53)
+Defined in: [src/message/message.ts:53](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L53)
 
 Add a new message to the database.
 
@@ -172,7 +172,7 @@ Message to store.
 countChatsByCreatorID(creatorID: string): Promise<number>;
 ```
 
-Defined in: [src/chat/chat.ts:44](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/chat/chat.ts#L44)
+Defined in: [src/chat/chat.ts:44](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L44)
 
 Count how many chats were created by a user.
 
@@ -200,7 +200,7 @@ User identifier.
 deleteChatByID(id: string): Promise<null | Chat>;
 ```
 
-Defined in: [src/chat/chat.ts:59](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/chat/chat.ts#L59)
+Defined in: [src/chat/chat.ts:59](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L59)
 
 Remove a chat by ID.
 
@@ -230,7 +230,7 @@ Deleted chat or null if not found.
 deleteFileByID(id: string): Promise<null | FileMeta>;
 ```
 
-Defined in: [src/file/file.ts:81](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L81)
+Defined in: [src/file/file.ts:81](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L81)
 
 Delete file metadata by ID.
 
@@ -260,7 +260,7 @@ Deleted metadata or null if not found.
 deleteMessagesByChatID(chatID: string): Promise<number>;
 ```
 
-Defined in: [src/message/message.ts:88](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L88)
+Defined in: [src/message/message.ts:88](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L88)
 
 Delete all messages belonging to a chat.
 
@@ -290,7 +290,7 @@ Number of deleted messages.
 deleteOldConfirmedSteps(maxDate: Date): Promise<number>;
 ```
 
-Defined in: [src/scene/step.ts:56](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/scene/step.ts#L56)
+Defined in: [src/scene/step.ts:56](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L56)
 
 Delete all confirmed steps created before a given date.
 
@@ -320,7 +320,7 @@ Number of deleted steps.
 deleteOldFiles(maxDate: Date): Promise<string[]>;
 ```
 
-Defined in: [src/file/file.ts:88](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L88)
+Defined in: [src/file/file.ts:88](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L88)
 
 Delete all files created before a given date.
 
@@ -350,7 +350,7 @@ List of deleted file IDs.
 deleteOldMessages(maxDate: Date): Promise<number>;
 ```
 
-Defined in: [src/message/message.ts:81](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L81)
+Defined in: [src/message/message.ts:81](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L81)
 
 Delete all messages created before a given date.
 
@@ -380,7 +380,7 @@ Number of deleted messages.
 editChatByID(id: string, updated: Partial<Chat>): Promise<null | Chat>;
 ```
 
-Defined in: [src/chat/chat.ts:52](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/chat/chat.ts#L52)
+Defined in: [src/chat/chat.ts:52](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L52)
 
 Update a chat by ID.
 
@@ -416,7 +416,7 @@ Updated chat or null if not found.
 getChatByID(id: string): Promise<null | Chat>;
 ```
 
-Defined in: [src/chat/chat.ts:30](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/chat/chat.ts#L30)
+Defined in: [src/chat/chat.ts:30](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L30)
 
 Retrieve a chat by its ID.
 
@@ -449,7 +449,7 @@ getChatsByCreatorID(
 limit: number): Promise<Chat[]>;
 ```
 
-Defined in: [src/chat/chat.ts:38](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/chat/chat.ts#L38)
+Defined in: [src/chat/chat.ts:38](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L38)
 
 Retrieve chats created by a specific user.
 
@@ -489,7 +489,7 @@ Maximum number of results.
 getConfirmedStepsByThreadID(threadID: string): Promise<ConfirmedStep[]>;
 ```
 
-Defined in: [src/scene/step.ts:49](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/scene/step.ts#L49)
+Defined in: [src/scene/step.ts:49](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L49)
 
 Retrieve all confirmed steps belonging to a thread.
 
@@ -517,7 +517,7 @@ Thread identifier.
 getFileByID(id: string): Promise<null | FileMeta>;
 ```
 
-Defined in: [src/file/file.ts:68](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L68)
+Defined in: [src/file/file.ts:68](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L68)
 
 Retrieve file metadata by ID.
 
@@ -547,7 +547,7 @@ Metadata if found, otherwise null.
 getFilesByIDs(ids: string[]): Promise<FileMeta[]>;
 ```
 
-Defined in: [src/file/file.ts:74](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L74)
+Defined in: [src/file/file.ts:74](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L74)
 
 Retrieve multiple files by IDs.
 
@@ -575,7 +575,7 @@ List of file identifiers.
 getMessageByID(id: string): Promise<null | Message>;
 ```
 
-Defined in: [src/message/message.ts:60](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L60)
+Defined in: [src/message/message.ts:60](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L60)
 
 Retrieve a message by its ID.
 
@@ -608,7 +608,7 @@ getMessagesByChatID(
 limit: number): Promise<Message[]>;
 ```
 
-Defined in: [src/message/message.ts:74](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L74)
+Defined in: [src/message/message.ts:74](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L74)
 
 Retrieve messages from a chat.
 
@@ -648,7 +648,7 @@ Maximum number of results.
 getMessagesByIDs(ids: string[]): Promise<Message[]>;
 ```
 
-Defined in: [src/message/message.ts:66](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L66)
+Defined in: [src/message/message.ts:66](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L66)
 
 Retrieve multiple messages by IDs.
 

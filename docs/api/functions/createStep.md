@@ -10,7 +10,7 @@
 function createStep<K, T>(step: SceneStep<K, T>): SceneStep<K, T>;
 ```
 
-Defined in: [src/scene/step.ts:77](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/scene/step.ts#L77)
+Defined in: [src/scene/step.ts:77](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L77)
 
 Create a new scene step, validating its key format and length.
 

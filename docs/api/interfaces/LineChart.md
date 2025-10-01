@@ -6,7 +6,7 @@
 
 # Interface: `LineChart`
 
-Defined in: [src/message/types.ts:16](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L16)
+Defined in: [src/message/types.ts:16](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L16)
 
 Configuration for rendering a line chart.
 
@@ -27,7 +27,7 @@ optional curveType:
   | "stepAfter";
 ```
 
-Defined in: [src/message/types.ts:24](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L24)
+Defined in: [src/message/types.ts:24](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L24)
 
 Curve interpolation type.
 
@@ -39,7 +39,7 @@ Curve interpolation type.
 data: Record<string, any>[];
 ```
 
-Defined in: [src/message/types.ts:18](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L18)
+Defined in: [src/message/types.ts:18](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L18)
 
 Data points for the chart.
 
@@ -51,7 +51,7 @@ Data points for the chart.
 dataKey: string;
 ```
 
-Defined in: [src/message/types.ts:20](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L20)
+Defined in: [src/message/types.ts:20](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L20)
 
 Key in each data object used for the X-axis.
 
@@ -63,7 +63,7 @@ Key in each data object used for the X-axis.
 optional extra: Record<string, any>;
 ```
 
-Defined in: [src/message/types.ts:26](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L26)
+Defined in: [src/message/types.ts:26](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L26)
 
 Any other parameters.
 
@@ -80,7 +80,7 @@ series: {
 }[];
 ```
 
-Defined in: [src/message/types.ts:22](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L22)
+Defined in: [src/message/types.ts:22](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L22)
 
 Series definitions (e.g. lines).
 

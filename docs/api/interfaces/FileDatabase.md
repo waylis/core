@@ -6,7 +6,7 @@
 
 # Interface: `FileDatabase`
 
-Defined in: [src/file/file.ts:56](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L56)
+Defined in: [src/file/file.ts:56](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L56)
 
 Abstraction for file metadata persistence.
 
@@ -22,7 +22,7 @@ Abstraction for file metadata persistence.
 addFile(data: FileMeta): Promise<void>;
 ```
 
-Defined in: [src/file/file.ts:61](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L61)
+Defined in: [src/file/file.ts:61](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L61)
 
 Add file metadata to the database.
 
@@ -46,7 +46,7 @@ File metadata to store.
 deleteFileByID(id: string): Promise<null | FileMeta>;
 ```
 
-Defined in: [src/file/file.ts:81](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L81)
+Defined in: [src/file/file.ts:81](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L81)
 
 Delete file metadata by ID.
 
@@ -72,7 +72,7 @@ Deleted metadata or null if not found.
 deleteOldFiles(maxDate: Date): Promise<string[]>;
 ```
 
-Defined in: [src/file/file.ts:88](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L88)
+Defined in: [src/file/file.ts:88](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L88)
 
 Delete all files created before a given date.
 
@@ -98,7 +98,7 @@ List of deleted file IDs.
 getFileByID(id: string): Promise<null | FileMeta>;
 ```
 
-Defined in: [src/file/file.ts:68](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L68)
+Defined in: [src/file/file.ts:68](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L68)
 
 Retrieve file metadata by ID.
 
@@ -124,7 +124,7 @@ Metadata if found, otherwise null.
 getFilesByIDs(ids: string[]): Promise<FileMeta[]>;
 ```
 
-Defined in: [src/file/file.ts:74](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L74)
+Defined in: [src/file/file.ts:74](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L74)
 
 Retrieve multiple files by IDs.
 

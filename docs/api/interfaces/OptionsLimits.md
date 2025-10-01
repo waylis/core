@@ -6,7 +6,7 @@
 
 # Interface: `OptionsLimits`
 
-Defined in: [src/message/types.ts:71](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L71)
+Defined in: [src/message/types.ts:71](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L71)
 
 Limits for selecting multiple options.
 
@@ -18,7 +18,7 @@ Limits for selecting multiple options.
 optional maxAmount: number;
 ```
 
-Defined in: [src/message/types.ts:73](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L73)
+Defined in: [src/message/types.ts:73](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L73)
 
 ***
 
@@ -28,4 +28,4 @@ Defined in: [src/message/types.ts:73](https://github.com/waylis/core/blob/cf814a
 options: Option[];
 ```
 
-Defined in: [src/message/types.ts:72](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L72)
+Defined in: [src/message/types.ts:72](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L72)

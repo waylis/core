@@ -6,7 +6,7 @@
 
 # Interface: `Table`
 
-Defined in: [src/message/types.ts:32](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L32)
+Defined in: [src/message/types.ts:32](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L32)
 
 Simple tabular data structure.
 
@@ -18,7 +18,7 @@ Simple tabular data structure.
 body: (string | number)[][];
 ```
 
-Defined in: [src/message/types.ts:36](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L36)
+Defined in: [src/message/types.ts:36](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L36)
 
 Table rows (values per column).
 
@@ -30,6 +30,6 @@ Table rows (values per column).
 head: string[];
 ```
 
-Defined in: [src/message/types.ts:34](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L34)
+Defined in: [src/message/types.ts:34](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L34)
 
 Column headers.

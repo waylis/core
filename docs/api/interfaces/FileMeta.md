@@ -6,7 +6,7 @@
 
 # Interface: `FileMeta`
 
-Defined in: [src/file/file.ts:4](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L4)
+Defined in: [src/file/file.ts:4](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L4)
 
 Represents file metadata stored in the system.
 
@@ -18,7 +18,7 @@ Represents file metadata stored in the system.
 createdAt: Date;
 ```
 
-Defined in: [src/file/file.ts:14](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L14)
+Defined in: [src/file/file.ts:14](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L14)
 
 Timestamp when the file was created.
 
@@ -30,7 +30,7 @@ Timestamp when the file was created.
 id: string;
 ```
 
-Defined in: [src/file/file.ts:6](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L6)
+Defined in: [src/file/file.ts:6](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L6)
 
 Unique identifier of the file.
 
@@ -42,7 +42,7 @@ Unique identifier of the file.
 mimeType: string;
 ```
 
-Defined in: [src/file/file.ts:12](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L12)
+Defined in: [src/file/file.ts:12](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L12)
 
 MIME type of the file.
 
@@ -54,7 +54,7 @@ MIME type of the file.
 name: string;
 ```
 
-Defined in: [src/file/file.ts:8](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L8)
+Defined in: [src/file/file.ts:8](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L8)
 
 Original file name.
 
@@ -66,6 +66,6 @@ Original file name.
 size: number;
 ```
 
-Defined in: [src/file/file.ts:10](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/file/file.ts#L10)
+Defined in: [src/file/file.ts:10](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L10)
 
 File size in bytes.

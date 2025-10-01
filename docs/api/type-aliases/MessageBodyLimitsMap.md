@@ -18,7 +18,7 @@ type MessageBodyLimitsMap = {
 };
 ```
 
-Defined in: [src/message/types.ts:130](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L130)
+Defined in: [src/message/types.ts:130](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L130)
 
 Maps message body types to their validation limits.
 
@@ -30,7 +30,7 @@ Maps message body types to their validation limits.
 datetime: DatetimeLimits;
 ```
 
-Defined in: [src/message/types.ts:137](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L137)
+Defined in: [src/message/types.ts:137](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L137)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [src/message/types.ts:137](https://github.com/waylis/core/blob/cf814
 file: FileLimits;
 ```
 
-Defined in: [src/message/types.ts:133](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L133)
+Defined in: [src/message/types.ts:133](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L133)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [src/message/types.ts:133](https://github.com/waylis/core/blob/cf814
 files: FilesLimits;
 ```
 
-Defined in: [src/message/types.ts:134](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L134)
+Defined in: [src/message/types.ts:134](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L134)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [src/message/types.ts:134](https://github.com/waylis/core/blob/cf814
 number: NumberLimits;
 ```
 
-Defined in: [src/message/types.ts:132](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L132)
+Defined in: [src/message/types.ts:132](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L132)
 
 ***
 
@@ -70,7 +70,7 @@ Defined in: [src/message/types.ts:132](https://github.com/waylis/core/blob/cf814
 option: OptionLimits;
 ```
 
-Defined in: [src/message/types.ts:135](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L135)
+Defined in: [src/message/types.ts:135](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L135)
 
 ***
 
@@ -80,7 +80,7 @@ Defined in: [src/message/types.ts:135](https://github.com/waylis/core/blob/cf814
 options: OptionsLimits;
 ```
 
-Defined in: [src/message/types.ts:136](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L136)
+Defined in: [src/message/types.ts:136](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L136)
 
 ***
 
@@ -90,4 +90,4 @@ Defined in: [src/message/types.ts:136](https://github.com/waylis/core/blob/cf814
 text: TextLimits;
 ```
 
-Defined in: [src/message/types.ts:131](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L131)
+Defined in: [src/message/types.ts:131](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L131)

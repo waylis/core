@@ -6,7 +6,7 @@
 
 # Interface: `Option`
 
-Defined in: [src/message/types.ts:6](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L6)
+Defined in: [src/message/types.ts:6](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L6)
 
 Selectable option with a value and optional label.
 
@@ -18,7 +18,7 @@ Selectable option with a value and optional label.
 optional label: string;
 ```
 
-Defined in: [src/message/types.ts:8](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L8)
+Defined in: [src/message/types.ts:8](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L8)
 
 ***
 
@@ -28,4 +28,4 @@ Defined in: [src/message/types.ts:8](https://github.com/waylis/core/blob/cf814ab
 value: string;
 ```
 
-Defined in: [src/message/types.ts:7](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L7)
+Defined in: [src/message/types.ts:7](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L7)

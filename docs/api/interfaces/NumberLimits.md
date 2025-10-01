@@ -6,7 +6,7 @@
 
 # Interface: `NumberLimits`
 
-Defined in: [src/message/types.ts:46](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L46)
+Defined in: [src/message/types.ts:46](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L46)
 
 Limits for numeric input.
 
@@ -18,7 +18,7 @@ Limits for numeric input.
 optional integerOnly: boolean;
 ```
 
-Defined in: [src/message/types.ts:49](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L49)
+Defined in: [src/message/types.ts:49](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L49)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/message/types.ts:49](https://github.com/waylis/core/blob/cf814a
 optional max: number;
 ```
 
-Defined in: [src/message/types.ts:48](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L48)
+Defined in: [src/message/types.ts:48](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L48)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: [src/message/types.ts:48](https://github.com/waylis/core/blob/cf814a
 optional min: number;
 ```
 
-Defined in: [src/message/types.ts:47](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L47)
+Defined in: [src/message/types.ts:47](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L47)

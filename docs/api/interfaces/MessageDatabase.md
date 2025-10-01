@@ -6,7 +6,7 @@
 
 # Interface: `MessageDatabase`
 
-Defined in: [src/message/message.ts:48](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L48)
+Defined in: [src/message/message.ts:48](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L48)
 
 Abstraction for message persistence operations.
 
@@ -22,7 +22,7 @@ Abstraction for message persistence operations.
 addMessage(msg: Message): Promise<void>;
 ```
 
-Defined in: [src/message/message.ts:53](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L53)
+Defined in: [src/message/message.ts:53](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L53)
 
 Add a new message to the database.
 
@@ -46,7 +46,7 @@ Message to store.
 deleteMessagesByChatID(chatID: string): Promise<number>;
 ```
 
-Defined in: [src/message/message.ts:88](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L88)
+Defined in: [src/message/message.ts:88](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L88)
 
 Delete all messages belonging to a chat.
 
@@ -72,7 +72,7 @@ Number of deleted messages.
 deleteOldMessages(maxDate: Date): Promise<number>;
 ```
 
-Defined in: [src/message/message.ts:81](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L81)
+Defined in: [src/message/message.ts:81](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L81)
 
 Delete all messages created before a given date.
 
@@ -98,7 +98,7 @@ Number of deleted messages.
 getMessageByID(id: string): Promise<null | Message>;
 ```
 
-Defined in: [src/message/message.ts:60](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L60)
+Defined in: [src/message/message.ts:60](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L60)
 
 Retrieve a message by its ID.
 
@@ -127,7 +127,7 @@ getMessagesByChatID(
 limit: number): Promise<Message[]>;
 ```
 
-Defined in: [src/message/message.ts:74](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L74)
+Defined in: [src/message/message.ts:74](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L74)
 
 Retrieve messages from a chat.
 
@@ -163,7 +163,7 @@ Maximum number of results.
 getMessagesByIDs(ids: string[]): Promise<Message[]>;
 ```
 
-Defined in: [src/message/message.ts:66](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/message.ts#L66)
+Defined in: [src/message/message.ts:66](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L66)
 
 Retrieve multiple messages by IDs.
 

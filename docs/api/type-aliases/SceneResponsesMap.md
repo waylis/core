@@ -10,7 +10,7 @@
 type SceneResponsesMap<Steps> = { [S in Steps[number] as S["key"]]: S extends SceneStep<S["key"], infer T> ? MessageBodyMap[T] : never };
 ```
 
-Defined in: [src/scene/scene.ts:5](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/scene/scene.ts#L5)
+Defined in: [src/scene/scene.ts:5](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/scene.ts#L5)
 
 Maps scene steps to their expected response body content.
 

@@ -6,7 +6,7 @@
 
 # Interface: `ServerConfig`
 
-Defined in: [src/server/config.ts:7](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/server/config.ts#L7)
+Defined in: [src/server/config.ts:7](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/config.ts#L7)
 
 ## Properties
 
@@ -20,7 +20,7 @@ app: {
 };
 ```
 
-Defined in: [src/server/config.ts:18](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/server/config.ts#L18)
+Defined in: [src/server/config.ts:18](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/config.ts#L18)
 
 Your app metadata
 
@@ -60,7 +60,7 @@ auth: {
 };
 ```
 
-Defined in: [src/server/config.ts:28](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/server/config.ts#L28)
+Defined in: [src/server/config.ts:28](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/config.ts#L28)
 
 Authentication configuration
 
@@ -134,7 +134,7 @@ Authentication middleware that returns user ID or throws
 chatNameGenerator: () => string;
 ```
 
-Defined in: [src/server/config.ts:15](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/server/config.ts#L15)
+Defined in: [src/server/config.ts:15](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/config.ts#L15)
 
 Default function for generating chat names, unless explicitly specified by the user
 
@@ -154,7 +154,7 @@ cleanup: {
 };
 ```
 
-Defined in: [src/server/config.ts:38](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/server/config.ts#L38)
+Defined in: [src/server/config.ts:38](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/config.ts#L38)
 
 Cleanup-related configuration
 
@@ -190,7 +190,7 @@ How long (in seconds) messages should be kept before automatic cleanup
 defaultPageLimit: number;
 ```
 
-Defined in: [src/server/config.ts:11](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/server/config.ts#L11)
+Defined in: [src/server/config.ts:11](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/config.ts#L11)
 
 Default number of items per page for paginated endpoints
 
@@ -202,7 +202,7 @@ Default number of items per page for paginated endpoints
 idGenerator: () => string;
 ```
 
-Defined in: [src/server/config.ts:13](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/server/config.ts#L13)
+Defined in: [src/server/config.ts:13](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/config.ts#L13)
 
 Default function for generating unique identifiers
 
@@ -220,7 +220,7 @@ limits: {
 };
 ```
 
-Defined in: [src/server/config.ts:48](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/server/config.ts#L48)
+Defined in: [src/server/config.ts:48](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/config.ts#L48)
 
 System limits and constraints
 
@@ -240,7 +240,7 @@ Maximum number of chats a single user can create
 port: number;
 ```
 
-Defined in: [src/server/config.ts:9](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/server/config.ts#L9)
+Defined in: [src/server/config.ts:9](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/config.ts#L9)
 
 Port number the server should listen on
 
@@ -254,7 +254,7 @@ sse: {
 };
 ```
 
-Defined in: [src/server/config.ts:54](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/server/config.ts#L54)
+Defined in: [src/server/config.ts:54](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/config.ts#L54)
 
 SSE configuration
 

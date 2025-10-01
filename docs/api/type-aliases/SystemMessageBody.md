@@ -28,6 +28,6 @@ type SystemMessageBody = Extract<MessageBody,
 }>;
 ```
 
-Defined in: [src/message/types.ts:111](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/message/types.ts#L111)
+Defined in: [src/message/types.ts:111](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L111)
 
 Message bodies generated only by the system.

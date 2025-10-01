@@ -6,7 +6,7 @@
 
 # Class: `MemoryDatabase`
 
-Defined in: [src/database/memory/memory.ts:12](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L12)
+Defined in: [src/database/memory/memory.ts:12](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L12)
 
 Simple in-memory database implementation.
 
@@ -32,7 +32,7 @@ new MemoryDatabase(): MemoryDatabase;
 
 | Property | Type | Default value | Defined in |
 | :------ | :------ | :------ | :------ |
-| <a id="isopen"></a> `isOpen` | `boolean` | `false` | [src/database/memory/memory.ts:13](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L13) |
+| <a id="isopen"></a> `isOpen` | `boolean` | `false` | [src/database/memory/memory.ts:13](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L13) |
 
 ## Methods
 
@@ -42,7 +42,7 @@ new MemoryDatabase(): MemoryDatabase;
 addChat(chat: Chat): Promise<void>;
 ```
 
-Defined in: [src/database/memory/memory.ts:28](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L28)
+Defined in: [src/database/memory/memory.ts:28](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L28)
 
 Add a new chat to the database.
 
@@ -70,7 +70,7 @@ Chat object to store.
 addConfirmedStep(step: ConfirmedStep): Promise<void>;
 ```
 
-Defined in: [src/database/memory/memory.ts:111](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L111)
+Defined in: [src/database/memory/memory.ts:111](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L111)
 
 Store a confirmed step.
 
@@ -98,7 +98,7 @@ Step to add.
 addFile(data: FileMeta): Promise<void>;
 ```
 
-Defined in: [src/database/memory/memory.ts:129](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L129)
+Defined in: [src/database/memory/memory.ts:129](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L129)
 
 Add file metadata to the database.
 
@@ -126,7 +126,7 @@ File metadata to store.
 addMessage(msg: Message): Promise<void>;
 ```
 
-Defined in: [src/database/memory/memory.ts:74](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L74)
+Defined in: [src/database/memory/memory.ts:74](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L74)
 
 Add a new message to the database.
 
@@ -154,7 +154,7 @@ Message to store.
 close(): Promise<void>;
 ```
 
-Defined in: [src/database/memory/memory.ts:23](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L23)
+Defined in: [src/database/memory/memory.ts:23](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L23)
 
 #### Returns
 
@@ -172,7 +172,7 @@ Defined in: [src/database/memory/memory.ts:23](https://github.com/waylis/core/bl
 countChatsByCreatorID(creatorID: string): Promise<number>;
 ```
 
-Defined in: [src/database/memory/memory.ts:47](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L47)
+Defined in: [src/database/memory/memory.ts:47](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L47)
 
 Count how many chats were created by a user.
 
@@ -200,7 +200,7 @@ User identifier.
 deleteChatByID(id: string): Promise<null | Chat>;
 ```
 
-Defined in: [src/database/memory/memory.ts:65](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L65)
+Defined in: [src/database/memory/memory.ts:65](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L65)
 
 Remove a chat by ID.
 
@@ -230,7 +230,7 @@ Deleted chat or null if not found.
 deleteFileByID(id: string): Promise<null | FileMeta>;
 ```
 
-Defined in: [src/database/memory/memory.ts:144](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L144)
+Defined in: [src/database/memory/memory.ts:144](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L144)
 
 Delete file metadata by ID.
 
@@ -260,7 +260,7 @@ Deleted metadata or null if not found.
 deleteMessagesByChatID(chatID: string): Promise<number>;
 ```
 
-Defined in: [src/database/memory/memory.ts:104](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L104)
+Defined in: [src/database/memory/memory.ts:104](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L104)
 
 Delete all messages belonging to a chat.
 
@@ -290,7 +290,7 @@ Number of deleted messages.
 deleteOldConfirmedSteps(maxDate: Date): Promise<number>;
 ```
 
-Defined in: [src/database/memory/memory.ts:122](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L122)
+Defined in: [src/database/memory/memory.ts:122](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L122)
 
 Delete all confirmed steps created before a given date.
 
@@ -320,7 +320,7 @@ Number of deleted steps.
 deleteOldFiles(maxDate: Date): Promise<string[]>;
 ```
 
-Defined in: [src/database/memory/memory.ts:152](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L152)
+Defined in: [src/database/memory/memory.ts:152](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L152)
 
 Delete all files created before a given date.
 
@@ -350,7 +350,7 @@ List of deleted file IDs.
 deleteOldMessages(maxDate: Date): Promise<number>;
 ```
 
-Defined in: [src/database/memory/memory.ts:98](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L98)
+Defined in: [src/database/memory/memory.ts:98](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L98)
 
 Delete all messages created before a given date.
 
@@ -380,7 +380,7 @@ Number of deleted messages.
 editChatByID(id: string, updated: Partial<Chat>): Promise<null | Chat>;
 ```
 
-Defined in: [src/database/memory/memory.ts:51](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L51)
+Defined in: [src/database/memory/memory.ts:51](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L51)
 
 Update a chat by ID.
 
@@ -416,7 +416,7 @@ Updated chat or null if not found.
 getChatByID(id: string): Promise<null | Chat>;
 ```
 
-Defined in: [src/database/memory/memory.ts:35](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L35)
+Defined in: [src/database/memory/memory.ts:35](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L35)
 
 Retrieve a chat by its ID.
 
@@ -449,7 +449,7 @@ getChatsByCreatorID(
 limit: number): Promise<Chat[]>;
 ```
 
-Defined in: [src/database/memory/memory.ts:39](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L39)
+Defined in: [src/database/memory/memory.ts:39](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L39)
 
 Retrieve chats created by a specific user.
 
@@ -489,7 +489,7 @@ Maximum number of results.
 getConfirmedStepsByThreadID(threadID: string): Promise<ConfirmedStep[]>;
 ```
 
-Defined in: [src/database/memory/memory.ts:118](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L118)
+Defined in: [src/database/memory/memory.ts:118](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L118)
 
 Retrieve all confirmed steps belonging to a thread.
 
@@ -517,7 +517,7 @@ Thread identifier.
 getFileByID(id: string): Promise<null | FileMeta>;
 ```
 
-Defined in: [src/database/memory/memory.ts:136](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L136)
+Defined in: [src/database/memory/memory.ts:136](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L136)
 
 Retrieve file metadata by ID.
 
@@ -547,7 +547,7 @@ Metadata if found, otherwise null.
 getFilesByIDs(ids: string[]): Promise<FileMeta[]>;
 ```
 
-Defined in: [src/database/memory/memory.ts:140](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L140)
+Defined in: [src/database/memory/memory.ts:140](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L140)
 
 Retrieve multiple files by IDs.
 
@@ -575,7 +575,7 @@ List of file identifiers.
 getMessageByID(id: string): Promise<null | Message>;
 ```
 
-Defined in: [src/database/memory/memory.ts:81](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L81)
+Defined in: [src/database/memory/memory.ts:81](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L81)
 
 Retrieve a message by its ID.
 
@@ -608,7 +608,7 @@ getMessagesByChatID(
 limit: number): Promise<Message[]>;
 ```
 
-Defined in: [src/database/memory/memory.ts:89](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L89)
+Defined in: [src/database/memory/memory.ts:89](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L89)
 
 Retrieve messages from a chat.
 
@@ -648,7 +648,7 @@ Maximum number of results.
 getMessagesByIDs(ids: string[]): Promise<Message[]>;
 ```
 
-Defined in: [src/database/memory/memory.ts:85](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L85)
+Defined in: [src/database/memory/memory.ts:85](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L85)
 
 Retrieve multiple messages by IDs.
 
@@ -676,7 +676,7 @@ List of message identifiers.
 open(): Promise<void>;
 ```
 
-Defined in: [src/database/memory/memory.ts:19](https://github.com/waylis/core/blob/cf814abeb0d255c46b018529492ef3597811d428/src/database/memory/memory.ts#L19)
+Defined in: [src/database/memory/memory.ts:19](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/database/memory/memory.ts#L19)
 
 #### Returns
 
