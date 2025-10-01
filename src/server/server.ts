@@ -58,7 +58,7 @@ export interface AppServerParams {
  * of the server, including database, file storage, configuration, and logging.
  */
 export class AppServer {
-    protected config: ServerConfig = defaultConfig;
+    protected config: ServerConfig;
     protected database: Database;
     protected fileStorage: FileStorage;
     protected fileManager: FileManager;
@@ -78,7 +78,7 @@ export class AppServer {
      *   the server. If omitted, defaults will be applied.
      */
     constructor(params?: AppServerParams) {
-        this.config = mergeDeep(this.config, params?.config);
+        this.config = mergeDeep(defaultConfig, params?.config);
         this.logger = params?.logger ?? new SimpleLogger();
         this.eventBus = eventBus;
 
@@ -93,23 +93,23 @@ export class AppServer {
         this.engine = new SceneEngine(this.database, this.eventBus, this.messageManager, this.stepManager);
     }
 
-    private handlers: Record<string, (req: IncomingMessage, res: ServerResponse) => Promise<void>> = {
-        "GET /api/config": getConfigHandler.bind(this),
-        "GET /api/commands": getCommandsHandler.bind(this),
-        "GET /api/events": eventsHandler.bind(this),
-        "GET /api/chats": getChatsHandler.bind(this),
-        "GET /api/messages": getMessagesHandler.bind(this),
-        "GET /api/file": getFileHandler.bind(this),
+    private handlers: Record<string, () => (req: IncomingMessage, res: ServerResponse) => Promise<void>> = {
+        "GET /api/config": () => getConfigHandler.bind(this),
+        "GET /api/commands": () => getCommandsHandler.bind(this),
+        "GET /api/events": () => eventsHandler.bind(this),
+        "GET /api/chats": () => getChatsHandler.bind(this),
+        "GET /api/messages": () => getMessagesHandler.bind(this),
+        "GET /api/file": () => getFileHandler.bind(this),
 
-        "POST /api/auth": this.config.auth.handler,
-        "POST /api/logout": this.config.auth.logoutHandler,
-        "POST /api/chat": createChatHandler.bind(this),
-        "POST /api/message": sendMessageHandler.bind(this),
-        "POST /api/file": uploadFileHandler.bind(this),
+        "POST /api/auth": () => this.config.auth.handler,
+        "POST /api/logout": () => this.config.auth.logoutHandler,
+        "POST /api/chat": () => createChatHandler.bind(this),
+        "POST /api/message": () => sendMessageHandler.bind(this),
+        "POST /api/file": () => uploadFileHandler.bind(this),
 
-        "PUT /api/chat": editChatHandler.bind(this),
+        "PUT /api/chat": () => editChatHandler.bind(this),
 
-        "DELETE /api/chat": deleteChatHandler.bind(this),
+        "DELETE /api/chat": () => deleteChatHandler.bind(this),
     };
 
     private router = async (req: IncomingMessage, res: ServerResponse) => {
@@ -120,12 +120,12 @@ export class AppServer {
             let handler = this.handlers[key];
             if (!handler) {
                 if (req.method !== "GET") throw new HTTPError(404, "Not found");
-                handler = staticHandler;
+                handler = () => staticHandler;
             }
 
             this.logger.debug(req.method, url.href);
 
-            await handler(req, res);
+            await handler()(req, res);
         } catch (error) {
             if (!(error instanceof HTTPError)) {
                 jsonMessage(res, { status: 500, message: "Internal Server Error" });
