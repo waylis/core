@@ -1,7 +1,7 @@
 <br>
 <p align="center">
   <a href="https://github.com/waylis/core">
-    <img src="./docs/public/logo-black-white.svg" alt="logo" height="128">
+    <img src="https://raw.githubusercontent.com/waylis/core/refs/heads/master/docs/public/logo-black-white.svg" alt="logo" height="128">
   </a>
 </p>
 
@@ -15,7 +15,7 @@
 </p>
 <br />
 
-<img src="./docs/public/promo.webp" alt="promo">
+<img src="https://raw.githubusercontent.com/waylis/core/refs/heads/master/docs/public/promo.webp" alt="promo">
 
 **Waylis** is a Node.js package for interacting with your app’s backend through predefined chat scenes. It’s a complete solution that can free you from writing a separate frontend part. Abstracting user interaction into reusable dialog blocks, Waylis allows you to fully focus on business logic by automatically collecting, validating user input and displaying processing results.
 
