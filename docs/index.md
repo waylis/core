@@ -4,7 +4,7 @@ layout: home
 
 hero:
     name: "Waylis"
-    tagline: A simple way to interact with your Node.js backend
+    tagline: A chat-like interface for your Node.js apps
     actions:
         - theme: brand
           text: Read more

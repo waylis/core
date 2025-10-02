@@ -6,7 +6,7 @@
 </p>
 
 <h2 align="center">Waylis</h2>
-<p align="center">A simple way to interact with your Node.js backend</p>
+<p align="center">A chat-like interface for your Node.js apps</p>
 <p align="center">
 🔍 <a href="https://waylis.github.io">Documentation</a>
 &nbsp; 🧩 <a href="https://waylis.github.io/examples">Examples</a>
@@ -17,7 +17,7 @@
 
 <img src="https://raw.githubusercontent.com/waylis/core/refs/heads/master/docs/public/promo.webp" alt="promo">
 
-**Waylis** is a Node.js package for interacting with your app’s backend through predefined chat scenes. It’s a complete solution that can free you from writing a separate frontend part. Abstracting user interaction into reusable dialog blocks, Waylis allows you to fully focus on domain logic by automatically collecting, validating user input and displaying processing results.
+**Waylis** is a Node.js library that allows you to add a chat-like interface for interacting with your applications. It’s a complete solution that can free you from writing a separate frontend part. Abstracting user interaction into reusable dialog blocks, Waylis allows you to fully focus on domain logic by automatically collecting, validating user input and displaying processing results.
 
 > [!WARNING]
 > Waylis is a new project and currently in beta phase. Updates released before version 1.0 may introduce breaking changes.
@@ -25,6 +25,7 @@
 ## Features
 
 -   **Wide range of usage**: from standalone offline tools to online services.
+-   **Backend-first**: dialog logic is defined on the server, and the UI comes for free.
 -   **Built-in input validation**: accept only data you need from users (strings, numbers, booleans, dates, files).
 -   **Configurable**: comes with flexible server configuration.
 -   **Pluggable**: supports custom databases, file storages, loggers by implementing simple interfaces.
