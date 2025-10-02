@@ -15,7 +15,7 @@ export default defineConfig({
             { text: "Documentation", link: "/intro" },
             { text: "API", link: "/api/" },
             { text: "Examples", link: "/examples" },
-            { text: "Live demo", link: "https://github.com/waylis/core" },
+            { text: "Live demo", link: "https://waylis.yurace.pro" },
         ],
 
         sidebar: [
