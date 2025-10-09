@@ -1,3 +1,4 @@
+import { ERRORS } from "./errors";
 import { FileMeta } from "../file/file";
 import { bytesToMB, isFloat } from "../utils/number";
 import { isPlainObject } from "../utils/validation";
@@ -119,9 +120,7 @@ export class MessageManager {
     constructor(private generateID: () => string) {}
 
     createSystemMessage(params: CreateSystemMessageParams, userMsg?: Message): Message {
-        if (!userMsg && !params.chatID) {
-            throw new Error("chatID is required when user message is not provided");
-        }
+        if (!userMsg && !params.chatID) throw new Error(ERRORS.SYSTEM_CHAT_ID_REQUIRED);
 
         return {
             id: this.generateID(),
@@ -143,18 +142,13 @@ export class MessageManager {
         };
 
         if (replyMsg) {
-            msg = {
-                ...msg,
-                replyTo: replyMsg.id,
-                scene: replyMsg.scene,
-                step: replyMsg.step,
-            };
+            msg = { ...msg, replyTo: replyMsg.id, scene: replyMsg.scene, step: replyMsg.step };
         }
 
         if (!replyMsg?.reply) return msg;
 
         if (replyMsg.reply.bodyType !== msg.body.type) {
-            throw Error(`Invalid body type. Expected ${replyMsg.reply.bodyType}`);
+            throw Error(ERRORS.INVALID_BODY_TYPE_EXPECTED(replyMsg.reply.bodyType));
         }
 
         if (replyMsg.reply.bodyType === "text") {
@@ -163,13 +157,11 @@ export class MessageManager {
             msg.body.content = bodyContent;
 
             if (limit?.minLength != null && bodyContent.length < limit.minLength) {
-                throw Error(`The message body is too short. It must be at least ${limit.minLength} characters long.`);
+                throw Error(ERRORS.TEXT_TOO_SHORT(limit.minLength));
             }
 
             if (limit?.maxLength != null && bodyContent.length > limit.maxLength) {
-                throw Error(
-                    `The message body is too long. It should be no more than ${limit.maxLength} characters long.`
-                );
+                throw Error(ERRORS.TEXT_TOO_LONG(limit.maxLength));
             }
         }
 
@@ -179,15 +171,15 @@ export class MessageManager {
             msg.body.content = bodyContent;
 
             if (limit?.integerOnly && isFloat(bodyContent)) {
-                throw Error(`Invalid message body. It must be a valid integer.`);
+                throw Error(ERRORS.NUMBER_NOT_INTEGER);
             }
 
             if (limit?.min != null && bodyContent < limit.min) {
-                throw Error(`The number is too small. The minimum allowed value is ${limit.min}.`);
+                throw Error(ERRORS.NUMBER_TOO_SMALL(limit.min));
             }
 
             if (limit?.max != null && bodyContent > limit.max) {
-                throw Error(`The number is too big. The maximum allowed value is ${limit.max}.`);
+                throw Error(ERRORS.NUMBER_TOO_BIG(limit.max));
             }
         }
 
@@ -197,11 +189,11 @@ export class MessageManager {
             msg.body.content = bodyContent;
 
             if (limit?.min != null && bodyContent.getTime() < limit.min.getTime()) {
-                throw Error(`The date is too old. The minimum allowed is ${limit.min.toISOString()}.`);
+                throw Error(ERRORS.DATE_TOO_OLD(limit.min));
             }
 
             if (limit?.max != null && bodyContent.getTime() > limit.max.getTime()) {
-                throw Error(`The date is too early. The maximum allowed is ${limit.max.toISOString()}.`);
+                throw Error(ERRORS.DATE_TOO_EARLY(limit.max));
             }
         }
 
@@ -210,7 +202,7 @@ export class MessageManager {
             const limit = replyMsg.reply.bodyLimits as OptionLimits;
             const existingOption = limit?.options?.find((opt) => opt?.value === bodyContent);
             if (!existingOption) {
-                throw Error("The provided option does not exist.");
+                throw Error(ERRORS.OPTION_NOT_EXIST);
             }
         }
 
@@ -219,13 +211,13 @@ export class MessageManager {
             const limit = replyMsg.reply.bodyLimits as OptionsLimits;
 
             if (limit?.maxAmount != null && bodyContent.length > limit.maxAmount) {
-                throw Error(`Too many options. The maximum allowed is ${limit.maxAmount}`);
+                throw Error(ERRORS.TOO_MANY_OPTIONS(limit.maxAmount));
             }
 
             for (const option of bodyContent) {
                 const existingOption = limit?.options?.find((lopt) => lopt?.value === option);
                 if (!existingOption) {
-                    throw Error("The provided option does not exist.");
+                    throw Error(ERRORS.OPTION_NOT_EXIST);
                 }
             }
         }
@@ -240,7 +232,7 @@ export class MessageManager {
             const bodyContent = msg.body.content as FileMeta[];
             const limit = replyMsg.reply.bodyLimits as FilesLimits;
             if (limit?.maxAmount != null && bodyContent.length > limit.maxAmount) {
-                throw Error(`Too many files. The maximum allowed is ${limit.maxAmount}`);
+                throw Error(ERRORS.TOO_MANY_FILES(limit.maxAmount));
             }
 
             for (const file of bodyContent) {
@@ -250,54 +242,49 @@ export class MessageManager {
 
         return msg;
     }
-
     validateUserMessageParams(input: any, senderID: string): CreateUserMessageParams {
-        if (!isPlainObject(input)) throw Error("Input must be an object");
+        if (!isPlainObject(input)) throw Error(ERRORS.INPUT_NOT_OBJECT);
         const params = structuredClone(input);
 
-        if (!("chatID" in input) || typeof input.chatID !== "string") throw Error("'chatID' must be a string");
-        if (!("body" in input) || !isPlainObject(input.body)) throw Error("'body' must be an object");
-        if (!("type" in input.body) || typeof input.body.type !== "string") throw Error("'body.type' must be a string");
-        if (!allowedUserMessageBodyTypes.includes(input.body.type)) throw Error("Not allowed 'body.type'");
-        if (!("content" in input.body)) throw Error("'body.content' must be provided");
-        if ("replyTo" in input && typeof input.replyTo !== "string") {
-            throw Error("'replyTo' must be a string if provided");
-        }
-
-        const invalidBodyContentMsg = "Invalid body.content for the provided body.type";
+        if (!("chatID" in input) || typeof input.chatID !== "string") throw Error(ERRORS.CHAT_ID_STRING);
+        if (!("body" in input) || !isPlainObject(input.body)) throw Error(ERRORS.BODY_NOT_OBJECT);
+        if (!("type" in input.body) || typeof input.body.type !== "string") throw Error(ERRORS.BODY_TYPE_STRING);
+        if (!("content" in input.body)) throw Error(ERRORS.BODY_CONTENT_REQUIRED);
+        if ("replyTo" in input && typeof input.replyTo !== "string") throw Error(ERRORS.REPLY_TO_STRING);
+        if (!allowedUserMessageBodyTypes.includes(input.body.type)) throw Error(ERRORS.BODY_TYPE_NOT_ALLOWED);
 
         if (input.body.type === "text") {
-            if (typeof input.body.content !== "string") throw Error(invalidBodyContentMsg);
+            if (typeof input.body.content !== "string") throw Error(ERRORS.INVALID_BODY_CONTENT);
         }
         if (input.body.type === "number") {
-            if (typeof input.body.content !== "number") throw Error(invalidBodyContentMsg);
+            if (typeof input.body.content !== "number") throw Error(ERRORS.INVALID_BODY_CONTENT);
         }
         if (input.body.type === "boolean") {
-            if (typeof input.body.content !== "boolean") throw Error(invalidBodyContentMsg);
+            if (typeof input.body.content !== "boolean") throw Error(ERRORS.INVALID_BODY_CONTENT);
         }
         if (input.body.type === "datetime") {
-            if (typeof input.body.content !== "string") throw Error(invalidBodyContentMsg);
-            if (isNaN(new Date(input.body.content)?.getTime())) throw Error(invalidBodyContentMsg);
+            if (typeof input.body.content !== "string") throw Error(ERRORS.INVALID_BODY_CONTENT);
+            if (isNaN(new Date(input.body.content)?.getTime())) throw Error(ERRORS.INVALID_BODY_CONTENT);
             params.body.content = new Date(input.body.content);
         }
         if (input.body.type === "option") {
-            if (typeof input.body.content !== "string") throw Error(invalidBodyContentMsg);
+            if (typeof input.body.content !== "string") throw Error(ERRORS.INVALID_BODY_CONTENT);
         }
         if (input.body.type === "options") {
-            if (!Array.isArray(input.body.content)) throw Error(invalidBodyContentMsg);
+            if (!Array.isArray(input.body.content)) throw Error(ERRORS.INVALID_BODY_CONTENT);
             params.body.content = input.body.content.map(String);
         }
         if (input.body.type === "file") {
-            if (!isPlainObject(input.body.content)) throw Error(invalidBodyContentMsg);
-            if (!("id" in input.body.content)) throw Error(invalidBodyContentMsg);
-            if (typeof input.body.content.id !== "string") throw Error(invalidBodyContentMsg);
+            if (!isPlainObject(input.body.content)) throw Error(ERRORS.INVALID_BODY_CONTENT);
+            if (!("id" in input.body.content)) throw Error(ERRORS.INVALID_BODY_CONTENT);
+            if (typeof input.body.content.id !== "string") throw Error(ERRORS.INVALID_BODY_CONTENT);
         }
         if (input.body.type === "files") {
-            if (!Array.isArray(input.body.content)) throw Error(invalidBodyContentMsg);
+            if (!Array.isArray(input.body.content)) throw Error(ERRORS.INVALID_BODY_CONTENT);
             for (const item of input.body.content) {
-                if (!isPlainObject(item)) throw Error(invalidBodyContentMsg);
-                if (!("id" in item)) throw Error(invalidBodyContentMsg);
-                if (typeof item.id !== "string") throw Error(invalidBodyContentMsg);
+                if (!isPlainObject(item)) throw Error(ERRORS.INVALID_BODY_CONTENT);
+                if (!("id" in item)) throw Error(ERRORS.INVALID_BODY_CONTENT);
+                if (typeof item.id !== "string") throw Error(ERRORS.INVALID_BODY_CONTENT);
             }
         }
 
@@ -312,11 +299,11 @@ export class MessageManager {
     private checkFileDataLimit(limit: FileLimits, filemeta: FileMeta) {
         if (limit?.mimeTypes && limit.mimeTypes.length) {
             const isValidMime = limit.mimeTypes.includes(filemeta.mimeType);
-            if (!isValidMime) throw Error("MIME type not allowed.");
+            if (!isValidMime) throw Error(ERRORS.MIME_NOT_ALLOWED);
         }
 
         if (limit?.maxSize != null && filemeta.size > limit.maxSize) {
-            throw Error(`Too large file. The maximum allowed size is ${bytesToMB(limit.maxSize)} MB.`);
+            throw Error(ERRORS.FILE_TOO_LARGE(bytesToMB(limit.maxSize)));
         }
     }
 }
