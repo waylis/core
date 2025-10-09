@@ -4,6 +4,8 @@ Waylis is a Node.js package designed to simplify and speed up interaction betwee
 
 ![Promo](/promo.webp)
 
+⚡ It’s like Express.js, but instead of exposing an HTTP API for developers — you expose a user-friendly UI for end users.
+
 ## Motivation
 
 Traditional [client-server](https://en.wikipedia.org/wiki/Client–server_model) applications often require building a separate [frontend](https://en.wikipedia.org/wiki/Front-end_web_development): designing forms, input flows, and UI components just to collect, validate and display data. Waylis eliminates this extra work by offering a ready-to-use web interface where interaction happens throw predefined chat scenes. The user and your application communicate using simple messages, which can contain data of different formats: from plain text to entire files.

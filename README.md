@@ -6,7 +6,7 @@
 </p>
 
 <h2 align="center">Waylis</h2>
-<p align="center">A chat-like interface for your Node.js apps</p>
+<p align="center">A quick and simple way to communicate with your Node.js app from the browser.</p>
 <p align="center">
 🔍 <a href="https://waylis.github.io">Documentation</a>
 &nbsp; 🧩 <a href="https://waylis.github.io/examples">Examples</a>
@@ -17,7 +17,11 @@
 
 <img src="https://raw.githubusercontent.com/waylis/core/refs/heads/master/docs/public/promo.webp" alt="promo">
 
-**Waylis** is a Node.js library that allows you to add a chat-like interface for interacting with your applications. It’s a complete solution that can free you from writing a separate frontend part. Abstracting user interaction into reusable dialog blocks, Waylis allows you to fully focus on domain logic by automatically collecting, validating user input and displaying processing results.
+Waylis is a Node.js package that provides a quick and simple way to interact with your application’s logic directly from the browser. It offers a developer-friendly API for building interactive scenes and a user-friendly interface for exchanging information with your app.
+
+Define exactly what kind of data you expect (strings, numbers, dates, files) with precise validation and constraints. Then work with it as you need and send responses back to users in any formats (such as text, files, tables, charts).
+
+⚡ It’s like Express.js, but instead of exposing an HTTP API for developers — you expose a user-friendly UI for end users.
 
 > [!WARNING]
 > Waylis is a new project and currently in beta phase. Updates released before version 1.0 may introduce breaking changes.
@@ -25,7 +29,6 @@
 ## Features
 
 -   **Wide range of usage**: from standalone offline tools to online services.
--   **Backend-first**: dialog logic is defined on the server, and the UI comes for free.
 -   **Built-in input validation**: accept only data you need from users (strings, numbers, booleans, dates, files).
 -   **Configurable**: comes with flexible server configuration.
 -   **Pluggable**: supports custom databases, file storages, loggers by implementing simple interfaces.
