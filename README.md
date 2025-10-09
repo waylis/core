@@ -17,9 +17,9 @@
 
 <img src="https://raw.githubusercontent.com/waylis/core/refs/heads/master/docs/public/promo.webp" alt="promo">
 
-Waylis is a Node.js package that provides a quick and simple way to interact with your application’s logic directly from the browser. It offers a developer-friendly API for building interactive scenes and a user-friendly interface for exchanging information with your app.
+**Waylis** is a Node.js package that provides a quick and simple way to interact with your application’s logic directly from the browser. It offers a developer-friendly API for building interactive scenes and a user-friendly interface for exchanging information with your app.
 
-Define exactly what kind of data you expect (strings, numbers, dates, files) with precise validation and constraints. Then work with it as you need and send responses back to users in any formats (such as text, files, tables, charts).
+Define exactly what kind of data you expect with precise validation and constraints. Then work with it as you need and send responses back to users in any formats (such as text, files, tables, charts).
 
 ⚡ It’s like Express.js, but instead of exposing an HTTP API for developers — you expose a user-friendly UI for end users.
 
