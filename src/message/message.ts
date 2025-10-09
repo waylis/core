@@ -252,19 +252,20 @@ export class MessageManager {
     }
 
     validateUserMessageParams(input: any, senderID: string): CreateUserMessageParams {
-        if (!isPlainObject(input)) throw Error("Input must be a JSON object");
-        const params = input;
+        if (!isPlainObject(input)) throw Error("Input must be an object");
+        const params = structuredClone(input);
 
         if (!("chatID" in input) || typeof input.chatID !== "string") throw Error("'chatID' must be a string");
-        if ("replyTo" in input && typeof input.replyTo !== "string")
-            throw Error("'replyTo' must be a string if provided");
-        if (!("body" in input)) throw Error("'body' must be an object");
+        if (!("body" in input) || !isPlainObject(input.body)) throw Error("'body' must be an object");
         if (!("type" in input.body) || typeof input.body.type !== "string") throw Error("'body.type' must be a string");
         if (!allowedUserMessageBodyTypes.includes(input.body.type)) throw Error("Not allowed 'body.type'");
-
         if (!("content" in input.body)) throw Error("'body.content' must be provided");
+        if ("replyTo" in input && typeof input.replyTo !== "string") {
+            throw Error("'replyTo' must be a string if provided");
+        }
 
         const invalidBodyContentMsg = "Invalid body.content for the provided body.type";
+
         if (input.body.type === "text") {
             if (typeof input.body.content !== "string") throw Error(invalidBodyContentMsg);
         }
