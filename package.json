@@ -1,6 +1,6 @@
 {
   "name": "@waylis/core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "cheatsnake",
   "license": "MIT",
   "description": "A simple way to interact with your backend.",
