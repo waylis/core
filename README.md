@@ -6,7 +6,7 @@
 </p>
 
 <h2 align="center">Waylis</h2>
-<p align="center">A quick and simple way to communicate with your Node.js app from the browser.</p>
+<p align="center">Tiny Node.js framework with built-in UI</p>
 <p align="center">
 🔍 <a href="https://waylis.github.io">Documentation</a>
 &nbsp; 🧩 <a href="https://waylis.github.io/examples">Examples</a>
@@ -17,7 +17,7 @@
 
 <img src="https://raw.githubusercontent.com/waylis/core/refs/heads/master/docs/public/promo.webp" alt="promo">
 
-**Waylis** is a Node.js package that provides a quick and simple way to interact with your application’s logic directly from the browser. It offers a developer-friendly API for building interactive scenes and a user-friendly interface for exchanging information with your app.
+**Waylis** is a Node.js package that allows you to quickly and easily build interactive scenes for interacting with your application's logic directly from the browser. It offers a developer-friendly API and a user-friendly web interface for using your app.
 
 Define exactly what kind of data you expect with precise validation and constraints. Then work with it as you need and send responses back to users in any formats (such as text, files, tables, charts).
 
