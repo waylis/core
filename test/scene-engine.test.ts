@@ -20,7 +20,7 @@ describe("SceneEngine > handleMessage", async () => {
         body: UserMessageBody,
         chatID = randomString(),
         senderID = randomString(),
-        replyMsg?: Message
+        replyMsg?: Message,
     ) => messageManager.createUserMessage({ chatID, senderID, body: body }, replyMsg);
 
     const mockSimpleScene = (response: SystemMessageBody) => {
@@ -36,9 +36,9 @@ describe("SceneEngine > handleMessage", async () => {
         const msg = mockMessage({ type: "command", content: randomString() });
         const got = (await engine.handleMessage(msg)) as Message;
 
-        assert.equal(Array.isArray(got), false);
-        assert.equal(got.body.type, "text");
-        assert.equal(got.body.content, "Unknown command.");
+        assert.strictEqual(Array.isArray(got), false);
+        assert.strictEqual(got.body.type, "text");
+        assert.strictEqual(got.body.content, "Unknown command.");
     });
 
     it("should properly handle existing command", async () => {
@@ -49,20 +49,20 @@ describe("SceneEngine > handleMessage", async () => {
         const msg = mockMessage({ type: "command", content: cmd.value });
         const got = (await engine.handleMessage(msg)) as Message;
 
-        assert.equal(engine.commands.size, 1);
-        assert.equal(engine.scenes.size, 1);
+        assert.strictEqual(engine.commands.size, 1);
+        assert.strictEqual(engine.scenes.size, 1);
 
-        assert.equal(Array.isArray(got), false);
-        assert.equal(got.body.type, response.type);
-        assert.equal(got.body.content, response.content);
+        assert.strictEqual(Array.isArray(got), false);
+        assert.strictEqual(got.body.type, response.type);
+        assert.strictEqual(got.body.content, response.content);
     });
 
     it("should handle empty command value", async () => {
         const msg = mockMessage({ type: "command", content: "" });
         const got = (await engine.handleMessage(msg)) as Message;
 
-        assert.equal(Array.isArray(got), false);
-        assert.equal(got.body.type, "text");
+        assert.strictEqual(Array.isArray(got), false);
+        assert.strictEqual(got.body.type, "text");
     });
 
     it("should handle helloworld scene", async () => {
@@ -85,10 +85,10 @@ describe("SceneEngine > handleMessage", async () => {
         const msg2 = mockMessage({ type: "text", content: "Node.js" }, resp1.chatID, msg1.senderID, resp1);
         const resp2 = (await engine.handleMessage(msg2)) as Message;
 
-        assert.equal(Array.isArray(resp1), false);
-        assert.equal(resp1.body.content, step.prompt.content);
-        assert.equal(Array.isArray(resp2), false);
-        assert.equal(resp2.body.content, "Hello Node.js!");
+        assert.strictEqual(Array.isArray(resp1), false);
+        assert.strictEqual(resp1.body.content, step.prompt.content);
+        assert.strictEqual(Array.isArray(resp2), false);
+        assert.strictEqual(resp2.body.content, "Hello Node.js!");
     });
 
     it("should handle calculator scene", async () => {
@@ -121,12 +121,12 @@ describe("SceneEngine > handleMessage", async () => {
         const msg3 = mockMessage({ type: "number", content: 7 }, resp2.chatID, msg2.senderID, resp2);
         const resp3 = (await engine.handleMessage(msg3)) as Message;
 
-        assert.equal(Array.isArray(resp1), false);
-        assert.equal(resp1.body.content, step1.prompt.content);
-        assert.equal(Array.isArray(resp2), false);
-        assert.equal(resp2.body.content, step2.prompt.content);
-        assert.equal(Array.isArray(resp3), false);
-        assert.equal(resp3.body.content, "The sum is 10");
+        assert.strictEqual(Array.isArray(resp1), false);
+        assert.strictEqual(resp1.body.content, step1.prompt.content);
+        assert.strictEqual(Array.isArray(resp2), false);
+        assert.strictEqual(resp2.body.content, step2.prompt.content);
+        assert.strictEqual(Array.isArray(resp3), false);
+        assert.strictEqual(resp3.body.content, "The sum is 10");
     });
 
     it("should reject message with exceeded limit", async () => {
@@ -147,13 +147,13 @@ describe("SceneEngine > handleMessage", async () => {
         const msg1 = mockMessage({ type: "command", content: cmd.value });
         const resp1 = (await engine.handleMessage(msg1)) as Message;
 
-        assert.equal(Array.isArray(resp1), false);
-        assert.equal(resp1.body.content, step.prompt.content);
+        assert.strictEqual(Array.isArray(resp1), false);
+        assert.strictEqual(resp1.body.content, step.prompt.content);
         assert.throws(
             () => {
                 mockMessage({ type: "text", content: "X" }, resp1.chatID, msg1.senderID, resp1);
             },
-            { name: "Error" }
+            { name: "Error" },
         );
     });
 });

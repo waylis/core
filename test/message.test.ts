@@ -71,7 +71,7 @@ describe("createSystemMessage", () => {
 
     it("should generate new threadID when no user message", () => {
         const result = manager.createSystemMessage(baseParams);
-        assert.equal(typeof result.threadID, "string");
+        assert.strictEqual(typeof result.threadID, "string");
     });
 
     it("should use user message threadID when provided", () => {
@@ -132,7 +132,7 @@ describe("createUserMessage", () => {
 
             assert.throws(
                 () => manager.createUserMessage({ ...baseParams, body: { type: "text", content: "Short" } }, replyMsg),
-                { message: /at least 10 characters/ }
+                { message: /at least 10 characters/ },
             );
         });
 
@@ -149,9 +149,9 @@ describe("createUserMessage", () => {
                 () =>
                     manager.createUserMessage(
                         { ...baseParams, body: { type: "text", content: "Too long text" } },
-                        replyMsg
+                        replyMsg,
                     ),
-                { message: /no more than 5 characters/ }
+                { message: /no more than 5 characters/ },
             );
         });
     });
@@ -170,9 +170,9 @@ describe("createUserMessage", () => {
                 () =>
                     manager.createUserMessage(
                         { ...baseParams, body: { type: "number", content: 3.14 } },
-                        numberReplyMsg({ integerOnly: true })
+                        numberReplyMsg({ integerOnly: true }),
                     ),
-                { message: /must be a valid integer/ }
+                { message: /must be a valid integer/ },
             );
         });
 
@@ -181,9 +181,9 @@ describe("createUserMessage", () => {
                 () =>
                     manager.createUserMessage(
                         { ...baseParams, body: { type: "number", content: 5 } },
-                        numberReplyMsg({ min: 10 })
+                        numberReplyMsg({ min: 10 }),
                     ),
-                { message: /minimum allowed value is 10/ }
+                { message: /minimum allowed value is 10/ },
             );
         });
     });
@@ -203,9 +203,9 @@ describe("createUserMessage", () => {
                 () =>
                     manager.createUserMessage(
                         { ...baseParams, body: { type: "datetime", content: new Date("2022-12-31") } },
-                        dateReplyMsg({ min: minDate })
+                        dateReplyMsg({ min: minDate }),
                     ),
-                { message: /The date is too old/ }
+                { message: /The date is too old/ },
             );
         });
     });
@@ -224,9 +224,9 @@ describe("createUserMessage", () => {
                 () =>
                     manager.createUserMessage(
                         { ...baseParams, body: { type: "option", content: "invalid" } },
-                        optionReplyMsg([{ value: "valid" }])
+                        optionReplyMsg([{ value: "valid" }]),
                     ),
-                { message: /does not exist/ }
+                { message: /does not exist/ },
             );
         });
     });
@@ -254,9 +254,9 @@ describe("createUserMessage", () => {
                 () =>
                     manager.createUserMessage(
                         { ...baseParams, body: { type: "file", content: { ...validFile, size: 10485760 } } },
-                        fileReplyMsg({ maxSize: 5242880 })
+                        fileReplyMsg({ maxSize: 5242880 }),
                     ),
-                { message: /Too large file/ }
+                { message: /Too large file/ },
             );
         });
     });
@@ -294,9 +294,9 @@ describe("createUserMessage", () => {
                 () =>
                     manager.createUserMessage(
                         { ...baseParams, body: { type: "files", content: [...validFiles, ...validFiles] } },
-                        filesReplyMsg({ maxAmount: 2 })
+                        filesReplyMsg({ maxAmount: 2 }),
                     ),
-                { message: /Too many files/ }
+                { message: /Too many files/ },
             );
         });
     });

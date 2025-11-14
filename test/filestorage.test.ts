@@ -46,7 +46,7 @@ describe("DiskFileStorage", () => {
 
     it("should delete uploaded file by ID", async () => {
         const deleted = await storage.deleteByID(metadata.id);
-        assert.equal(deleted, true, "File should be deleted");
+        assert.strictEqual(deleted, true, "File should be deleted");
     });
 
     after(async () => {
