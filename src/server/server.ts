@@ -175,9 +175,9 @@ export class AppServer {
     }
 
     /**
-     * Start the application server.
+     * Start the HTTP server.
      *
-     * @returns A function that, when called, closes the server and triggers cleanup.
+     * @returns A new instance of the HTTP server.
      */
     async start() {
         if (!this.database.isOpen) await this.database.open();
@@ -205,7 +205,7 @@ export class AppServer {
             this.logger.error("Server is dropped by error", err);
         });
 
-        return server.close;
+        return server;
     }
 
     /**
@@ -224,7 +224,7 @@ export class AppServer {
         scene: {
             steps: [...Steps];
             handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody | SystemMessageBody[]>;
-        }
+        },
     ) {
         this.engine.addScene(command, scene);
     }
