@@ -6,7 +6,7 @@
 
 # Class: `AppServer`
 
-Defined in: [src/server/server.ts:60](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L60)
+Defined in: [server/server.ts:60](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L60)
 
 Main application server.
 
@@ -21,7 +21,7 @@ of the server, including database, file storage, configuration, and logging.
 new AppServer(params?: AppServerParams): AppServer;
 ```
 
-Defined in: [src/server/server.ts:80](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L80)
+Defined in: [server/server.ts:80](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L80)
 
 Create a new application server instance.
 
@@ -42,17 +42,17 @@ Optional initialization parameters used to configure
 
 | Property | Modifier | Type | Defined in |
 | :------ | :------ | :------ | :------ |
-| <a id="chatmanager"></a> `chatManager` | `protected` | `ChatManager` | [src/server/server.ts:65](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L65) |
-| <a id="config"></a> `config` | `protected` | [`ServerConfig`](../interfaces/ServerConfig.md) | [src/server/server.ts:61](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L61) |
-| <a id="connections"></a> `connections` | `protected` | `Map`\<`string`, `ServerResponse`\<`IncomingMessage`\>\> | [src/server/server.ts:72](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L72) |
-| <a id="database"></a> `database` | `protected` | [`Database`](../interfaces/Database.md) | [src/server/server.ts:62](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L62) |
-| <a id="engine"></a> `engine` | `protected` | `SceneEngine` | [src/server/server.ts:70](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L70) |
-| <a id="eventbus"></a> `eventBus` | `protected` | `EventBusClass` | [src/server/server.ts:71](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L71) |
-| <a id="filemanager"></a> `fileManager` | `protected` | [`FileManager`](../interfaces/FileManager.md) | [src/server/server.ts:64](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L64) |
-| <a id="filestorage"></a> `fileStorage` | `protected` | [`FileStorage`](../interfaces/FileStorage.md) | [src/server/server.ts:63](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L63) |
-| <a id="logger"></a> `logger` | `protected` | [`Logger`](../interfaces/Logger.md) | [src/server/server.ts:68](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L68) |
-| <a id="messagemanager"></a> `messageManager` | `protected` | `MessageManager` | [src/server/server.ts:66](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L66) |
-| <a id="stepmanager"></a> `stepManager` | `protected` | `StepManager` | [src/server/server.ts:67](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L67) |
+| <a id="chatmanager"></a> `chatManager` | `protected` | `ChatManager` | [server/server.ts:65](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L65) |
+| <a id="config"></a> `config` | `protected` | [`ServerConfig`](../interfaces/ServerConfig.md) | [server/server.ts:61](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L61) |
+| <a id="connections"></a> `connections` | `protected` | `Map`\<`string`, `ServerResponse`\<`IncomingMessage`\>\> | [server/server.ts:72](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L72) |
+| <a id="database"></a> `database` | `protected` | [`Database`](../interfaces/Database.md) | [server/server.ts:62](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L62) |
+| <a id="engine"></a> `engine` | `protected` | `SceneEngine` | [server/server.ts:70](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L70) |
+| <a id="eventbus"></a> `eventBus` | `protected` | `EventBusClass` | [server/server.ts:71](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L71) |
+| <a id="filemanager"></a> `fileManager` | `protected` | [`FileManager`](../interfaces/FileManager.md) | [server/server.ts:64](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L64) |
+| <a id="filestorage"></a> `fileStorage` | `protected` | [`FileStorage`](../interfaces/FileStorage.md) | [server/server.ts:63](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L63) |
+| <a id="logger"></a> `logger` | `protected` | [`Logger`](../interfaces/Logger.md) | [server/server.ts:68](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L68) |
+| <a id="messagemanager"></a> `messageManager` | `protected` | `MessageManager` | [server/server.ts:66](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L66) |
+| <a id="stepmanager"></a> `stepManager` | `protected` | `StepManager` | [server/server.ts:67](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L67) |
 
 ## Methods
 
@@ -67,7 +67,7 @@ addScene<Steps>(command: Command, scene: {
 }): void;
 ```
 
-Defined in: [src/server/server.ts:222](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L222)
+Defined in: [server/server.ts:222](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L222)
 
 Add a new scene to the application.
 
@@ -117,7 +117,7 @@ The actual scene.
 getFileManager(): Promise<FileManager>;
 ```
 
-Defined in: [src/server/server.ts:237](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L237)
+Defined in: [server/server.ts:237](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L237)
 
 Get the `FileManager` instance for managing files.
 
@@ -132,15 +132,15 @@ A promise that resolves to the `FileManager` instance.
 ### start()
 
 ```ts
-start(): Promise<(callback?: (err?: Error) => void) => this>;
+start(): Promise<Server<typeof IncomingMessage, typeof ServerResponse>>;
 ```
 
-Defined in: [src/server/server.ts:182](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L182)
+Defined in: [server/server.ts:182](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L182)
 
-Start the application server.
+Start the HTTP server.
 
 #### Returns
 
-`Promise`\<(`callback?`: (`err?`: `Error`) => `void`) => `this`\>
+`Promise`\<`Server`\<*typeof* `IncomingMessage`, *typeof* `ServerResponse`\>\>
 
-A function that, when called, closes the server and triggers cleanup.
+A new instance of the HTTP server.

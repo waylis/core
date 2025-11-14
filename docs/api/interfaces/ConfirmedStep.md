@@ -6,7 +6,7 @@
 
 # Interface: `ConfirmedStep`
 
-Defined in: [src/scene/step.ts:5](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L5)
+Defined in: [scene/step.ts:5](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L5)
 
 Represents a confirmed step in a scene flow.
 
@@ -18,7 +18,7 @@ Represents a confirmed step in a scene flow.
 createdAt: Date;
 ```
 
-Defined in: [src/scene/step.ts:17](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L17)
+Defined in: [scene/step.ts:17](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L17)
 
 Timestamp when the step was confirmed.
 
@@ -30,7 +30,7 @@ Timestamp when the step was confirmed.
 id: string;
 ```
 
-Defined in: [src/scene/step.ts:7](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L7)
+Defined in: [scene/step.ts:7](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L7)
 
 Unique identifier of the confirmed step.
 
@@ -42,7 +42,7 @@ Unique identifier of the confirmed step.
 messageID: string;
 ```
 
-Defined in: [src/scene/step.ts:11](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L11)
+Defined in: [scene/step.ts:11](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L11)
 
 Message that triggered the confirmation.
 
@@ -54,7 +54,7 @@ Message that triggered the confirmation.
 scene: string;
 ```
 
-Defined in: [src/scene/step.ts:13](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L13)
+Defined in: [scene/step.ts:13](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L13)
 
 Scene identifier.
 
@@ -66,7 +66,7 @@ Scene identifier.
 step: string;
 ```
 
-Defined in: [src/scene/step.ts:15](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L15)
+Defined in: [scene/step.ts:15](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L15)
 
 Step key within the scene.
 
@@ -78,6 +78,6 @@ Step key within the scene.
 threadID: string;
 ```
 
-Defined in: [src/scene/step.ts:9](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L9)
+Defined in: [scene/step.ts:9](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L9)
 
 Thread the step belongs to.

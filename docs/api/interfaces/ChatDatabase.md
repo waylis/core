@@ -6,7 +6,7 @@
 
 # Interface: `ChatDatabase`
 
-Defined in: [src/chat/chat.ts:18](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L18)
+Defined in: [chat/chat.ts:18](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L18)
 
 Abstraction for chat persistence operations.
 
@@ -22,7 +22,7 @@ Abstraction for chat persistence operations.
 addChat(chat: Chat): Promise<void>;
 ```
 
-Defined in: [src/chat/chat.ts:23](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L23)
+Defined in: [chat/chat.ts:23](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L23)
 
 Add a new chat to the database.
 
@@ -46,7 +46,7 @@ Chat object to store.
 countChatsByCreatorID(creatorID: string): Promise<number>;
 ```
 
-Defined in: [src/chat/chat.ts:44](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L44)
+Defined in: [chat/chat.ts:44](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L44)
 
 Count how many chats were created by a user.
 
@@ -70,7 +70,7 @@ User identifier.
 deleteChatByID(id: string): Promise<null | Chat>;
 ```
 
-Defined in: [src/chat/chat.ts:59](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L59)
+Defined in: [chat/chat.ts:59](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L59)
 
 Remove a chat by ID.
 
@@ -96,7 +96,7 @@ Deleted chat or null if not found.
 editChatByID(id: string, updated: Partial<Chat>): Promise<null | Chat>;
 ```
 
-Defined in: [src/chat/chat.ts:52](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L52)
+Defined in: [chat/chat.ts:52](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L52)
 
 Update a chat by ID.
 
@@ -128,7 +128,7 @@ Updated chat or null if not found.
 getChatByID(id: string): Promise<null | Chat>;
 ```
 
-Defined in: [src/chat/chat.ts:30](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L30)
+Defined in: [chat/chat.ts:30](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L30)
 
 Retrieve a chat by its ID.
 
@@ -157,7 +157,7 @@ getChatsByCreatorID(
 limit: number): Promise<Chat[]>;
 ```
 
-Defined in: [src/chat/chat.ts:38](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L38)
+Defined in: [chat/chat.ts:38](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L38)
 
 Retrieve chats created by a specific user.
 

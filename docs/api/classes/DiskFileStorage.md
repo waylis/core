@@ -6,7 +6,7 @@
 
 # Class: `DiskFileStorage`
 
-Defined in: [src/file/storage/disk.ts:9](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/storage/disk.ts#L9)
+Defined in: [file/storage/disk.ts:9](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/storage/disk.ts#L9)
 
 File storage implementation that saves files to the local disk.
 
@@ -22,7 +22,7 @@ File storage implementation that saves files to the local disk.
 new DiskFileStorage(storagePath?: string): DiskFileStorage;
 ```
 
-Defined in: [src/file/storage/disk.ts:17](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/storage/disk.ts#L17)
+Defined in: [file/storage/disk.ts:17](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/storage/disk.ts#L17)
 
 Create a new disk-based file storage.
 
@@ -42,7 +42,7 @@ Optional root directory path (defaults to `"files"`).
 
 | Property | Type | Default value | Description | Defined in |
 | :------ | :------ | :------ | :------ | :------ |
-| <a id="isopen"></a> `isOpen` | `boolean` | `false` | Indicates whether the storage connection is open. | [src/file/storage/disk.ts:10](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/storage/disk.ts#L10) |
+| <a id="isopen"></a> `isOpen` | `boolean` | `false` | Indicates whether the storage connection is open. | [file/storage/disk.ts:10](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/storage/disk.ts#L10) |
 
 ## Methods
 
@@ -52,7 +52,7 @@ Optional root directory path (defaults to `"files"`).
 close(): Promise<void>;
 ```
 
-Defined in: [src/file/storage/disk.ts:36](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/storage/disk.ts#L36)
+Defined in: [file/storage/disk.ts:36](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/storage/disk.ts#L36)
 
 Close the storage connection.
 
@@ -72,7 +72,7 @@ Close the storage connection.
 deleteByID(id: string): Promise<boolean>;
 ```
 
-Defined in: [src/file/storage/disk.ts:72](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/storage/disk.ts#L72)
+Defined in: [file/storage/disk.ts:72](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/storage/disk.ts#L72)
 
 Delete a file from storage by its ID.
 
@@ -102,7 +102,7 @@ True if deletion succeeded.
 download(metadata: FileMeta): Promise<ReadableStream>;
 ```
 
-Defined in: [src/file/storage/disk.ts:60](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/storage/disk.ts#L60)
+Defined in: [file/storage/disk.ts:60](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/storage/disk.ts#L60)
 
 Download a file from storage.
 
@@ -132,7 +132,7 @@ File content as a readable stream.
 open(): Promise<void>;
 ```
 
-Defined in: [src/file/storage/disk.ts:32](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/storage/disk.ts#L32)
+Defined in: [file/storage/disk.ts:32](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/storage/disk.ts#L32)
 
 Open the storage connection.
 
@@ -152,7 +152,7 @@ Open the storage connection.
 upload(bytes: ReadableStream | Buffer<ArrayBufferLike>, metadata: FileMeta): Promise<boolean>;
 ```
 
-Defined in: [src/file/storage/disk.ts:40](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/storage/disk.ts#L40)
+Defined in: [file/storage/disk.ts:40](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/storage/disk.ts#L40)
 
 Upload a file into storage.
 

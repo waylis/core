@@ -15,7 +15,7 @@ function createScene<Steps>(config: {
 }): Scene<Steps>;
 ```
 
-Defined in: [src/scene/scene.ts:27](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/scene.ts#L27)
+Defined in: [scene/scene.ts:27](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/scene.ts#L27)
 
 Create a new scene definition.
 

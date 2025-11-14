@@ -6,7 +6,7 @@
 
 # Class: `SimpleLogger`
 
-Defined in: [src/logger/logger.ts:22](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L22)
+Defined in: [logger/logger.ts:22](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L22)
 
 A simple logger implementation with configurable log levels and optional file output.
 
@@ -26,7 +26,7 @@ new SimpleLogger(options: {
 }): SimpleLogger;
 ```
 
-Defined in: [src/logger/logger.ts:34](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L34)
+Defined in: [logger/logger.ts:34](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L34)
 
 Creates a new SimpleLogger instance.
 
@@ -66,7 +66,7 @@ Whether to write logs to files in addition to console. Defaults to `true`.
 debug(...args: unknown[]): void;
 ```
 
-Defined in: [src/logger/logger.ts:76](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L76)
+Defined in: [logger/logger.ts:76](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L76)
 
 #### Parameters
 
@@ -90,7 +90,7 @@ Defined in: [src/logger/logger.ts:76](https://github.com/waylis/core/blob/ec4e52
 error(...args: unknown[]): void;
 ```
 
-Defined in: [src/logger/logger.ts:72](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L72)
+Defined in: [logger/logger.ts:72](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L72)
 
 #### Parameters
 
@@ -114,7 +114,7 @@ Defined in: [src/logger/logger.ts:72](https://github.com/waylis/core/blob/ec4e52
 info(...args: unknown[]): void;
 ```
 
-Defined in: [src/logger/logger.ts:64](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L64)
+Defined in: [logger/logger.ts:64](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L64)
 
 #### Parameters
 
@@ -138,7 +138,7 @@ Defined in: [src/logger/logger.ts:64](https://github.com/waylis/core/blob/ec4e52
 warn(...args: unknown[]): void;
 ```
 
-Defined in: [src/logger/logger.ts:68](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L68)
+Defined in: [logger/logger.ts:68](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L68)
 
 #### Parameters
 

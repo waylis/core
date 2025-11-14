@@ -6,7 +6,7 @@
 
 # Interface: `FileManager`
 
-Defined in: [src/file/file.ts:100](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L100)
+Defined in: [file/file.ts:100](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/file.ts#L100)
 
 High-level interface for managing files and metadata.
 
@@ -18,7 +18,7 @@ High-level interface for managing files and metadata.
 deleteFile(id: string): Promise<null | FileMeta>;
 ```
 
-Defined in: [src/file/file.ts:128](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L128)
+Defined in: [file/file.ts:128](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/file.ts#L128)
 
 Delete a file by ID.
 
@@ -44,7 +44,7 @@ Deleted metadata or null if not found.
 downloadFile(id: string): Promise<ReadableStream>;
 ```
 
-Defined in: [src/file/file.ts:121](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L121)
+Defined in: [file/file.ts:121](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/file.ts#L121)
 
 Download a file by ID.
 
@@ -70,7 +70,7 @@ File content as a readable stream.
 generateFileMeta(meta: CreateFileMetaParams): FileMeta;
 ```
 
-Defined in: [src/file/file.ts:135](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L135)
+Defined in: [file/file.ts:135](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/file.ts#L135)
 
 Generate metadata for a file.
 
@@ -96,7 +96,7 @@ Complete file metadata object.
 getFileMeta(id: string): Promise<null | FileMeta>;
 ```
 
-Defined in: [src/file/file.ts:106](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L106)
+Defined in: [file/file.ts:106](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/file.ts#L106)
 
 Retrieve metadata of a file by ID.
 
@@ -122,7 +122,7 @@ File metadata if found, otherwise null.
 uploadFile(bytes: ReadableStream | Buffer<ArrayBufferLike>, meta: CreateFileMetaParams): Promise<FileMeta>;
 ```
 
-Defined in: [src/file/file.ts:114](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/file/file.ts#L114)
+Defined in: [file/file.ts:114](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/file/file.ts#L114)
 
 Upload a new file with metadata.
 

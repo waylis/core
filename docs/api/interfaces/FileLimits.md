@@ -6,7 +6,7 @@
 
 # Interface: `FileLimits`
 
-Defined in: [src/message/types.ts:53](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L53)
+Defined in: [message/types.ts:53](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L53)
 
 Limits for a single file.
 
@@ -22,7 +22,7 @@ Limits for a single file.
 optional maxSize: number;
 ```
 
-Defined in: [src/message/types.ts:57](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L57)
+Defined in: [message/types.ts:57](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L57)
 
 Maximum size in bytes.
 
@@ -34,6 +34,6 @@ Maximum size in bytes.
 optional mimeTypes: string[];
 ```
 
-Defined in: [src/message/types.ts:55](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L55)
+Defined in: [message/types.ts:55](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L55)
 
 Allowed MIME types.

@@ -6,7 +6,7 @@
 
 # Interface: `Logger`
 
-Defined in: [src/logger/logger.ts:12](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L12)
+Defined in: [logger/logger.ts:12](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L12)
 
 A logging interface defining standard log methods.
 
@@ -18,7 +18,7 @@ A logging interface defining standard log methods.
 debug(...args: unknown[]): void;
 ```
 
-Defined in: [src/logger/logger.ts:16](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L16)
+Defined in: [logger/logger.ts:16](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L16)
 
 #### Parameters
 
@@ -38,7 +38,7 @@ Defined in: [src/logger/logger.ts:16](https://github.com/waylis/core/blob/ec4e52
 error(...args: unknown[]): void;
 ```
 
-Defined in: [src/logger/logger.ts:15](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L15)
+Defined in: [logger/logger.ts:15](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L15)
 
 #### Parameters
 
@@ -58,7 +58,7 @@ Defined in: [src/logger/logger.ts:15](https://github.com/waylis/core/blob/ec4e52
 info(...args: unknown[]): void;
 ```
 
-Defined in: [src/logger/logger.ts:13](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L13)
+Defined in: [logger/logger.ts:13](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L13)
 
 #### Parameters
 
@@ -78,7 +78,7 @@ Defined in: [src/logger/logger.ts:13](https://github.com/waylis/core/blob/ec4e52
 warn(...args: unknown[]): void;
 ```
 
-Defined in: [src/logger/logger.ts:14](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/logger/logger.ts#L14)
+Defined in: [logger/logger.ts:14](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/logger/logger.ts#L14)
 
 #### Parameters
 

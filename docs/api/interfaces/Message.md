@@ -6,7 +6,7 @@
 
 # Interface: `Message`
 
-Defined in: [src/message/message.ts:22](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L22)
+Defined in: [message/message.ts:23](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L23)
 
 Represents a chat message.
 
@@ -18,7 +18,7 @@ Represents a chat message.
 body: MessageBody;
 ```
 
-Defined in: [src/message/message.ts:38](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L38)
+Defined in: [message/message.ts:39](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L39)
 
 Message content.
 
@@ -30,7 +30,7 @@ Message content.
 chatID: string;
 ```
 
-Defined in: [src/message/message.ts:26](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L26)
+Defined in: [message/message.ts:27](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L27)
 
 ID of the chat this message belongs to.
 
@@ -42,7 +42,7 @@ ID of the chat this message belongs to.
 createdAt: Date;
 ```
 
-Defined in: [src/message/message.ts:42](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L42)
+Defined in: [message/message.ts:43](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L43)
 
 Timestamp when the message was created.
 
@@ -54,7 +54,7 @@ Timestamp when the message was created.
 id: string;
 ```
 
-Defined in: [src/message/message.ts:24](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L24)
+Defined in: [message/message.ts:25](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L25)
 
 Unique identifier of the message.
 
@@ -66,7 +66,7 @@ Unique identifier of the message.
 optional reply: ExpectedReply<UserMessageBodyType>;
 ```
 
-Defined in: [src/message/message.ts:40](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L40)
+Defined in: [message/message.ts:41](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L41)
 
 Restriction settings for replies, if any.
 
@@ -78,7 +78,7 @@ Restriction settings for replies, if any.
 optional replyTo: string;
 ```
 
-Defined in: [src/message/message.ts:30](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L30)
+Defined in: [message/message.ts:31](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L31)
 
 ID of the message this one replies to, if any.
 
@@ -90,7 +90,7 @@ ID of the message this one replies to, if any.
 optional scene: string;
 ```
 
-Defined in: [src/message/message.ts:34](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L34)
+Defined in: [message/message.ts:35](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L35)
 
 Optional scene identifier for workflow tracking.
 
@@ -102,7 +102,7 @@ Optional scene identifier for workflow tracking.
 senderID: string;
 ```
 
-Defined in: [src/message/message.ts:28](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L28)
+Defined in: [message/message.ts:29](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L29)
 
 ID of the user who sent the message.
 
@@ -114,7 +114,7 @@ ID of the user who sent the message.
 optional step: string;
 ```
 
-Defined in: [src/message/message.ts:36](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L36)
+Defined in: [message/message.ts:37](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L37)
 
 Optional step identifier within a scene.
 
@@ -126,6 +126,6 @@ Optional step identifier within a scene.
 threadID: string;
 ```
 
-Defined in: [src/message/message.ts:32](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/message.ts#L32)
+Defined in: [message/message.ts:33](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/message.ts#L33)
 
 ID of the thread this message belongs to.

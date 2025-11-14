@@ -6,7 +6,7 @@
 
 # Interface: `AppServerParams`
 
-Defined in: [src/server/server.ts:39](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L39)
+Defined in: [server/server.ts:39](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L39)
 
 Parameters for initializing application server.
 
@@ -18,7 +18,7 @@ Parameters for initializing application server.
 optional config: DeepPartial<ServerConfig>;
 ```
 
-Defined in: [src/server/server.ts:49](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L49)
+Defined in: [server/server.ts:49](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L49)
 
 Server configuration options.
 Can be partially provided; defaults will be applied for missing values.
@@ -31,7 +31,7 @@ Can be partially provided; defaults will be applied for missing values.
 optional db: Database;
 ```
 
-Defined in: [src/server/server.ts:41](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L41)
+Defined in: [server/server.ts:41](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L41)
 
 Database instance used by the server for persistence.
 
@@ -43,7 +43,7 @@ Database instance used by the server for persistence.
 optional fileStorage: FileStorage;
 ```
 
-Defined in: [src/server/server.ts:43](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L43)
+Defined in: [server/server.ts:43](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L43)
 
 File storage implementation for handling file uploads and storage.
 
@@ -55,6 +55,6 @@ File storage implementation for handling file uploads and storage.
 optional logger: Logger;
 ```
 
-Defined in: [src/server/server.ts:51](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/server/server.ts#L51)
+Defined in: [server/server.ts:51](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/server/server.ts#L51)
 
 Logger instance for capturing and formatting logs.

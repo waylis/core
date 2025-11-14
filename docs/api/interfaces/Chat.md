@@ -6,7 +6,7 @@
 
 # Interface: `Chat`
 
-Defined in: [src/chat/chat.ts:4](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L4)
+Defined in: [chat/chat.ts:4](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L4)
 
 Represents a chat entity.
 
@@ -18,7 +18,7 @@ Represents a chat entity.
 createdAt: Date;
 ```
 
-Defined in: [src/chat/chat.ts:12](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L12)
+Defined in: [chat/chat.ts:12](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L12)
 
 Timestamp when the chat was created.
 
@@ -30,7 +30,7 @@ Timestamp when the chat was created.
 creatorID: string;
 ```
 
-Defined in: [src/chat/chat.ts:10](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L10)
+Defined in: [chat/chat.ts:10](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L10)
 
 ID of the user who created the chat.
 
@@ -42,7 +42,7 @@ ID of the user who created the chat.
 id: string;
 ```
 
-Defined in: [src/chat/chat.ts:6](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L6)
+Defined in: [chat/chat.ts:6](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L6)
 
 Unique identifier of the chat.
 
@@ -54,6 +54,6 @@ Unique identifier of the chat.
 name: string;
 ```
 
-Defined in: [src/chat/chat.ts:8](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/chat/chat.ts#L8)
+Defined in: [chat/chat.ts:8](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/chat/chat.ts#L8)
 
 Display name of the chat.

@@ -6,7 +6,7 @@
 
 # Interface: `TextLimits`
 
-Defined in: [src/message/types.ts:40](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L40)
+Defined in: [message/types.ts:40](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L40)
 
 Limits for text content.
 
@@ -18,7 +18,7 @@ Limits for text content.
 optional maxLength: number;
 ```
 
-Defined in: [src/message/types.ts:42](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L42)
+Defined in: [message/types.ts:42](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L42)
 
 ***
 
@@ -28,4 +28,4 @@ Defined in: [src/message/types.ts:42](https://github.com/waylis/core/blob/ec4e52
 optional minLength: number;
 ```
 
-Defined in: [src/message/types.ts:41](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L41)
+Defined in: [message/types.ts:41](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L41)

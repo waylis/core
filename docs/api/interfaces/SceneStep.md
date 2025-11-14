@@ -6,7 +6,7 @@
 
 # Interface: `SceneStep<K, T>`
 
-Defined in: [src/scene/step.ts:21](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L21)
+Defined in: [scene/step.ts:21](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L21)
 
 Defines a single step in a scene.
 
@@ -28,7 +28,7 @@ Defines a single step in a scene.
 optional handler: (body: MessageBodyMap[T]) => Promise<void | SystemMessageBody>;
 ```
 
-Defined in: [src/scene/step.ts:34](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L34)
+Defined in: [scene/step.ts:34](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L34)
 
 Optional handler to process (validate) the user's reply.
 
@@ -54,7 +54,7 @@ Optional system message response if processing (validation) fails.
 key: K;
 ```
 
-Defined in: [src/scene/step.ts:23](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L23)
+Defined in: [scene/step.ts:23](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L23)
 
 Unique key identifying the step.
 
@@ -66,7 +66,7 @@ Unique key identifying the step.
 prompt: SystemMessageBody;
 ```
 
-Defined in: [src/scene/step.ts:25](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L25)
+Defined in: [scene/step.ts:25](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L25)
 
 Prompt message shown to the user.
 
@@ -78,6 +78,6 @@ Prompt message shown to the user.
 reply: ExpectedReply<T>;
 ```
 
-Defined in: [src/scene/step.ts:27](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/scene/step.ts#L27)
+Defined in: [scene/step.ts:27](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/scene/step.ts#L27)
 
 Restriction on expected reply.

@@ -23,7 +23,7 @@ type MessageBodyMap = {
 };
 ```
 
-Defined in: [src/message/types.ts:85](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L85)
+Defined in: [message/types.ts:85](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L85)
 
 Maps each message body type to its corresponding content shape.
 
@@ -35,7 +35,7 @@ Maps each message body type to its corresponding content shape.
 boolean: boolean;
 ```
 
-Defined in: [src/message/types.ts:89](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L89)
+Defined in: [message/types.ts:89](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L89)
 
 ***
 
@@ -45,7 +45,7 @@ Defined in: [src/message/types.ts:89](https://github.com/waylis/core/blob/ec4e52
 command: string;
 ```
 
-Defined in: [src/message/types.ts:86](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L86)
+Defined in: [message/types.ts:86](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L86)
 
 ***
 
@@ -55,7 +55,7 @@ Defined in: [src/message/types.ts:86](https://github.com/waylis/core/blob/ec4e52
 datetime: Date;
 ```
 
-Defined in: [src/message/types.ts:94](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L94)
+Defined in: [message/types.ts:94](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L94)
 
 ***
 
@@ -65,7 +65,7 @@ Defined in: [src/message/types.ts:94](https://github.com/waylis/core/blob/ec4e52
 file: FileMeta;
 ```
 
-Defined in: [src/message/types.ts:90](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L90)
+Defined in: [message/types.ts:90](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L90)
 
 ***
 
@@ -75,7 +75,7 @@ Defined in: [src/message/types.ts:90](https://github.com/waylis/core/blob/ec4e52
 files: FileMeta[];
 ```
 
-Defined in: [src/message/types.ts:91](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L91)
+Defined in: [message/types.ts:91](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L91)
 
 ***
 
@@ -85,7 +85,7 @@ Defined in: [src/message/types.ts:91](https://github.com/waylis/core/blob/ec4e52
 linechart: LineChart;
 ```
 
-Defined in: [src/message/types.ts:96](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L96)
+Defined in: [message/types.ts:96](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L96)
 
 ***
 
@@ -95,7 +95,7 @@ Defined in: [src/message/types.ts:96](https://github.com/waylis/core/blob/ec4e52
 markdown: string;
 ```
 
-Defined in: [src/message/types.ts:95](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L95)
+Defined in: [message/types.ts:95](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L95)
 
 ***
 
@@ -105,7 +105,7 @@ Defined in: [src/message/types.ts:95](https://github.com/waylis/core/blob/ec4e52
 number: number;
 ```
 
-Defined in: [src/message/types.ts:88](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L88)
+Defined in: [message/types.ts:88](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L88)
 
 ***
 
@@ -115,7 +115,7 @@ Defined in: [src/message/types.ts:88](https://github.com/waylis/core/blob/ec4e52
 option: string;
 ```
 
-Defined in: [src/message/types.ts:92](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L92)
+Defined in: [message/types.ts:92](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L92)
 
 ***
 
@@ -125,7 +125,7 @@ Defined in: [src/message/types.ts:92](https://github.com/waylis/core/blob/ec4e52
 options: string[];
 ```
 
-Defined in: [src/message/types.ts:93](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L93)
+Defined in: [message/types.ts:93](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L93)
 
 ***
 
@@ -135,7 +135,7 @@ Defined in: [src/message/types.ts:93](https://github.com/waylis/core/blob/ec4e52
 table: Table;
 ```
 
-Defined in: [src/message/types.ts:97](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L97)
+Defined in: [message/types.ts:97](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L97)
 
 ***
 
@@ -145,4 +145,4 @@ Defined in: [src/message/types.ts:97](https://github.com/waylis/core/blob/ec4e52
 text: string;
 ```
 
-Defined in: [src/message/types.ts:87](https://github.com/waylis/core/blob/ec4e52cc907d26692651cc5868e974b2792624f2/src/message/types.ts#L87)
+Defined in: [message/types.ts:87](https://github.com/waylis/core/blob/29d83ce405b1852dcce37021d7e0f727d8d40cae/src/message/types.ts#L87)
