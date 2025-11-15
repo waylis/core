@@ -120,7 +120,7 @@ export class AppServer {
             let handler = this.handlers[key];
             if (!handler) {
                 if (req.method !== "GET") throw new HTTPError(404, "Not found");
-                handler = () => staticHandler;
+                handler = () => staticHandler.bind(this);
             }
 
             this.logger.debug(req.method, url.href);
@@ -224,7 +224,7 @@ export class AppServer {
         scene: {
             steps: [...Steps];
             handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody | SystemMessageBody[]>;
-        },
+        }
     ) {
         this.engine.addScene(command, scene);
     }

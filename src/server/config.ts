@@ -1,6 +1,6 @@
-import { IncomingMessage, ServerResponse } from "http";
-import { simpleAuthHandler, simpleLogoutHandler } from "./handlers";
+import { IncomingMessage, ServerResponse } from "node:http";
 import { simpleAuthMiddleware } from "./helpers";
+import { simpleAuthHandler, simpleLogoutHandler } from "./handlers";
 import { createSortableIdGenerator, randomString } from "../utils/random";
 
 //** HTTP server configuration file */
@@ -13,6 +13,8 @@ export interface ServerConfig {
     idGenerator: () => string;
     /** Default function for generating chat names, unless explicitly specified by the user */
     chatNameGenerator: () => string;
+    /** Custom path to folder with static content */
+    publicRoot?: string;
 
     /** Your app metadata */
     app: {

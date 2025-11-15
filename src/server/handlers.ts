@@ -2,8 +2,8 @@ import { IncomingMessage, ServerResponse } from "node:http";
 import { basename, join, normalize, resolve } from "node:path";
 import { realpath, stat, readFile } from "node:fs/promises";
 import { Transform } from "node:stream";
-import { AppServer } from "./server";
 import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL, sseMessage } from "./helpers";
+import { AppServer } from "./server";
 import { defineFileExtension } from "../utils/mime";
 import { randomUUID } from "../utils/random";
 import { Message } from "../message/message";
@@ -15,12 +15,15 @@ const PUBLIC_ROOT = resolve(getDirname(), "public");
 export async function staticHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     try {
         const url = parseURL(req);
+        const root = this.config.publicRoot ?? PUBLIC_ROOT;
+
         let filePath = url.pathname === "/" ? "/index.html" : url.pathname;
         filePath = normalize(filePath).replace(/^(\.\.(\/|\\|$))+/, ""); // sanitize
-        filePath = join(PUBLIC_ROOT, filePath);
+        filePath = join(root, filePath);
 
         let staticPath = await realpath(filePath);
-        if (!staticPath.startsWith(PUBLIC_ROOT)) throw new HTTPError(403, "Forbidden");
+        if (!staticPath.startsWith(root)) throw new HTTPError(403, "Forbidden");
+
         let stats = await stat(staticPath);
         if (stats.isDirectory()) throw new HTTPError(403, "Forbidden");
 
