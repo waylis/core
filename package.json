@@ -1,12 +1,13 @@
 {
   "name": "@waylis/core",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "author": "cheatsnake",
   "license": "MIT",
-  "description": "A simple way to interact with your backend.",
+  "description": "Tiny Node.js framework with built-in UI",
   "keywords": [
-    "chat",
-    "server"
+    "framework",
+    "server",
+    "ui"
   ],
   "homepage": "https://github.com/waylis/core#readme",
   "repository": {
@@ -16,7 +17,8 @@
   "bugs": {
     "url": "https://github.com/waylis/core/issues"
   },
-  "main": "index.js",
+  "main": "./build/index.cjs",
+  "module": "./build/index.mjs",
   "type": "module",
   "scripts": {
     "dev": "npx tsx --watch dev/main.ts",
@@ -33,13 +35,13 @@
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
-    "@types/node": "^24.5.0",
-    "tsdown": "^0.15.1",
-    "tsx": "^4.20.5",
-    "typedoc": "^0.28.13",
+    "@types/node": "^24.10.1",
+    "tsdown": "^0.16.4",
+    "tsx": "^4.20.6",
+    "typedoc": "^0.28.14",
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-vitepress-theme": "^1.1.2",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "vitepress": "^2.0.0-alpha.12"
   },
   "engines": {
@@ -48,16 +50,16 @@
   "dependencies": {
     "mime": "^4.1.0"
   },
-  "types": "./build/index.d.ts",
+  "types": "./build/index.d.mts",
   "files": [
     "build"
   ],
   "exports": {
     ".": {
-      "types": "./build/index.d.ts",
+      "types": "./build/index.d.mts",
+      "import": "./build/index.mjs",
       "require": "./build/index.cjs",
-      "import": "./build/index.js",
-      "default": "./build/index.js"
+      "default": "./build/index.mjs"
     },
     "./cjs": {
       "require": "./build/index.cjs",
