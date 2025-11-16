@@ -26,7 +26,20 @@ describe("staticHandler", () => {
         server = await app.start();
         const host = getTestHost(server);
 
-        const res = await fetch(`${host}/`);
+        const res = await fetch(`${host}`);
+        const text = await res.text();
+        const expected = await readFile(resolve(publicRoot, "index.html"), "utf8");
+
+        assert.strictEqual(res.status, 200);
+        assert.strictEqual(res.headers.get("content-type"), "text/html");
+        assert.strictEqual(text.trim(), expected.trim());
+    });
+
+    it("should serve index.html for /index.html", async () => {
+        server = await app.start();
+        const host = getTestHost(server);
+
+        const res = await fetch(`${host}/index.html`);
         const text = await res.text();
         const expected = await readFile(resolve(publicRoot, "index.html"), "utf8");
 
@@ -61,17 +74,17 @@ describe("staticHandler", () => {
         server = await app.start();
         const host = getTestHost(server);
 
-        const res = await fetch(`${host}/../../.env`);
+        const res = await fetch(`${host}/../../package.json`);
 
         assert.strictEqual(res.status, 404);
     });
 
-    it("should return 404 when accessing not existing directory", async () => {
+    it("should return 403 when accessing existing directory", async () => {
         server = await app.start();
         const host = getTestHost(server);
 
         const res = await fetch(`${host}/folder`);
 
-        assert.strictEqual(res.status, 404);
+        assert.strictEqual(res.status, 403);
     });
 });
