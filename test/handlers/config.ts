@@ -19,11 +19,11 @@ export const testConfig: DeepPartial<ServerConfig> = {
     },
 };
 
-export const testAppServerSetup: AppServerParams = {
+export const testAppServerSetup = (): AppServerParams => ({
     logger: new SimpleLogger({ levels: [] }),
     db: new MemoryDatabase(),
     config: testConfig,
-};
+});
 
 export const getTestHost = (s: Server) => `http://localhost:${(s.address() as AddressInfo).port}`;
 

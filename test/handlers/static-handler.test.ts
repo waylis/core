@@ -12,7 +12,7 @@ describe("staticHandler", () => {
     const publicRoot = resolve(process.cwd(), "test", "handlers", "public");
 
     beforeEach(() => {
-        app = new AppServer({ ...testAppServerSetup, config: { publicRoot, port: 0 } });
+        app = new AppServer({ ...testAppServerSetup(), config: { publicRoot, port: 0 } });
     });
 
     afterEach(async () => {

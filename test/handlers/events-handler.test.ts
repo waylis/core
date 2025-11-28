@@ -10,7 +10,7 @@ describe("eventsHandler", () => {
     const reqTimeout = AbortSignal.timeout(100); // need to close connection manually
 
     beforeEach(async () => {
-        app = new AppServer(testAppServerSetup);
+        app = new AppServer(testAppServerSetup());
     });
 
     afterEach(async () => {

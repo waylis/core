@@ -18,7 +18,7 @@ describe("getConfigHandler", () => {
     });
 
     it("should return default config", async () => {
-        app = new AppServer(testAppServerSetup);
+        app = new AppServer(testAppServerSetup());
         server = await app.start();
         const res = await fetch(`${getTestHost(server)}/api/config`);
 
@@ -34,7 +34,7 @@ describe("getConfigHandler", () => {
             defaultPageLimit: 5,
         };
 
-        app = new AppServer({ ...testAppServerSetup, config: expected });
+        app = new AppServer({ ...testAppServerSetup(), config: expected });
         server = await app.start();
         const res = await fetch(`${getTestHost(server)}/api/config`);
 

@@ -10,7 +10,7 @@ describe("getCommandsHandler", () => {
     let server: Server | null = null;
 
     beforeEach(async () => {
-        app = new AppServer(testAppServerSetup);
+        app = new AppServer(testAppServerSetup());
     });
 
     afterEach(async () => {

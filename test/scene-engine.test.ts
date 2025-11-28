@@ -1,3 +1,4 @@
+import { MemoryDatabase } from "./../src/database/memory/memory";
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { SceneEngine } from "../src/scene/engine";
@@ -8,11 +9,10 @@ import { createScene } from "../src/scene/scene";
 import { SystemMessageBody, UserMessageBody } from "../src/message/types";
 import { createStep, StepManager } from "../src/scene/step";
 import { eventBus } from "../src/events/bus";
-import { JSONDatabase } from "../src/database/json/json";
 
 describe("SceneEngine > handleMessage", async () => {
     let engine: SceneEngine;
-    const db = new JSONDatabase();
+    const db = new MemoryDatabase();
     const messageManager = new MessageManager(createSortableIdGenerator());
     const stepManager = new StepManager();
 
@@ -20,7 +20,7 @@ describe("SceneEngine > handleMessage", async () => {
         body: UserMessageBody,
         chatID = randomString(),
         senderID = randomString(),
-        replyMsg?: Message,
+        replyMsg?: Message
     ) => messageManager.createUserMessage({ chatID, senderID, body: body }, replyMsg);
 
     const mockSimpleScene = (response: SystemMessageBody) => {
@@ -153,7 +153,7 @@ describe("SceneEngine > handleMessage", async () => {
             () => {
                 mockMessage({ type: "text", content: "X" }, resp1.chatID, msg1.senderID, resp1);
             },
-            { name: "Error" },
+            { name: "Error" }
         );
     });
 });
