@@ -11,7 +11,7 @@ import {
     getCommandsHandler,
     getFileHandler,
     getMessagesHandler,
-    sendMessageHandler,
+    createMessageHandler,
     staticHandler,
     uploadFileHandler,
 } from "./handlers";
@@ -104,7 +104,7 @@ export class AppServer {
         "POST /api/auth": () => this.config.auth.handler,
         "POST /api/logout": () => this.config.auth.logoutHandler,
         "POST /api/chat": () => createChatHandler.bind(this),
-        "POST /api/message": () => sendMessageHandler.bind(this),
+        "POST /api/message": () => createMessageHandler.bind(this),
         "POST /api/file": () => uploadFileHandler.bind(this),
 
         "PUT /api/chat": () => editChatHandler.bind(this),
@@ -224,7 +224,7 @@ export class AppServer {
         scene: {
             steps: [...Steps];
             handler: (responses: SceneResponsesMap<Steps>) => Promise<SystemMessageBody | SystemMessageBody[]>;
-        }
+        },
     ) {
         this.engine.addScene(command, scene);
     }

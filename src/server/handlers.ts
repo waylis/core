@@ -138,7 +138,7 @@ export async function getMessagesHandler(this: AppServer, req: IncomingMessage, 
     jsonData(res, messages);
 }
 
-export async function sendMessageHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+export async function createMessageHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     try {
         const senderID = await this.config.auth.middleware(req);
         const body = await parseJSONBody(req);
