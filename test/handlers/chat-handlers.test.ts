@@ -2,12 +2,14 @@ import assert from "node:assert";
 import { Server } from "node:http";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import { getTestHost, TEST, testAppServerSetup } from "./config";
-import { AppServer } from "../../src/server/server";
 import { Chat } from "../../src/chat/chat";
+import { eventBus } from "../../src/events/bus";
+import { AppServer } from "../../src/server/server";
 
 describe("Chat handlers", () => {
     let app: AppServer;
     let server: Server | null = null;
+    eventBus.setMaxListeners(99); // need to prevent MaxListenersExceededWarning warning
 
     beforeEach(async () => {
         app = new AppServer(testAppServerSetup());

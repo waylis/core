@@ -27,6 +27,8 @@ export const testAppServerSetup = (): AppServerParams => ({
 
 export const getTestHost = (s: Server) => `http://localhost:${(s.address() as AddressInfo).port}`;
 
+export const testUserMessageBody = { type: "command", content: TEST };
+
 export const testCommand = createCommand({ value: TEST, description: TEST, label: TEST });
 
 export const testStep = createStep({

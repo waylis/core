@@ -1,14 +1,14 @@
-import { IncomingMessage, ServerResponse } from "node:http";
-import { basename, join, normalize, resolve } from "node:path";
-import { realpath, stat, readFile } from "node:fs/promises";
 import { Transform } from "node:stream";
+import { IncomingMessage, ServerResponse } from "node:http";
+import { realpath, stat, readFile } from "node:fs/promises";
+import { basename, join, normalize, resolve } from "node:path";
 import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL, sseMessage } from "./helpers";
 import { AppServer } from "./server";
-import { defineFileExtension } from "../utils/mime";
+import { getDirname } from "../utils/fs";
 import { randomUUID } from "../utils/random";
 import { Message } from "../message/message";
+import { defineFileExtension } from "../utils/mime";
 import { defineMimeType } from "./../utils/mime";
-import { getDirname } from "../utils/fs";
 
 const PUBLIC_ROOT = resolve(getDirname(), "public");
 
@@ -57,23 +57,6 @@ export async function getCommandsHandler(this: AppServer, _req: IncomingMessage,
     jsonData(res, commands);
 }
 
-export async function getMessagesHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = await this.config.auth.middleware(req);
-    const url = parseURL(req);
-    const chatID = url.searchParams.get("chat_id");
-    if (!chatID) throw new HTTPError(400, "chat_id query parameter is required");
-
-    const chat = await this.database.getChatByID(chatID);
-    if (!chat) throw new HTTPError(404, "Chat not found");
-    if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
-
-    const offset = Number(url.searchParams.get("offset")) ?? 0;
-    const limit = Number(url.searchParams.get("limit")) || this.config.defaultPageLimit;
-    const messages = await this.database.getMessagesByChatID(chatID, offset, limit);
-
-    jsonData(res, messages);
-}
-
 export async function getChatsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.auth.middleware(req);
     const url = parseURL(req);
@@ -99,6 +82,60 @@ export async function createChatHandler(this: AppServer, req: IncomingMessage, r
 
     this.logger.debug("Chat created:", JSON.stringify(chat));
     jsonData(res, chat, 201);
+}
+
+export async function editChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+    const userID = await this.config.auth.middleware(req);
+    const url = parseURL(req);
+    const chatID = url.searchParams.get("id");
+    if (!chatID) throw new HTTPError(400, "id query parameter is required");
+
+    const chat = await this.database.getChatByID(chatID);
+    if (!chat) throw new HTTPError(404, "Chat not found");
+    if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
+
+    const body = await parseJSONBody<{ name?: string }>(req);
+    const newName = body?.name ?? chat.name;
+    const updated = await this.database.editChatByID(chatID, { name: newName });
+
+    this.logger.debug("Chat edited:", JSON.stringify(updated));
+
+    jsonData(res, updated);
+}
+
+export async function deleteChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+    const userID = await this.config.auth.middleware(req);
+    const url = parseURL(req);
+    const chatID = url.searchParams.get("id");
+    if (!chatID) throw new HTTPError(400, "id query parameter is required");
+
+    const chat = await this.database.getChatByID(chatID);
+    if (!chat) throw new HTTPError(404, "Chat not found");
+    if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
+
+    await this.database.deleteChatByID(chatID);
+    await this.database.deleteMessagesByChatID(chatID);
+
+    this.logger.debug("Chat deleted:", JSON.stringify(chat));
+
+    jsonData(res, chat);
+}
+
+export async function getMessagesHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
+    const userID = await this.config.auth.middleware(req);
+    const url = parseURL(req);
+    const chatID = url.searchParams.get("chat_id");
+    if (!chatID) throw new HTTPError(400, "chat_id query parameter is required");
+
+    const chat = await this.database.getChatByID(chatID);
+    if (!chat) throw new HTTPError(404, "Chat not found");
+    if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
+
+    const offset = Number(url.searchParams.get("offset")) ?? 0;
+    const limit = Number(url.searchParams.get("limit")) || this.config.defaultPageLimit;
+    const messages = await this.database.getMessagesByChatID(chatID, offset, limit);
+
+    jsonData(res, messages);
 }
 
 export async function sendMessageHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
@@ -130,7 +167,7 @@ export async function sendMessageHandler(this: AppServer, req: IncomingMessage, 
                     const filemeta = await this.fileManager.getFileMeta(file.id);
                     if (!filemeta) throw fileNotFoundErr;
                     return { ...file, ...filemeta };
-                })
+                }),
             );
         }
 
@@ -208,43 +245,6 @@ export async function uploadFileHandler(this: AppServer, req: IncomingMessage, r
     this.logger.debug("File uploaded:", JSON.stringify(filemeta));
 
     jsonData(res, filemeta);
-}
-
-export async function editChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = await this.config.auth.middleware(req);
-    const url = parseURL(req);
-    const chatID = url.searchParams.get("id");
-    if (!chatID) throw new HTTPError(400, "id query parameter is required");
-
-    const chat = await this.database.getChatByID(chatID);
-    if (!chat) throw new HTTPError(404, "Chat not found");
-    if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
-
-    const body = await parseJSONBody<{ name?: string }>(req);
-    const newName = body?.name ?? chat.name;
-    const updated = await this.database.editChatByID(chatID, { name: newName });
-
-    this.logger.debug("Chat edited:", JSON.stringify(updated));
-
-    jsonData(res, updated);
-}
-
-export async function deleteChatHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
-    const userID = await this.config.auth.middleware(req);
-    const url = parseURL(req);
-    const chatID = url.searchParams.get("id");
-    if (!chatID) throw new HTTPError(400, "id query parameter is required");
-
-    const chat = await this.database.getChatByID(chatID);
-    if (!chat) throw new HTTPError(404, "Chat not found");
-    if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
-
-    await this.database.deleteChatByID(chatID);
-    await this.database.deleteMessagesByChatID(chatID);
-
-    this.logger.debug("Chat deleted:", JSON.stringify(chat));
-
-    jsonData(res, chat);
 }
 
 export async function eventsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
