@@ -1,69 +1,69 @@
 {
-  "name": "@waylis/core",
-  "version": "0.2.0",
-  "author": "cheatsnake",
-  "license": "MIT",
-  "description": "Tiny Node.js framework with built-in UI",
-  "keywords": [
-    "framework",
-    "server",
-    "ui"
-  ],
-  "homepage": "https://github.com/waylis/core#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/waylis/core.git"
-  },
-  "bugs": {
-    "url": "https://github.com/waylis/core/issues"
-  },
-  "main": "./build/index.cjs",
-  "module": "./build/index.mjs",
-  "type": "module",
-  "scripts": {
-    "dev": "npx tsx --watch dev/main.ts",
-    "test": "npx tsx --test",
-    "build:server": "tsdown && cp package.shared.json build-shared/package.json",
-    "build:client": "npm run build --prefix ./ui",
-    "build": "npm run build:server && npm run build:client && cp -r ./ui/dist ./build/public",
-    "ui:init": "git submodule update --init ./ui",
-    "ui:install": "npm install --prefix ./ui",
-    "ui:update": "git submodule update --remote ./ui && git add ./ui && git commit -m 'chore: pull updates from ui'",
-    "predocs": "typedoc",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
-  },
-  "devDependencies": {
-    "@types/node": "^24.10.1",
-    "tsdown": "^0.16.4",
-    "tsx": "^4.20.6",
-    "typedoc": "^0.28.14",
-    "typedoc-plugin-markdown": "^4.9.0",
-    "typedoc-vitepress-theme": "^1.1.2",
-    "typescript": "^5.9.3",
-    "vitepress": "^2.0.0-alpha.12"
-  },
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "dependencies": {
-    "mime": "^4.1.0"
-  },
-  "types": "./build/index.d.mts",
-  "files": [
-    "build"
-  ],
-  "exports": {
-    ".": {
-      "types": "./build/index.d.mts",
-      "import": "./build/index.mjs",
-      "require": "./build/index.cjs",
-      "default": "./build/index.mjs"
+    "name": "@waylis/core",
+    "version": "0.3.0",
+    "author": "cheatsnake",
+    "license": "MIT",
+    "description": "Tiny Node.js framework with built-in UI",
+    "keywords": [
+        "framework",
+        "server",
+        "ui"
+    ],
+    "homepage": "https://github.com/waylis/core#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/waylis/core.git"
     },
-    "./cjs": {
-      "require": "./build/index.cjs",
-      "types": "./build/index.d.cts"
+    "bugs": {
+        "url": "https://github.com/waylis/core/issues"
+    },
+    "main": "./build/index.cjs",
+    "module": "./build/index.mjs",
+    "type": "module",
+    "scripts": {
+        "dev": "npx tsx --watch dev/main.ts",
+        "test": "npx tsx --test",
+        "build:server": "tsdown && cp package.shared.json build-shared/package.json",
+        "build:client": "npm run build --prefix ./ui",
+        "build": "npm run build:server && npm run build:client && cp -r ./ui/dist ./build/public",
+        "ui:init": "git submodule update --init ./ui",
+        "ui:install": "npm install --prefix ./ui",
+        "ui:update": "git submodule update --remote ./ui && git add ./ui && git commit -m 'chore: pull updates from ui'",
+        "predocs": "typedoc",
+        "docs:dev": "vitepress dev docs",
+        "docs:build": "vitepress build docs",
+        "docs:preview": "vitepress preview docs"
+    },
+    "devDependencies": {
+        "@types/node": "^24.10.1",
+        "tsdown": "^0.19.0",
+        "tsx": "^4.21.0",
+        "typedoc": "^0.28.16",
+        "typedoc-plugin-markdown": "^4.9.0",
+        "typedoc-vitepress-theme": "^1.1.2",
+        "typescript": "^5.9.3",
+        "vitepress": "^2.0.0-alpha.12"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "dependencies": {
+        "mime": "^4.1.0"
+    },
+    "types": "./build/index.d.mts",
+    "files": [
+        "build"
+    ],
+    "exports": {
+        ".": {
+            "types": "./build/index.d.mts",
+            "import": "./build/index.mjs",
+            "require": "./build/index.cjs",
+            "default": "./build/index.mjs"
+        },
+        "./cjs": {
+            "require": "./build/index.cjs",
+            "types": "./build/index.d.cts"
+        }
     }
-  }
 }
