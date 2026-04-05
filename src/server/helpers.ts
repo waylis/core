@@ -73,3 +73,15 @@ export const simpleAuthMiddleware = async (req: IncomingMessage) => {
     if (!userID) throw new HTTPError(401, "Unauthorized");
     return userID;
 };
+
+export const parseIntParam = (
+    param: string | null,
+    defaultValue: number,
+    min = -Infinity,
+    max = Infinity
+): number => {
+    if (param === null) return defaultValue;
+    const parsed = parseInt(param, 10);
+    if (isNaN(parsed)) return defaultValue;
+    return Math.max(min, Math.min(max, parsed));
+};

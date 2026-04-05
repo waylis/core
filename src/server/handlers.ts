@@ -2,7 +2,7 @@ import { Transform } from "node:stream";
 import { IncomingMessage, ServerResponse } from "node:http";
 import { realpath, stat, readFile } from "node:fs/promises";
 import { basename, join, normalize, resolve } from "node:path";
-import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseURL, sseMessage } from "./helpers";
+import { HTTPError, jsonData, jsonMessage, parseJSONBody, parseIntParam, parseURL, sseMessage } from "./helpers";
 import { AppServer } from "./server";
 import { getDirname } from "../utils/fs";
 import { randomUUID } from "../utils/random";
@@ -60,8 +60,8 @@ export async function getCommandsHandler(this: AppServer, _req: IncomingMessage,
 export async function getChatsHandler(this: AppServer, req: IncomingMessage, res: ServerResponse) {
     const userID = await this.config.auth.middleware(req);
     const url = parseURL(req);
-    const offset = Number(url.searchParams.get("offset")) ?? 0;
-    const limit = Number(url.searchParams.get("limit")) || this.config.defaultPageLimit;
+    const offset = parseIntParam(url.searchParams.get("offset"), 0, 0);
+    const limit = parseIntParam(url.searchParams.get("limit"), this.config.defaultPageLimit, 1);
 
     const chats = await this.database.getChatsByCreatorID(userID, offset, limit);
     jsonData(res, chats);
@@ -131,8 +131,8 @@ export async function getMessagesHandler(this: AppServer, req: IncomingMessage, 
     if (!chat) throw new HTTPError(404, "Chat not found");
     if (chat.creatorID !== userID) throw new HTTPError(403, "Forbidden");
 
-    const offset = Number(url.searchParams.get("offset")) ?? 0;
-    const limit = Number(url.searchParams.get("limit")) || this.config.defaultPageLimit;
+    const offset = parseIntParam(url.searchParams.get("offset"), 0, 0);
+    const limit = parseIntParam(url.searchParams.get("limit"), this.config.defaultPageLimit, 1);
     const messages = await this.database.getMessagesByChatID(chatID, offset, limit);
 
     jsonData(res, messages);
