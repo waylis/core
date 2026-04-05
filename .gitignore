@@ -8,5 +8,6 @@ logs
 
 docs/.vitepress/dist
 docs/.vitepress/cache
+scripts/**/package-lock.json
 
 db.json
