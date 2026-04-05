@@ -32,7 +32,8 @@
         "predocs": "typedoc",
         "docs:dev": "vitepress dev docs",
         "docs:build": "vitepress build docs",
-        "docs:preview": "vitepress preview docs"
+        "docs:preview": "vitepress preview docs",
+        "verify:build": "npx tsx scripts/verify-build.ts"
     },
     "devDependencies": {
         "@types/node": "^24.12.2",

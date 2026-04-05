@@ -1,0 +1,11 @@
+{
+  "name": "waylis-test-app",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/main.ts"
+  },
+  "devDependencies": {
+    "@waylis/core": "file:../..",
+    "tsx": "^4.21.0"
+  }
+}
