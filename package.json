@@ -35,14 +35,14 @@
         "docs:preview": "vitepress preview docs"
     },
     "devDependencies": {
-        "@types/node": "^24.10.1",
-        "tsdown": "^0.19.0",
+        "@types/node": "^24.12.2",
+        "tsdown": "^0.21.7",
         "tsx": "^4.21.0",
-        "typedoc": "^0.28.16",
-        "typedoc-plugin-markdown": "^4.9.0",
+        "typedoc": "^0.28.18",
+        "typedoc-plugin-markdown": "^4.11.0",
         "typedoc-vitepress-theme": "^1.1.2",
-        "typescript": "^5.9.3",
-        "vitepress": "^2.0.0-alpha.12"
+        "typescript": "^6.0.2",
+        "vitepress": "^2.0.0-alpha.17"
     },
     "engines": {
         "node": ">=20.0.0"
