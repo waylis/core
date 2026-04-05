@@ -24,7 +24,7 @@ Define exactly what kind of data you expect with precise validation and constrai
 ⚡ It’s like Express.js, but instead of exposing an HTTP API for developers — you expose a user-friendly UI for end users.
 
 > [!WARNING]
-> Waylis is a new project and currently in beta phase. Updates released before version 1.0 may introduce breaking changes.
+> Updates released before version 1.0 may introduce breaking changes.
 
 ## Features
 
